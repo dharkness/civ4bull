@@ -18,6 +18,7 @@
 #include "CvDLLWidgetData.h"
 #include "CvPopupInfo.h"
 #include "FProfiler.h"
+#include "UnofficialPatch.h"
 
 CvDLLWidgetData* CvDLLWidgetData::m_pInst = NULL;
 
@@ -3516,6 +3517,21 @@ void CvDLLWidgetData::parseUnitModelHelp(CvWidgetDataStruct &widgetDataStruct, C
 void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {
 	CvWString szTempBuffer;
+
+	// Unofficial Patch Start
+    // * Added (English-only) patch version string to flag hover text. Idea borrowed from BetterAI mod.
+	float fVersion = ((float)GC.getDefineINT("CIV4_VERSION"))/100.0f;
+	szTempBuffer.Format(SETCOLR L"Beyond the Sword %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), fVersion);
+	szBuffer.append(szTempBuffer);
+	szBuffer.append(NEWLINE);
+	fVersion = ((float)UP_PATCH_VERSION)/100.0f;
+	szTempBuffer.Format(SETCOLR L"Unofficial Patch %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), fVersion);
+	szBuffer.append(szTempBuffer);
+	szBuffer.append(NEWLINE);
+	szTempBuffer.Format(L"================================");
+	szBuffer.append(szTempBuffer);
+	szBuffer.append(NEWLINE);
+	// Unofficial Patch End
 
 	szTempBuffer.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), GC.getCivilizationInfo(GC.getGameINLINE().getActiveCivilizationType()).getDescription());
 	szBuffer.append(szTempBuffer);

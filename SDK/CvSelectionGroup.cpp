@@ -192,7 +192,22 @@ void CvSelectionGroup::doTurn()
 		{
 			if (getActivityType() == ACTIVITY_MISSION)
 			{
-				if (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0)
+				// Unofficial Patch Start
+				// * Spies really no longer interrupt their mission when moving next to an enemy unit
+				bool bNonSpy = false;
+				for (CLLNode<IDInfo>* pUnitNode = headUnitNode(); pUnitNode != NULL; pUnitNode = nextUnitNode(pUnitNode))
+				{
+					CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
+					// For all invisible units, use !pLoopUnit->alwaysInvisible()
+					if (!pLoopUnit->isSpy())
+					{
+						bNonSpy = true;
+						break;
+					}
+				}
+
+				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0)
+				// Unofficial Patch End
 				{
 					clearMissionQueue();
 				}

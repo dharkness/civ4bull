@@ -29,6 +29,9 @@
 #include "CvDLLEventReporterIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 
+// Needed to check compilation options
+#include "UnofficialPatch.h"
+
 // Public Functions...
 
 CvGame::CvGame()
@@ -1079,7 +1082,10 @@ void CvGame::normalizeStartingPlotLocations()
 void CvGame::normalizeAddRiver()
 {
 	CvPlot* pStartingPlot;
-	int iI;
+	// Unofficial Patch Start
+	// * Rivers running through deserts will result in floodplains
+	CvPlot* pPlot;
+	int iI, iJ, iK;
 
 	for (iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 	{
@@ -1101,6 +1107,31 @@ void CvGame::normalizeAddRiver()
 					{
 						CvMapGenerator::GetInstance().addRiver(pStartingPlot);
 					}
+					// add floodplains to any desert tiles the new river passes through
+					for (iK = 0; iK < GC.getMapINLINE().numPlotsINLINE(); iK++)
+					{
+						pPlot = GC.getMapINLINE().plotByIndexINLINE(iK);
+						FAssert(pPlot != NULL);
+
+						for (iJ = 0; iJ < GC.getNumFeatureInfos(); iJ++)
+						{
+							if (GC.getFeatureInfo((FeatureTypes)iJ).isRequiresRiver())
+							{
+								if (pPlot->canHaveFeature((FeatureTypes)iJ))
+								{
+									if (GC.getFeatureInfo((FeatureTypes)iJ).getAppearanceProbability() == 10000)
+									{
+										if (pPlot->getBonusType() != NO_BONUS)
+										{
+											pPlot->setBonusType(NO_BONUS);
+										}
+										pPlot->setFeatureType((FeatureTypes)iJ);
+									}
+								}
+							}
+						}
+					}
+					// Unofficial Patch End
 				}
 			}
 		}
@@ -1416,10 +1447,9 @@ void CvGame::normalizeAddFoodBonuses()
 
 						if (eBonus != NO_BONUS)
 						{
-						    if (pLoopPlot->calculateBestNatureYield(YIELD_FOOD, GET_PLAYER((PlayerTypes)iI).getTeam()) >= 2)
-						    {
-						        iGoodNatureTileCount++;
-						    }
+						    // Unofficial Patch Start
+						    // * Start location tweaks per SevenSpirits Pt 1/2
+						    // Ref: http://forums.civfanatics.com/showpost.php?p=6197765&postcount=1304
 							if (GC.getBonusInfo(eBonus).getYieldChange(YIELD_FOOD) > 0)
 							{
 								if ((GC.getBonusInfo(eBonus).getTechCityTrade() == NO_TECH) || (GC.getTechInfo((TechTypes)(GC.getBonusInfo(eBonus).getTechCityTrade())).getEra() <= getStartEra()))
@@ -1434,6 +1464,11 @@ void CvGame::normalizeAddFoodBonuses()
 									}
 								}
 							}
+							else if (pLoopPlot->calculateBestNatureYield(YIELD_FOOD, GET_PLAYER((PlayerTypes)iI).getTeam()) >= 2)
+						    {
+						        iGoodNatureTileCount++;
+						    }
+							// Unofficial Patch End
 						}
 						else
 						{
@@ -1679,8 +1714,10 @@ void CvGame::normalizeAddExtras()
 					{
 						break;
 					}
-					
-					//if (getSorenRandNum((iCount + 2), "Setting Feature Type") <= 1)
+					// Unofficial Patch Start
+					// * Reenabled first-pass randomizer in start location forestation code to allow potential resource placement as per Bhruic's patch for 3.13
+					if (getSorenRandNum((iCount + 2), "Setting Feature Type") <= 1)
+					// Unofficial Patch End
 					{
 						pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), aiShuffle[iJ]);
 
@@ -1724,9 +1761,14 @@ void CvGame::normalizeAddExtras()
 					{
 						if (pLoopPlot != pStartingPlot)
 						{
-							iWaterCount++;
+						    // Unofficial Patch Start
+						    // * Fixed bug in the map generator with water starts
+						    // Ref: http://forums.civfanatics.com/showpost.php?p=6197765&postcount=1304
+						    // See also L3 entry in http://forums.civfanatics.com/showpost.php?p=6200320&postcount=1314
 							if (pLoopPlot->isWater())
 							{
+								iWaterCount++;
+								// Unofficial Patch End
 								if (pLoopPlot->getBonusType() != NO_BONUS)
 								{
 									if (pLoopPlot->isAdjacentToLand())
@@ -1851,6 +1893,46 @@ void CvGame::normalizeAddExtras()
 					}
 				}
 				
+				// Unofficial Patch Start
+				// * Start location tweaks per SevenSpirits Pt 2
+				// REF: http://forums.civfanatics.com/showpost.php?p=6197765&postcount=1304
+				shuffleArray(aiShuffle, NUM_CITY_PLOTS, getMapRand());
+
+				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
+				{
+					if (GET_PLAYER((PlayerTypes)iI).AI_foundValue(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), -1, true) >= iTargetValue)
+					{
+						break;
+					}
+				
+					pLoopPlot = plotCity(pStartingPlot->getX_INLINE(), pStartingPlot->getY_INLINE(), aiShuffle[iJ]);
+
+					if (pLoopPlot != NULL)
+					{
+						if (pLoopPlot != pStartingPlot)
+						{
+							if (pLoopPlot->getBonusType() == NO_BONUS)
+							{
+								if (pLoopPlot->getFeatureType() == NO_FEATURE)
+								{
+									for (iK = 0; iK < GC.getNumFeatureInfos(); iK++)
+									{
+										if ((GC.getFeatureInfo((FeatureTypes)iK).getYieldChange(YIELD_FOOD) + GC.getFeatureInfo((FeatureTypes)iK).getYieldChange(YIELD_PRODUCTION)) > 0)
+										{
+											if (pLoopPlot->canHaveFeature((FeatureTypes)iK))
+											{
+												pLoopPlot->setFeatureType((FeatureTypes)iK);
+												break;
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				// Unofficial Patch End
 				int iHillsCount = 0;
 				
 				for (iJ = 0; iJ < NUM_CITY_PLOTS; iJ++)
@@ -2811,6 +2893,11 @@ void CvGame::clearSecretaryGeneral(VoteSourceTypes eVoteSource)
 				kData.kVoteOption.szText.empty();
 				kData.kVoteOption.ePlayer = NO_PLAYER;
 				setVoteOutcome(kData, NO_PLAYER_VOTE);
+
+				// Unofficial Patch Start
+				// * Certain situations which invalidated Secretary General/AP Resident will now force the next vote to be an election.
+				setSecretaryGeneralTimer(eVoteSource, 0);
+				// Unofficial Patch End
 			}
 		}
 	}
@@ -2891,7 +2978,10 @@ int CvGame::countCivTeamsEverAlive() const
 		{
 			if (kPlayer.getParent() == NO_PLAYER)
 			{
-				setTeamsEverAlive.insert(iI);
+				// Unofficial Patch Start
+				// * Fixed team-counting bug that would cause some mapscripts to fail. [DanF5571]
+				setTeamsEverAlive.insert(kPlayer.getTeam());
+				// Unofficial Patch End
 			}
 		}
 	}
@@ -3877,11 +3967,25 @@ void CvGame::setAIAutoPlay(int iNewValue)
 	{
 		m_iAIAutoPlay = std::max(0, iNewValue);
 
+		// Unofficial Patch Start
+		// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+		// (AIAutoPlay) Multiplayer compatibility idea from Jeckel
+		for( int iI = 0; iI < MAX_CIV_PLAYERS; iI++ )
+		{
+			if( GET_PLAYER((PlayerTypes)iI).isHuman() || GET_PLAYER((PlayerTypes)iI).isHumanDisabled() )
+			{
+				GET_PLAYER(getActivePlayer()).setHumanDisabled((getAIAutoPlay() != 0));
+			}
+		}
+#else
 		if ((iOldValue == 0) && (getAIAutoPlay() > 0))
 		{
 			GET_PLAYER(getActivePlayer()).killUnits();
 			GET_PLAYER(getActivePlayer()).killCities();
 		}
+#endif
+		// Unofficial Patch End
 	}
 }
 
@@ -4635,6 +4739,11 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 		m_eWinner = eNewWinner;
 		m_eVictory = eNewVictory;
 
+		// Unofficial Patch Start
+		// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+		gDLL->getEventReporterIFace()->victory(eNewWinner, eNewVictory);
+#endif
 		if (getVictory() != NO_VICTORY)
 		{
 			if (getWinner() != NO_TEAM)
@@ -4655,7 +4764,10 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 
 		gDLL->getInterfaceIFace()->setDirty(Center_DIRTY_BIT, true);
 
+#ifndef _USE_AIAUTOPLAY
 		gDLL->getEventReporterIFace()->victory(eNewWinner, eNewVictory);
+#endif
+		// Unofficial Patch End
 
 		gDLL->getInterfaceIFace()->setDirty(Soundtrack_DIRTY_BIT, true);
 	}
@@ -8809,6 +8921,14 @@ void CvGame::doVoteResults()
 				}
 			}
 		}
+
+		// Unofficial Patch Start
+		// * Certain situations which invalidated Secretary General/AP Resident will now force the next vote to be an election.
+		if (!bPassed && GC.getVoteInfo(eVote).isSecretaryGeneral())
+		{
+			setSecretaryGeneralTimer(eVoteSource, 0);
+		}
+		// Unofficial Patch End
 
 		deleteVoteTriggered(pVoteTriggered->getID());
 	}
