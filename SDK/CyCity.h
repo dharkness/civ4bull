@@ -191,6 +191,11 @@ public:
 	int getTotalGreatPeopleRateModifier();
 	void changeBaseGreatPeopleRate(int iChange);
 	int getGreatPeopleRateModifier();
+// BUG - Building Additional Great People - start
+	int getAdditionalGreatPeopleRateByBuilding(int /*BuildingTypes*/ iBuilding);
+	int getAdditionalBaseGreatPeopleRateByBuilding(int /*BuildingTypes*/ iBuilding);
+	int getAdditionalGreatPeopleRateModifierByBuilding(int /*BuildingTypes*/ iBuilding);
+// BUG - Building Additional Great People - end
 	int getGreatPeopleProgress();
 	void changeGreatPeopleProgress(int iChange);
 	int getNumWorldWonders();
@@ -336,6 +341,13 @@ public:
 	int getBaseYieldRateModifier(int /*YieldTypes*/ eIndex, int iExtra);
 	int getYieldRate(int /*YieldTypes*/ eIndex);
 	int getYieldRateModifier(int /*YieldTypes*/ eIndex);
+	
+// BUG - Building Additional Yield - start
+	int getAdditionalYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+	int getAdditionalBaseYieldRateByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+	int getAdditionalYieldRateModifierByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+// BUG - Building Additional Yield - end
+
 	int getTradeYield(int /*YieldTypes*/ eIndex);
 	int totalTradeModifier();
 
@@ -354,6 +366,12 @@ public:
 	int getProductionToCommerceModifier(int /*CommerceTypes*/ eIndex);
 	int getBuildingCommerce(int /*CommerceTypes*/ eIndex);
 	int getBuildingCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);	
+// BUG - Building Additional Commerce - start
+	int getAdditionalCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+	int getAdditionalCommerceTimes100ByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+	int getAdditionalBaseCommerceRateByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+	int getAdditionalCommerceRateModifierByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding);
+// BUG - Building Additional Commerce - end
 	int getSpecialistCommerce(int /*CommerceTypes*/ eIndex);
 	void changeSpecialistCommerce(int /*CommerceTypes*/ eIndex, int iChange);
 	int getReligionCommerce(int /*CommerceTypes*/ eIndex);
@@ -401,11 +419,24 @@ public:
 	int getBuildingProductionTime(int /*BuildingTypes*/ eIndex);
 	void setBuildingProductionTime(int /*BuildingTypes*/ eIndex, int iNewValue);
 	void changeBuildingProductionTime(int /*BuildingTypes*/ eIndex, int iChange);
+// BUG - Production Decay - start
+	bool isBuildingProductionDecay(int /*BuildingTypes*/ eIndex);
+	int getBuildingProductionDecay(int /*BuildingTypes*/ eIndex);
+	int getBuildingProductionDecayTurns(int /*BuildingTypes*/ eIndex);
+// BUG - Production Decay - end
 	int getBuildingOriginalOwner(int /*BuildingTypes*/ iIndex);
 	int getBuildingOriginalTime(int /*BuildingTypes*/ iIndex);
 	int getUnitProduction(int iIndex);
 	void setUnitProduction(int iIndex, int iNewValue);
 	void changeUnitProduction(int /*UnitTypes*/ iIndex, int iChange);
+// BUG - Production Decay - start
+	int getUnitProductionTime(int /*UnitTypes*/ eIndex);
+	void setUnitProductionTime(int /*UnitTypes*/ eIndex, int iNewValue);
+	void changeUnitProductionTime(int /*UnitTypes*/ eIndex, int iChange);
+	bool isUnitProductionDecay(int /*UnitTypes*/ eIndex);
+	int getUnitProductionDecay(int /*UnitTypes*/ eIndex);
+	int getUnitProductionDecayTurns(int /*UnitTypes*/ eIndex);
+// BUG - Production Decay - end
 	int getGreatPeopleUnitRate(int /*UnitTypes*/ iIndex);
 	int getGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex);
 	void setGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex, int iNewValue);

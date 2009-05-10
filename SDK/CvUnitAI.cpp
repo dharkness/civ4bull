@@ -5511,7 +5511,10 @@ void CvUnitAI::AI_attackAirMove()
 	if (getDamage() > 0)
 	{
 		// * Damaged AI attack planes may choose to continue attacking if no defending interceptors are around
-		if ((currHitPoints() / maxHitPoints() * 100) < 40)
+// BUG - AI Wounded Planes Fix - start
+		// Original test always succeeded due to integer division, grounding all wounded planes.
+		if ((100 * currHitPoints() / maxHitPoints()) < 40)
+// BUG - AI Wounded Planes Fix - end
 		{
 			getGroup()->pushMission(MISSION_SKIP);
 			return;
@@ -5594,6 +5597,27 @@ void CvUnitAI::AI_attackAirMove()
 		}
 	}
 
+	// Unofficial Patch Start
+	// EF: this code was removed but not commented in any way
+	/*if (canAirAttack())
+	{
+		pCity = plot()->getPlotCity();
+
+		if (pCity != NULL)
+		{
+			if (pCity->AI_isDanger())
+			{
+				if (!(pCity->AI_isDefended()))
+				{
+					if (AI_airOffensiveCity())
+					{
+						return;
+					}
+				}
+			}
+		}
+	}*/
+	// Unofficial Patch End
 
 	if (AI_airBombDefenses())
 	{

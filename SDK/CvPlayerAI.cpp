@@ -6927,6 +6927,8 @@ DenialTypes CvPlayerAI::AI_bonusTrade(BonusTypes eBonus, PlayerTypes ePlayer) co
 
 	// Unofficial Patch Start
 	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
+	// EF: I think the original code was correct; there are two AI_getAttitude() functions:
+	//     one takes an int, the other takes a PlayerTypes.
 	eAttitude = GET_PLAYER(getID()).AI_getAttitude(ePlayer);
 	// Unofficial Patch End
 
@@ -7281,6 +7283,7 @@ DenialTypes CvPlayerAI::AI_civicTrade(CivicTypes eCivic, PlayerTypes ePlayer) co
 
 	// Unofficial Patch Start
 	// * Fixed bug where AI misinterprets the civicPercentAnger attribute when evaluating civic deals.
+	// EF: doesn't this test if currect civics make AI angrier than requested civic?
 	if (getCivicPercentAnger(getCivics((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())),true) > getCivicPercentAnger(eCivic))
 	// Unofficial Patch End
 	{
@@ -7306,6 +7309,7 @@ DenialTypes CvPlayerAI::AI_civicTrade(CivicTypes eCivic, PlayerTypes ePlayer) co
 
 	// Unofficial Patch Start
 	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
+	// EF: same as above, tho again doesn't cause a problem
 	if (GET_PLAYER(getID()).AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getAdoptCivicRefuseAttitudeThreshold())
 	// Unofficial Patch End
 	{

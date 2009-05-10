@@ -3268,6 +3268,52 @@ void CvCity::hurry(HurryTypes eHurry)
 	gDLL->getEventReporterIFace()->cityHurry(this, eHurry);
 }
 
+// BUG - Hurry Assist - start
+bool CvCity::hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) const
+{
+	if (!canHurry(eHurry))
+	{
+		return false;
+	}
+
+	if (GC.getHurryInfo(eHurry).getProductionPerPopulation() == 0)
+	{
+		*iProduction = 0;
+		*iGold = 0;
+		return true;
+	}
+
+	if (isProductionUnit())
+	{
+		UnitTypes eUnit = getProductionUnit();
+		FAssertMsg(eUnit != NO_UNIT, "eUnit is expected to be assigned a valid unit type");
+		int iProductionNeeded = getProductionNeeded(eUnit);
+		int iOverflow = getUnitProduction(eUnit) + hurryProduction(eHurry) - iProductionNeeded;
+		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
+		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+		iOverflow = std::min(iMaxOverflow, iOverflow);
+		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eUnit)));
+		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT")) / 100);
+		return true;
+	}
+	else if (isProductionBuilding())
+	{
+		BuildingTypes eBldg = getProductionBuilding();
+		FAssertMsg(eBldg != NO_BUILDING, "eBldg is expected to be assigned a valid building type");
+		int iProductionNeeded = getProductionNeeded(eBldg);
+		int iOverflow = getBuildingProduction(eBldg) + hurryProduction(eHurry) - iProductionNeeded;
+		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
+		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+		iOverflow = std::min(iMaxOverflow, iOverflow);
+		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eBldg)));
+		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
+		return true;
+	}
+
+	return false;
+}
+// BUG - Hurry Assist - end
+
 
 UnitTypes CvCity::getConscriptUnit() const
 {
@@ -5244,6 +5290,68 @@ void CvCity::changeGreatPeopleProgress(int iChange)
 	m_iGreatPeopleProgress = (m_iGreatPeopleProgress + iChange);
 	FAssert(getGreatPeopleProgress() >= 0);
 }
+
+
+// BUG - Building Additional Great People - start
+/*
+ * Returns the total additional great people rate that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalGreatPeopleRateByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	int iRate = getBaseGreatPeopleRate();
+	int iModifier = getTotalGreatPeopleRateModifier();
+	int iExtra = ((iRate + getAdditionalBaseGreatPeopleRateByBuilding(eBuilding)) * (iModifier + getAdditionalGreatPeopleRateModifierByBuilding(eBuilding)) / 100) - (iRate * iModifier / 100);
+
+	return iExtra;
+}
+
+/*
+ * Returns the additional great people rate that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalBaseGreatPeopleRateByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraRate = 0;
+
+	iExtraRate += kBuilding.getGreatPeopleRateChange();
+
+	return iExtraRate;
+}
+
+/*
+ * Returns the additional great people rate modifier that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalGreatPeopleRateModifierByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraModifier = 0;
+
+	if (!bObsolete)
+	{
+		iExtraModifier += kBuilding.getGreatPeopleRateModifier();
+		iExtraModifier += kBuilding.getGlobalGreatPeopleRateModifier();
+	}
+
+	return iExtraModifier;
+}
+// BUG - Building Additional Great People - end
 
 
 int CvCity::getNumWorldWonders() const
@@ -7546,6 +7654,114 @@ void CvCity::changeRiverPlotYield(YieldTypes eIndex, int iChange)
 }
 
 
+// BUG - Building Additional Yield - start
+/*
+ * Returns the total additional yield that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex expected to be < NUM_YIELD_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	int iRate = getBaseYieldRate(eIndex);
+	int iModifier = getBaseYieldRateModifier(eIndex);
+	int iExtra = ((iRate + getAdditionalBaseYieldRateByBuilding(eIndex, eBuilding)) * (iModifier + getAdditionalYieldRateModifierByBuilding(eIndex, eBuilding)) / 100) - (iRate * iModifier / 100);
+
+	return iExtra;
+}
+
+/*
+ * Returns the additional yield rate that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex expected to be < NUM_YIELD_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraRate = 0;
+
+	if (!bObsolete)
+	{
+		if (kBuilding.getSeaPlotYieldChange(eIndex) != 0)
+		{
+			int iChange = kBuilding.getSeaPlotYieldChange(eIndex);
+			for (int iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			{
+				if (isWorkingPlot(iI) && getCityIndexPlot(iI)->isWater())
+				{
+					iExtraRate += iChange;
+				}
+			}
+		}
+		if (kBuilding.getRiverPlotYieldChange(eIndex) != 0)
+		{
+			int iChange = kBuilding.getRiverPlotYieldChange(eIndex);
+			for (int iI = 0; iI < NUM_CITY_PLOTS; ++iI)
+			{
+				if (isWorkingPlot(iI) && getCityIndexPlot(iI)->isRiver())
+				{
+					iExtraRate += iChange;
+				}
+			}
+		}
+		iExtraRate += kBuilding.getYieldChange(eIndex);
+		iExtraRate += getBuildingYieldChange((BuildingClassTypes)kBuilding.getBuildingClassType(), eIndex);
+	}
+
+	return iExtraRate;
+}
+
+/*
+ * Returns the additional yield rate modifier that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex expected to be < NUM_YIELD_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraModifier = 0;
+
+	if (!bObsolete)
+	{
+		iExtraModifier += kBuilding.getYieldModifier(eIndex);
+		if ((kBuilding.isPower() || kBuilding.isAreaCleanPower()) && !isPower())
+		{
+			iExtraModifier += kBuilding.getPowerYieldModifier(eIndex);
+		}
+		if (eIndex == YIELD_PRODUCTION)
+		{
+			iExtraModifier += kBuilding.getMilitaryProductionModifier();
+		}
+		for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
+		{
+			if (hasBonus((BonusTypes)iI))
+			{
+				iExtraModifier += kBuilding.getBonusYieldModifier(iI, eIndex);
+			}
+		}
+	}
+
+	return iExtraModifier;
+}
+// BUG - Building Additional Yield - end
+
+
 int CvCity::getBaseYieldRate(YieldTypes eIndex)	const													
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
@@ -8109,6 +8325,168 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 
 	return 0;
 }
+
+// BUG - Building Additional Commerce - start
+/*
+ * Returns the rounded total additional commerce that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	return getAdditionalCommerceTimes100ByBuilding(eIndex, eBuilding) / 100;
+}
+
+/*
+ * Returns the total additional commerce times 100 that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalCommerceTimes100ByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	int iExtraRate = getAdditionalBaseCommerceRateByBuilding(eIndex, eBuilding);
+	int iExtraModifier = getAdditionalCommerceRateModifierByBuilding(eIndex, eBuilding);
+	//getAdditionalCommerceByBuilding(eIndex, eBuilding, iExtraRate, iExtraModifier);
+	if (iExtraRate == 0 && iExtraModifier == 0)
+	{
+		return 0;
+	}
+
+	int iRateTimes100 = getBaseCommerceRateTimes100(eIndex);
+	int iModifier = getTotalCommerceRateModifier(eIndex);
+	int iExtraTimes100 = ((iModifier + iExtraModifier) * (100 * iExtraRate + iRateTimes100) / 100) - (iModifier * iRateTimes100 / 100);
+
+	return iExtraTimes100;
+}
+
+/*
+ * Returns the additional base commerce rate constructing the given building will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalBaseCommerceRateByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	bool bNoEspionage = GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE);
+	if (bNoEspionage && eIndex == COMMERCE_ESPIONAGE)
+	{
+		return 0;
+	}
+
+	int iExtraRate = getAdditionalBaseCommerceRateByBuildingImpl(eIndex, eBuilding);
+	if (bNoEspionage && eIndex == COMMERCE_CULTURE)
+	{
+		iExtraRate += getAdditionalBaseCommerceRateByBuildingImpl(COMMERCE_ESPIONAGE, eBuilding);
+	}
+	return iExtraRate;
+}
+
+/*
+ * Returns the additional base commerce rate constructing the given building will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalBaseCommerceRateByBuildingImpl(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraRate = 0;
+
+	iExtraRate += kBuilding.getObsoleteSafeCommerceChange(eIndex);
+	if (!bObsolete)
+	{
+		iExtraRate += kBuilding.getCommerceChange(eIndex);
+		iExtraRate += getBuildingCommerceChange((BuildingClassTypes)kBuilding.getBuildingClassType(), eIndex);
+		if (kBuilding.getReligionType() != NO_RELIGION)
+		{
+			if (kBuilding.getReligionType() == GET_PLAYER(getOwnerINLINE()).getStateReligion())
+			{
+				iExtraRate += GET_PLAYER(getOwnerINLINE()).getStateReligionBuildingCommerce(eIndex);
+			}
+		}
+		if (kBuilding.getGlobalReligionCommerce() != NO_RELIGION)
+		{
+			iExtraRate += GC.getReligionInfo((ReligionTypes)(kBuilding.getGlobalReligionCommerce())).getGlobalReligionCommerce(eIndex) * GC.getGameINLINE().countReligionLevels((ReligionTypes)(kBuilding.getGlobalReligionCommerce()));
+		}
+		if (kBuilding.getGlobalCorporationCommerce() != NO_CORPORATION)
+		{
+			iExtraRate += GC.getCorporationInfo((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())).getHeadquarterCommerce(eIndex) * GC.getGameINLINE().countCorporationLevels((CorporationTypes)(kBuilding.getGlobalCorporationCommerce()));
+		}
+		// ignore double-time check since this assumes you are building it this turn
+	}
+	
+	return iExtraRate;
+}
+
+/*
+ * Returns the additional commerce rate modifier constructing the given building will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalCommerceRateModifierByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	bool bNoEspionage = GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE);
+	if (bNoEspionage && eIndex == COMMERCE_ESPIONAGE)
+	{
+		return 0;
+	}
+
+	int iExtraModifier = getAdditionalCommerceRateModifierByBuildingImpl(eIndex, eBuilding);
+	if (bNoEspionage && eIndex == COMMERCE_CULTURE)
+	{
+		iExtraModifier += getAdditionalCommerceRateModifierByBuildingImpl(COMMERCE_ESPIONAGE, eBuilding);
+	}
+	return iExtraModifier;
+}
+
+/*
+ * Returns the additional commerce rate modifier constructing the given building will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalCommerceRateModifierByBuildingImpl(CommerceTypes eIndex, BuildingTypes eBuilding) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	bool bObsolete = GET_TEAM(getTeam()).isObsoleteBuilding(eBuilding);
+	int iExtraModifier = 0;
+
+	if (!bObsolete)
+	{
+		iExtraModifier += kBuilding.getCommerceModifier(eIndex);
+		iExtraModifier += kBuilding.getGlobalCommerceModifier(eIndex);
+	}
+	
+	return iExtraModifier;
+}
+// BUG - Building Additional Commerce - end
 
 
 void CvCity::updateBuildingCommerce()
@@ -9173,6 +9551,42 @@ void CvCity::changeBuildingProductionTime(BuildingTypes eIndex, int iChange)
 }
 
 
+// BUG - Production Decay - start
+/*
+ * Returns true if the given building will decay this turn.
+ */
+bool CvCity::isBuildingProductionDecay(BuildingTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex expected to be < GC.getNumBuildingInfos()");
+	return isHuman() && getProductionBuilding() != eIndex && getBuildingProduction(eIndex) > 0 && getBuildingProductionTime(eIndex) >= GC.getDefineINT("BUILDING_PRODUCTION_DECAY_TIME");
+}
+
+/*
+ * Returns the amount by which the given building will decay once it reaches the limit.
+ * Ignores whether or not the building will actually decay this turn.
+ */
+int CvCity::getBuildingProductionDecay(BuildingTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex expected to be < GC.getNumBuildingInfos()");
+	int iProduction = getBuildingProduction(eIndex);
+	return iProduction - ((iProduction * GC.getDefineINT("BUILDING_PRODUCTION_DECAY_PERCENT")) / 100);
+}
+
+/*
+ * Returns the number of turns left before the given building will decay.
+ */
+int CvCity::getBuildingProductionDecayTurns(BuildingTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex expected to be < GC.getNumBuildingInfos()");
+	int iTurnsLeft = GC.getDefineINT("BUILDING_PRODUCTION_DECAY_TIME") - getBuildingProductionTime(eIndex);
+	return iTurnsLeft <= 0 ? 0 : iTurnsLeft;
+}
+// BUG - Production Decay - end
+
+
 int CvCity::getProjectProduction(ProjectTypes eIndex) const																 
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
@@ -9286,6 +9700,42 @@ void CvCity::changeUnitProductionTime(UnitTypes eIndex, int iChange)
 {
 	setUnitProductionTime(eIndex, (getUnitProductionTime(eIndex) + iChange));
 }
+
+
+// BUG - Production Decay - start
+/*
+ * Returns true if the given unit will decay this turn.
+ */
+bool CvCity::isUnitProductionDecay(UnitTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
+	return isHuman() && getProductionUnit() != eIndex && getUnitProduction(eIndex) > 0 && getUnitProductionTime(eIndex) >= GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME");
+}
+
+/*
+ * Returns the amount by which the given unit will decay once it reaches the limit.
+ * Ignores whether or not the unit will actually decay this turn.
+ */
+int CvCity::getUnitProductionDecay(UnitTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
+	int iProduction = getUnitProduction(eIndex);
+	return iProduction - ((iProduction * GC.getDefineINT("UNIT_PRODUCTION_DECAY_PERCENT")) / 100);
+}
+
+/*
+ * Returns the number of turns left before the given unit will decay.
+ */
+int CvCity::getUnitProductionDecayTurns(UnitTypes eIndex) const																			 
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
+	int iTurnsLeft = GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME") - getUnitProductionTime(eIndex);
+	return iTurnsLeft <= 0 ? 0 : iTurnsLeft;
+}
+// BUG - Production Decay - end
 
 
 int CvCity::getGreatPeopleUnitRate(UnitTypes eIndex) const																 

@@ -317,11 +317,22 @@ public:
 	int getNUM_CITY_PLOTS() const { return GC.getNUM_CITY_PLOTS(); }
 	int getCITY_HOME_PLOT() const { return GC.getCITY_HOME_PLOT(); }
 
-	// Unofficial Patch Start
+// BUG - DLL Info - start
+	bool isBull() const { return GC.isBull(); }
+	int getBullApiVersion() const { return GC.getBullApiVersion(); }
+
+	const wchar* getBullName() const { return GC.getBullName(); }
+	const wchar* getBullVersion() const { return GC.getBullVersion(); }
+	
+	std::wstring pyGetBullName() { return getBullName(); }									// Exposed to Python
+	std::wstring pyGetBullVersion() { return getBullVersion(); }							// Exposed to Python
+// BUG - DLL Info - end
+	
+// Unofficial Patch Start
 	// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
 	bool isUnofficialPatch() const { return GC.isUnofficialPatch(); }
 	int getUnofficialPatchVersion() const { return GC.getUnofficialPatchVersion(); }
-	// Unofficial Patch End
+// Unofficial Patch End
 
 };
 

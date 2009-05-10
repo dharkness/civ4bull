@@ -671,6 +671,9 @@ public:
 	void changeExtraDomainModifier(DomainTypes eIndex, int iChange);
 
 	DllExport const CvWString getName(uint uiForm = 0) const;																// Exposed to Python
+// BUG - Unit Name - start
+	bool isDescInName() const;
+// BUG - Unit Name - end
 	DllExport const wchar* getNameKey() const;																							// Exposed to Python
 	DllExport const CvWString& getNameNoDesc() const;																				// Exposed to Python
 	DllExport void setName(const CvWString szNewValue);																			// Exposed to Python

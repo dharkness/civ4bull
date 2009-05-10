@@ -27,6 +27,10 @@
 #include "CvPopupInfo.h"
 #include "CvArtFileMgr.h"
 
+// BUG - start
+#include "CvBugOptions.h"
+// BUG - end
+
 // Public Functions...
 
 
@@ -442,6 +446,15 @@ void CvUnit::convert(CvUnit* pUnit)
 	setExperience(std::max(0, (pUnit->getExperience() * iOurModifier) / iOldModifier));
 
 	setName(pUnit->getNameNoDesc());
+// BUG - Unit Name - start
+	if (pUnit->isDescInName() && getBugOptionBOOL("MiscHover__UpdateUnitNameOnUpgrade", true, "BUG_UPDATE_UNIT_NAME_ON_UPGRADE"))
+	{
+		CvWString szUnitType(pUnit->m_pUnitInfo->getDescription());
+
+		//szUnitType.Format(L"%s", pUnit->m_pUnitInfo->getDescription());
+		m_szName.replace(m_szName.find(szUnitType), szUnitType.length(), m_pUnitInfo->getDescription());
+	}
+// BUG - Unit Name - end
 	setLeaderUnitType(pUnit->getLeaderUnitType());
 
 	CvUnit* pTransportUnit = pUnit->getTransportUnit();
@@ -1087,6 +1100,14 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					flankingStrikeCombat(pPlot, iAttackerStrength, iAttackerFirepower, iAttackerKillOdds, iDefenderDamage, pDefender);
 
 					changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
+// BUG - Retreat Event - start
+					CyArgsList pyArgs;
+					CyUnit* pyAttacker = new CyUnit(this);
+					CyUnit* pyDefender = new CyUnit(pDefender);
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
+					gDLL->getEventReporterIFace()->genericEvent("combatRetreat", pyArgs.makeFunctionArgs());
+// BUG - Retreat Event - end
 					break;
 				}
 
@@ -1119,6 +1140,14 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 				{
 					changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
 					pDefender->setDamage(combatLimit(), getOwnerINLINE());
+// BUG - Withdrawal Event - start
+					CyArgsList pyArgs;
+					CyUnit* pyAttacker = new CyUnit(this);
+					CyUnit* pyDefender = new CyUnit(pDefender);
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
+					gDLL->getEventReporterIFace()->genericEvent("combatWithdrawal", pyArgs.makeFunctionArgs());
+// BUG - Withdrawal Event - end
 					break;
 				}
 
@@ -1500,7 +1529,15 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_OUR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 			szBuffer = gDLL->getText("TXT_KEY_MISC_ENEMY_UNIT_WITHDRAW", getNameKey(), pDefender->getNameKey());
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_THEIR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
-
+/*
+// BUG - Unit Withdraw Event - start
+			CyArgsList pyArgs;
+			pyArgs.add(gDLL->getPythonIFace()->makePythonObject(this));
+			pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pUpgradeUnit));
+			pyArgs.add(upgradePrice(eUnit));
+			gDLL->getEventReporterIFace()->genericEvent("combatWithdraw", pyArgs.makeFunctionArgs());
+// BUG - Unit Withdraw Event - end
+*/
 			changeMoves(std::max(GC.getMOVE_DENOMINATOR(), pPlot->movementCost(this, plot())));
 			checkRemoveSelectionAfterAttack();
 
@@ -6279,6 +6316,7 @@ bool CvUnit::isIntruding() const
 
 	// Unofficial Patch Start
 	// * Vassal's spies no longer caught in master's territory
+	// EF: some might want vassal's spies caught -- what if vassal is about to break away?
 	//if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
 	if (GET_TEAM(eLocalTeam).isVassal(getTeam()) || GET_TEAM(getTeam()).isVassal(eLocalTeam))
 	// Unofficial Patch End
@@ -6482,6 +6520,10 @@ void CvUnit::promote(PromotionTypes ePromotion, int iLeaderUnitId)
 		gDLL->getInterfaceIFace()->playGeneralSound(GC.getPromotionInfo(ePromotion).getSound());
 
 		gDLL->getInterfaceIFace()->setDirty(UnitInfo_DIRTY_BIT, true);
+
+// BUG - Update Plot List - start
+		gDLL->getInterfaceIFace()->setDirty(PlotListButtons_DIRTY_BIT, true);
+// BUG - Update Plot List - end
 	}
 	else
 	{
@@ -7004,6 +7046,16 @@ void CvUnit::upgrade(UnitTypes eUnit)
 			pUpgradeUnit->setExperience(GC.getDefineINT("MAX_EXPERIENCE_AFTER_UPGRADE"));
 		}
 	}
+
+// BUG - Upgrade Unit Event - start
+	CyArgsList pyArgs;
+	CyUnit* pyOldUnit = new CyUnit(this);
+	CyUnit* pyNewUnit = new CyUnit(pUpgradeUnit);
+	pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyOldUnit));
+	pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyNewUnit));
+	pyArgs.add(upgradePrice(eUnit));
+	gDLL->getEventReporterIFace()->genericEvent("unitUpgraded", pyArgs.makeFunctionArgs());
+// BUG - Upgrade Unit Event - end
 }
 
 
@@ -10823,11 +10875,24 @@ const CvWString CvUnit::getName(uint uiForm) const
 	{
 		return m_pUnitInfo->getDescription(uiForm);
 	}
+// BUG - Unit Name - start
+	else if (isDescInName())
+	{
+		return m_szName;
+	}
+// BUG - Unit Name - end
 
 	szBuffer.Format(L"%s (%s)", m_szName.GetCString(), m_pUnitInfo->getDescription(uiForm));
 
 	return szBuffer;
 }
+
+// BUG - Unit Name - start
+bool CvUnit::isDescInName() const
+{
+	return (m_szName.find(m_pUnitInfo->getDescription()) != -1);
+}
+// BUG - Unit Name - end
 
 
 const wchar* CvUnit::getNameKey() const
@@ -11613,7 +11678,17 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 
 				if (pBestUnit->getDamage() != iUnitDamage)
 				{
+// BUG - Collateral Damage Event - start
+					int iDamageDone = iUnitDamage - pBestUnit->getDamage();
 					pBestUnit->setDamage(iUnitDamage, getOwnerINLINE());
+					CyArgsList pyArgs;
+					CyUnit* pyAttacker = new CyUnit(this);
+					CyUnit* pyDefender = new CyUnit(pBestUnit);
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
+					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
+					pyArgs.add(iDamageDone);
+					gDLL->getEventReporterIFace()->genericEvent("combatLogCollateral", pyArgs.makeFunctionArgs());
+// BUG - Collateral Damage Event - end
 					iDamageCount++;
 				}
 			}
@@ -11695,6 +11770,9 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 		int iIndexHit = GC.getGameINLINE().getSorenRandNum(listFlankedUnits.size(), "Pick Flanked Unit");
 		CvUnit* pUnit = listFlankedUnits[iIndexHit].first;
 		int iDamage = listFlankedUnits[iIndexHit].second;
+// BUG - Flanking Damage Event - start
+		int iDamageDone = iDamage - pUnit->getDamage();
+// BUG - Flanking Damage Event - end
 		pUnit->setDamage(iDamage, getOwnerINLINE());
 		if (pUnit->isDead())
 		{
@@ -11705,6 +11783,15 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 
 			pUnit->kill(false); 
 		}
+// BUG - Flanking Damage Event - start
+		CyArgsList pyArgs;
+		CyUnit* pyAttacker = new CyUnit(this);
+		CyUnit* pyDefender = new CyUnit(pUnit);
+		pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
+		pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
+		pyArgs.add(iDamageDone);
+		gDLL->getEventReporterIFace()->genericEvent("combatLogFlanking", pyArgs.makeFunctionArgs());
+// BUG - Flanking Damage Event - end
 		
 		listFlankedUnits.erase(std::remove(listFlankedUnits.begin(), listFlankedUnits.end(), listFlankedUnits[iIndexHit]));
 	}

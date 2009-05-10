@@ -125,6 +125,9 @@ public:
 
 	DllExport bool canHurry(HurryTypes eHurry, bool bTestVisible = false) const;		// Exposed to Python
 	void hurry(HurryTypes eHurry);																						// Exposed to Python
+// BUG - Hurry Assist - start
+	bool hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) const;
+// BUG - Hurry Assist - end
 
 	DllExport UnitTypes getConscriptUnit() const;																// Exposed to Python
 	CvUnit* initConscriptedUnit();
@@ -279,6 +282,12 @@ public:
 
 	int getGreatPeopleRateModifier() const;																// Exposed to Python
 	void changeGreatPeopleRateModifier(int iChange);
+
+// BUG - Building Additional Great People - start
+	int getAdditionalGreatPeopleRateByBuilding(BuildingTypes eBuilding) const;								// Exposed to Python
+	int getAdditionalBaseGreatPeopleRateByBuilding(BuildingTypes eBuilding) const;							// Exposed to Python
+	int getAdditionalGreatPeopleRateModifierByBuilding(BuildingTypes eBuilding) const;						// Exposed to Python
+// BUG - Building Additional Great People - end
 
 	DllExport int getGreatPeopleProgress() const;													// Exposed to Python
 	void changeGreatPeopleProgress(int iChange);										// Exposed to Python
@@ -574,6 +583,12 @@ public:
 	int getRiverPlotYield(YieldTypes eIndex) const;																// Exposed to Python
 	void changeRiverPlotYield(YieldTypes eIndex, int iChange);
 
+// BUG - Building Additional Yield - start
+	int getAdditionalYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;						// Exposed to Python
+	int getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;				// Exposed to Python
+	int getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+// BUG - Building Additional Yield - end
+
 	int getBaseYieldRate(YieldTypes eIndex) const;															// Exposed to Python
 	int getBaseYieldRateModifier(YieldTypes eIndex, int iExtra = 0) const;			// Exposed to Python
 	DllExport int getYieldRate(YieldTypes eIndex) const;												// Exposed to Python
@@ -617,6 +632,14 @@ public:
 
 	int getBuildingCommerce(CommerceTypes eIndex) const;																				// Exposed to Python
 	int getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+// BUG - Building Additional Commerce - start
+	int getAdditionalCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;						// Exposed to Python
+	int getAdditionalCommerceTimes100ByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;				// Exposed to Python
+	int getAdditionalBaseCommerceRateByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;				// Exposed to Python
+	int getAdditionalBaseCommerceRateByBuildingImpl(CommerceTypes eIndex, BuildingTypes eBuilding) const;
+	int getAdditionalCommerceRateModifierByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
+	int getAdditionalCommerceRateModifierByBuildingImpl(CommerceTypes eIndex, BuildingTypes eBuilding) const;
+// BUG - Building Additional Commerce - end
 	void updateBuildingCommerce();
 
 	int getSpecialistCommerce(CommerceTypes eIndex) const;											// Exposed to Python
@@ -706,6 +729,11 @@ public:
 	int getBuildingProductionTime(BuildingTypes eIndex) const;										// Exposed to Python
 	void setBuildingProductionTime(BuildingTypes eIndex, int iNewValue);		// Exposed to Python
 	void changeBuildingProductionTime(BuildingTypes eIndex, int iChange);		// Exposed to Python
+// BUG - Production Decay - start
+	bool isBuildingProductionDecay(BuildingTypes eIndex) const;														// Exposed to Python
+	int getBuildingProductionDecay(BuildingTypes eIndex) const;														// Exposed to Python
+	int getBuildingProductionDecayTurns(BuildingTypes eIndex) const;												// Exposed to Python
+// BUG - Production Decay - end
 
 	DllExport int getProjectProduction(ProjectTypes eIndex) const;								// Exposed to Python
 	void setProjectProduction(ProjectTypes eIndex, int iNewValue);					// Exposed to Python
@@ -721,6 +749,11 @@ public:
 	int getUnitProductionTime(UnitTypes eIndex) const;														// Exposed to Python
 	void setUnitProductionTime(UnitTypes eIndex, int iNewValue);						// Exposed to Python
 	void changeUnitProductionTime(UnitTypes eIndex, int iChange);						// Exposed to Python
+// BUG - Production Decay - start
+	bool isUnitProductionDecay(UnitTypes eIndex) const;														// Exposed to Python
+	int getUnitProductionDecay(UnitTypes eIndex) const;														// Exposed to Python
+	int getUnitProductionDecayTurns(UnitTypes eIndex) const;												// Exposed to Python
+// BUG - Production Decay - end
 
 	int getGreatPeopleUnitRate(UnitTypes eIndex) const;														// Exposed to Python
 	void setGreatPeopleUnitRate(UnitTypes eIndex, int iNewValue);

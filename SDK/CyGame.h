@@ -270,6 +270,14 @@ public:
 
 	bool isEventActive(int /*EventTriggerTypes*/ eTrigger);
 
+// BUG - MapFinder - start
+	bool canRegenerateMap() const;
+	bool regenerateMap();
+
+	void saveGame(std::string fileName) const;
+	bool takeJPEGScreenShot(std::string fileName) const;
+// BUG - MapFinder - end
+
 protected:
 	CvGame* m_pGame;
 };

@@ -541,6 +541,25 @@ enum DllExport WidgetTypes					// Exposed to Python
 	WIDGET_GLOBELAYER_OPTION,
 	WIDGET_GLOBELAYER_TOGGLE,
 
+// BUG - Min/Max Commerce Rate - start
+	WIDGET_SET_PERCENT,
+// BUG - Min/Max Commerce Rate - end
+
+// BUG - Finance Advisor - start
+	WIDGET_HELP_FINANCE_DOMESTIC_TRADE,
+	WIDGET_HELP_FINANCE_FOREIGN_TRADE,
+	WIDGET_HELP_FINANCE_SPECIALISTS,
+// BUG - Finance Advisor - end
+
+// BUG - Trade Denial - start
+	WIDGET_PEDIA_JUMP_TO_BONUS_TRADE,
+	WIDGET_PEDIA_JUMP_TO_TECH_TRADE,
+// BUG - Trade Denial - end
+
+// BUG - Foreign Advisor INFO Trade - start
+	WIDGET_TRADE_ROUTES,
+// BUG - Foreign Advisor INFO Trade - end
+
 #ifdef _USRDLL
 	NUM_WIDGET_TYPES
 #endif
@@ -926,6 +945,10 @@ enum DllExport FontSymbols					// Exposed to Python
 	MAP_CHAR,
 	OCCUPATION_CHAR,
 	POWER_CHAR,
+// BUG - start
+	CITIZEN_CHAR,
+	GREAT_GENERAL_CHAR,
+// BUG - end
 
 #ifdef _USRDLL
 	MAX_NUM_SYMBOLS

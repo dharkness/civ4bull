@@ -19,6 +19,11 @@
 #include "FProfiler.h"
 #include "FVariableSystem.h"
 #include "CvInitCore.h"
+#include "UnofficialPatch.h"
+
+// BUG - DLL Info - start
+#include "BugMod.h"
+// BUG - DLL Info - end
 
 #define COPY(dst, src, typeName) \
 	{ \
@@ -3578,3 +3583,31 @@ void CvGlobals::setBorderFinder(FAStar* pVal) { m_borderFinder = pVal; }
 void CvGlobals::setAreaFinder(FAStar* pVal) { m_areaFinder = pVal; }
 void CvGlobals::setPlotGroupFinder(FAStar* pVal) { m_plotGroupFinder = pVal; }
 CvDLLUtilityIFaceBase* CvGlobals::getDLLIFaceNonInl() { return m_pDLL; }
+
+// BUG - DLL Info - start
+bool CvGlobals::isBull() const { return true; }
+int CvGlobals::getBullApiVersion() const { return BUG_DLL_API_VERSION; }
+const wchar* CvGlobals::getBullName() const { return BUG_DLL_NAME; }
+const wchar* CvGlobals::getBullVersion() const { return BUG_DLL_VERSION; }
+// BUG - DLL Info - end
+
+// Unofficial Patch Start
+// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
+bool CvGlobals::isUnofficialPatch() const 
+{
+#ifdef _USE_UNOFFICIALPATCH
+	return true; 
+#else
+	return false;
+#endif
+}
+
+int CvGlobals::getUnofficialPatchVersion() const 
+{ 
+#ifdef _USE_UNOFFICIALPATCH
+	return UP_PATCH_VERSION; 
+#else
+	return 0;
+#endif
+}
+// Unofficial Patch End
