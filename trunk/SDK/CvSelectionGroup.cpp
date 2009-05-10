@@ -23,6 +23,10 @@
 #include "CvDLLPythonIFaceBase.h"
 #include <set>
 
+// BUG - start
+#include "CvBugOptions.h"
+// BUG - end
+
 // Public Functions...
 
 CvSelectionGroup::CvSelectionGroup()
@@ -180,6 +184,16 @@ void CvSelectionGroup::doTurn()
 		{
 			setActivityType(ACTIVITY_AWAKE);
 		}
+
+// BUG - Sentry Healing Units - start
+		if (eActivityType == ACTIVITY_HEAL && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
+		{
+			if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true, "BUG_SENTRY_HEALING_ONLY_NEUTRAL") && plot()->isOwned()))
+			{
+				setActivityType(ACTIVITY_AWAKE);
+			}
+		}
+// BUG - Sentry Healing Units - end
 
 		if (AI_isControlled())
 		{
@@ -3392,18 +3406,23 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 
 				if ((pLoopUnit1->getCargo() > 0) && (pLoopUnit1->domainCargo() == DOMAIN_LAND))
 				{
+// BUG - Amphibious Landing OOS Fix - start
+// from http://forums.civfanatics.com/showthread.php?t=310116
 					std::vector<CvUnit*> aCargoUnits;
 					pLoopUnit1->getCargoUnits(aCargoUnits);
-					std::set<CvSelectionGroup*> aCargoGroups;
+					std::vector<CvSelectionGroup*> aCargoGroups;
 					for (uint i = 0; i < aCargoUnits.size(); ++i)
 					{
-						aCargoGroups.insert(aCargoUnits[i]->getGroup());
+						CvSelectionGroup* pGroup = aCargoUnits[i]->getGroup();
+						if (std::find(aCargoGroups.begin(), aCargoGroups.end(), pGroup) == aCargoGroups.end())						
+						{
+							aCargoGroups.push_back(aCargoUnits[i]->getGroup());
+						}
 					}
 
-					std::set<CvSelectionGroup*>::iterator it;
-					for (it = aCargoGroups.begin(); it != aCargoGroups.end(); ++it)
+					for (uint i = 0; i < aCargoGroups.size(); ++i)
 					{
-						CvSelectionGroup* pGroup = *it;
+						CvSelectionGroup* pGroup = aCargoGroups[i];
 						if (pGroup->canAllMove())
 						{
 							FAssert(!pGroup->at(pPlot->getX_INLINE(), pPlot->getY_INLINE()));
@@ -3411,6 +3430,7 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 							bLanding = true;
 						}
 					}
+// BUG - Amphibious Landing OOS Fix - end
 				}
 			}
 		}

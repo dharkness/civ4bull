@@ -14,6 +14,10 @@
 #include "CvReplayInfo.h"
 #include "CyPlot.h"
 
+// BUG - MapFinder - start
+#include "CvDLLEngineIFaceBase.h"
+// BUG - MapFinder - end
+
 CyGame::CyGame() : m_pGame(NULL)
 {
 	m_pGame = &GC.getGameINLINE();
@@ -1140,3 +1144,34 @@ bool CyGame::isEventActive(int /*EventTriggerTypes*/ eTrigger)
 {
 	return (NULL != m_pGame ? m_pGame->isEventActive((EventTriggerTypes)eTrigger) : false);
 }
+
+// BUG - MapFinder - start
+// from HOF Mod - Dianthus
+bool CyGame::canRegenerateMap() const
+{
+	return (NULL != m_pGame ? m_pGame->canRegenerateMap() : false);
+}
+
+bool CyGame::regenerateMap()
+{
+	if (canRegenerateMap() && m_pGame)
+	{
+		m_pGame->regenerateMap();
+		return true;
+	}
+	return false;
+}
+
+
+void CyGame::saveGame(std::string fileName) const
+{
+	//m_pGame->setFileType(SAVE_HOFMOD);
+	gDLL->getEngineIFace()->SaveGame((CvString &)fileName, SAVEGAME_NORMAL);
+	//m_pGame->setFileType(SAVE_NORMAL);
+}
+
+bool CyGame::takeJPEGScreenShot(std::string fileName) const
+{
+	return (NULL != m_pGame ? m_pGame->takeJPEGScreenShot(fileName) : false);
+}
+// BUG - MapFinder - end
