@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<!--
+	BULL User Settings
+	
+	This file is used only when BULL is running without BUG.
+
+	Copyright (c) 2009 The BUG Mod.
+  -->
+<Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
+
+<!-- City Bar -->
+	
+	<Define>
+		<DefineName>BUG_CITYBAR_AIRPORT_ICONS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+<!-- City Bar Hover -->
+	
+	<Define>
+		<DefineName>BUG_CITYBAR_BASE_VALUES</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_HEALTH</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_HAPPINESS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_HURRY_ANGER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_DRAFT_ANGER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_FOOD_ASSIST</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_BASE_PRODUCTION</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_HURRY_ASSIST</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_TRADE_DETAIL</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_COMMERCE</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_BUILDING_ICONS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_CULTURE_TURNS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_GREAT_PERSON_TURNS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_SPECIALISTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITYBAR_HIDE_INSTRUCTIONS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+<!-- Miscellaneous Hovers -->
+	
+	<!-- Production Decay (Buildings/Units) -->
+	<Define>
+		<DefineName>BUG_PRODUCTION_DECAY_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_PRODUCTION_DECAY_HOVER_THRESHOLD</DefineName>
+		<iDefineIntVal>50</iDefineIntVal>
+	</Define>
+	
+	<!-- Building -->
+	<Define>
+		<DefineName>UP_UNIQUE_BUILDINGS_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_HOVER_ACTUAL_EFFECTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Unit -->
+	<Define>
+		<DefineName>BUG_UPDATE_UNIT_NAME_ON_UPGRADE</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>UP_COLLATERAL_DAMAGE_LIMIT_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Tech -->
+	<Define>
+		<DefineName>BUG_SPED_UP_TECHS_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_TECH_TRADE_DENIAL_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Bonus -->
+	<Define>
+		<DefineName>BUG_BONUS_TRADE_DENIAL_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Action Buttons -->
+	<Define>
+		<DefineName>BUG_HURRY_OVERFLOW_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITY_SCREEN_REMOVE_SPECIALIST_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CDA_ZOOM_CITY_DETAILS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Calculations -->
+	<Define>
+		<DefineName>BUG_CITY_SCREEN_BASE_COMMERCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_PRODUCTION_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_COMMERCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+<!-- Sentry Healing -->
+	
+	<Define>
+		<DefineName>BUG_SENTRY_HEALING</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_SENTRY_HEALING_ONLY_NEUTRAL</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+
+<!-- Advanced Combat Odds -->
+	
+	<Define>
+		<DefineName>ADVANCED_COMBAT_ODDS_ENABLED</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>ADVANCED_COMBAT_ODDS_DEBUG</DefineName>
+		<iDefineIntVal>0</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>ADVANCED_COMBAT_ODDS_DETAIL</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+<!-- Unofficial Patch -->
+	
+
+</Civ4Defines>
