@@ -31,6 +31,9 @@
 #include "CvDLLEventReporterIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 
+// Needed to check compilation options
+#include "UnofficialPatch.h"
+
 
 // Public Functions...
 
@@ -476,6 +479,12 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bExtendedGame = false;
 	m_bFoundedFirstCity = false;
 	m_bStrike = false;
+	// Unofficial Patch Start
+	// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+	m_bDisableHuman = false;
+#endif
+	// Unofficial Patch End
 
 	m_eID = eID;
 	updateTeamType();
@@ -2221,6 +2230,20 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 	return GC.getLeaderHeadInfo(getLeaderType()).hasTrait(eTrait);
 }
 
+// Unofficial Patch Start
+// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+void CvPlayer::setHumanDisabled(bool newVal)
+{
+	m_bDisableHuman = newVal;
+	updateHuman();		//MRGENIE fix for BtS 3.13
+}
+bool CvPlayer::isHumanDisabled() const
+{
+	return m_bDisableHuman;
+}
+#endif
+// Unofficial Patch End
 
 bool CvPlayer::isHuman() const
 {
@@ -2235,7 +2258,21 @@ void CvPlayer::updateHuman()
 	}
 	else
 	{
+		// Unofficial Patch Start
+		// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+		if( m_bDisableHuman )
+		{
+			m_bHuman = false;
+		}
+		else
+		{
+			m_bHuman = GC.getInitCore().getHuman(getID());
+		}
+#else
 		m_bHuman = GC.getInitCore().getHuman(getID());
+#endif
+		// Unofficial Patch End
 	}
 }
 
@@ -13584,17 +13621,23 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 				iCultureAmount /= 10000;
 				iCultureAmount = std::max(1, iCultureAmount);
 
+				// Unofficial Patch Start
+				// * Fixed espionage spread culture mission to insert the listed 5% of culture rather than the current .05%
+				// Note: This next line is the only thing they had in 3.13
+				//pCity->changeCulture(getID(), iCultureAmount, true, true);
+				
 				int iNumTurnsApplied = (GC.getDefineINT("GREAT_WORKS_CULTURE_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getUnitGreatWorkPercent()) / 100;
 
 				for (int i = 0; i < iNumTurnsApplied; ++i)
 				{
-					pCity->changeCultureTimes100(getID(), iCultureAmount / iNumTurnsApplied, true, true);
+					pCity->changeCulture(getID(), iCultureAmount / iNumTurnsApplied, true, true);
 				}
 
 				if (iNumTurnsApplied > 0)
 				{
-					pCity->changeCultureTimes100(getID(), iCultureAmount % iNumTurnsApplied, false, true);
+					pCity->changeCulture(getID(), iCultureAmount % iNumTurnsApplied, false, true);
 				}
+				// Unofficial Patch End
 
 				bSomethingHappened = true;
 			}
@@ -18854,7 +18897,10 @@ CvUnit* CvPlayer::pickTriggerUnit(EventTriggerTypes eTrigger, CvPlot* pPlot, boo
 				iBestValue = iValue;
 			}
 
-			apUnits.push_back(pUnit);
+			// Unofficial Patch Start
+			// * Fixed bug that prevented random events that target a unit from triggering
+			apUnits.push_back(pLoopUnit);
+			// Unofficial Patch End
 		}
 	}
 

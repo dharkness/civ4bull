@@ -1450,7 +1450,10 @@ void CvUnitAI::AI_workerMove()
 		}
 	}
 
-	if (isHuman() || (AI_getBirthmark() % 3) == 0)
+	// Unofficial Patch Start
+	// * Workers not as lazy, per Bhruic's patch
+	//if (isHuman() || (AI_getBirthmark() % 3) == 0)
+	// Unofficial Patch End
 	{
 		if (bCanRoute)
 		{
@@ -4260,6 +4263,34 @@ void CvUnitAI::AI_attackSeaMove()
 {
 	PROFILE_FUNC();
 
+	// Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 1/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
+
 	if (AI_heal(30, 1))
 	{
 		return;
@@ -4368,6 +4399,34 @@ void CvUnitAI::AI_attackSeaMove()
 void CvUnitAI::AI_reserveSeaMove()
 {
 	PROFILE_FUNC();
+
+	// Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 2/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
 
 	if (AI_guardBonus(30))
 	{
@@ -4489,7 +4548,35 @@ void CvUnitAI::AI_escortSeaMove()
 //			return;
 //		}
 //	}
-	
+
+	// Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 3/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
+
 	if (AI_heal(30, 1))
 	{
 		return;
@@ -4573,6 +4660,34 @@ void CvUnitAI::AI_escortSeaMove()
 void CvUnitAI::AI_exploreSeaMove()
 {
 	PROFILE_FUNC();
+
+	// Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 4/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
 
 	CvArea* pWaterArea = plot()->waterArea();
 
@@ -5173,6 +5288,34 @@ void CvUnitAI::AI_spySeaMove()
 
 void CvUnitAI::AI_carrierSeaMove()
 {
+    // Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 5/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
+
 	if (AI_heal(50))
 	{
 		return;
@@ -5258,6 +5401,34 @@ void CvUnitAI::AI_carrierSeaMove()
 void CvUnitAI::AI_missileCarrierSeaMove()
 {
 	bool bIsStealth = (getInvisibleType() != NO_INVISIBLE);
+
+	// Unofficial Patch Start
+	// * Made AI ships prioritize retreating if docked in a city which is in danger of imminent capture by enemy. Pt 6/6
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (bDanger && plot()->isCity(true)) //prioritize getting outta there
+	{
+		if (AI_anyAttack(2, 40))
+		{
+			return;
+		}
+
+		if (AI_anyAttack(4, 50))
+		{
+			return;
+		}
+
+		if (AI_retreatToCity())
+		{
+			return;
+		}
+
+		if (AI_safety())
+		{
+			return;
+		}
+	}
+	// Unofficial Patch End
 	
 	if (plot()->isCity() && plot()->getTeam() == getTeam())
 	{
@@ -5309,14 +5480,85 @@ void CvUnitAI::AI_missileCarrierSeaMove()
 
 void CvUnitAI::AI_attackAirMove()
 {
-	CvCity* pCity;
+	// Unofficial Patch Start
+    // * AI will try to retreat air assets from endangered cities  Pt 1/2
+    // * AI will no longer refuse to retreat damaged planes
+	//CvCity* pCity;
+	CvCity* pCity = plot()->getPlotCity();
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+	bool bSkiesClear = true;
+	int iDX, iDY;
 
+	//if (getDamage() > 0)
+	if (plot()->isCity(true))
+	{
+		if (bDanger || (pCity != NULL && !pCity->AI_isDefended()))
+		{
+			if (AI_airOffensiveCity())
+			{
+				return;
+			}
+			
+			// * Tweaked plane retreat logic to avoid unnecessary mission check
+			if (canAirDefend() && AI_airDefensiveCity())
+			{
+				return;
+			}
+		}
+	}
+
+	// * Fixed problem with AI Bombers always retreating. Fix is from Better AI mod [jdog5000]
 	if (getDamage() > 0)
 	{
-		getGroup()->pushMission(MISSION_SKIP);
-		return;
-	}
+		// * Damaged AI attack planes may choose to continue attacking if no defending interceptors are around
+		if ((currHitPoints() / maxHitPoints() * 100) < 40)
+		{
+			getGroup()->pushMission(MISSION_SKIP);
+			return;
+		}
+		else
+		{
+			CvPlot *pLoopPlot;
+			int iSearchRange = airRange();
+			for (iDX = -(iSearchRange); iDX <= iSearchRange; iDX++)
+			{
+				if (!bSkiesClear) break;
+				for (iDY = -(iSearchRange); iDY <= iSearchRange; iDY++)
+				{
+					pLoopPlot = plotXY(getX_INLINE(), getY_INLINE(), iDX, iDY);
 	
+					if (pLoopPlot != NULL)
+					{
+						if (bestInterceptor(pLoopPlot) != NULL)
+						{
+							bSkiesClear = false;
+							break;
+						}
+					}
+				}
+			}
+
+			if (!bSkiesClear)
+			{
+			    getGroup()->pushMission(MISSION_SKIP);
+				return;
+			}
+			else
+			{
+			    //in this case we prefer plotbombing and airstrikes
+			    if (AI_airBombPlots())
+				{
+				  return;
+			    }
+			    if (AI_airStrike())
+				{
+				  return;
+			    }
+			}
+		}
+	}
+	// Unofficial Patch End
+
 	CvPlayerAI& kPlayer = GET_PLAYER(getOwnerINLINE());
 	CvArea* pArea = area();
 	int iAttackValue = kPlayer.AI_unitValue(getUnitType(), UNITAI_ATTACK_AIR, pArea);
@@ -5352,25 +5594,7 @@ void CvUnitAI::AI_attackAirMove()
 		}
 	}
 
-	if (canAirAttack())
-	{
-		pCity = plot()->getPlotCity();
 
-		if (pCity != NULL)
-		{
-			if (pCity->AI_isDanger())
-			{
-				if (!(pCity->AI_isDefended()))
-				{
-					if (AI_airOffensiveCity())
-					{
-						return;
-					}
-				}
-			}
-		}
-	}
-	
 	if (AI_airBombDefenses())
 	{
 		return;
@@ -5418,7 +5642,29 @@ void CvUnitAI::AI_attackAirMove()
 
 void CvUnitAI::AI_defenseAirMove()
 {
-	CvCity* pCity;
+	// Unofficial Patch Start
+	// * AI will try to retreat air assets from endangered cities  Pt 2/2
+	//CvCity* pCity;
+	CvCity* pCity = plot()->getPlotCity();
+
+	bool bDanger = (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0);
+
+	if (plot()->isCity(true))
+	{
+		if (bDanger || (pCity != NULL && !pCity->AI_isDefended()))
+		{
+			if (AI_airOffensiveCity())
+			{
+				return;
+			}
+			
+			if (AI_airDefensiveCity())
+			{
+				return;
+			}
+		}
+	}
+	// Unofficial Patch End
 
 	if (getDamage() > 0)
 	{
@@ -5597,7 +5843,19 @@ void CvUnitAI::AI_missileAirMove()
 	
 	if (isCargo())
 	{
-		int iRand = GC.getGameINLINE().getSorenRandNum(3, "AI Air Missile Carrier Move");
+	    // Unofficial Patch Start
+	    //* Made the AI more likely to use missiles on cruisers/subs to strike against enemy improvements.
+		int iRand = GC.getGameINLINE().getSorenRandNum(3, "AI Air Missile plot bombing");
+		if (iRand != 0)
+		{
+			if (AI_airBombPlots())
+			{
+				return;
+			}
+		}
+
+		iRand = GC.getGameINLINE().getSorenRandNum(3, "AI Air Missile Carrier Move");
+		// Unofficial Patch End
 		
 		if (iRand == 0)
 		{
@@ -6008,6 +6266,10 @@ int CvUnitAI::AI_promotionValue(PromotionTypes ePromotion)
 		iExtra = getExtraChanceFirstStrikes() + getExtraFirstStrikes() * 2;
 		iTemp *= 100 + iExtra * 15;
 		iTemp /= 100;
+		// Unofficial Patch Start
+		// * Fixed bug where some AI unit types mistakenly ignored the value of first-strike promotions. [ViterboKnight]
+		iValue += (iTemp * 1);
+		// Unofficial Patch End
 	}
 	else
 	{
@@ -6131,6 +6393,26 @@ int CvUnitAI::AI_promotionValue(PromotionTypes ePromotion)
             iValue += (iTemp / 4);
         }
     }
+
+	// Unofficial Patch Start
+	// * AI may now try to use Warlords to create super-medic units Pt 1/2
+	if (GC.getPromotionInfo(ePromotion).getAdjacentTileHealChange() > 0 || GC.getPromotionInfo(ePromotion).getSameTileHealChange() > 0)
+	{
+		PromotionTypes eLeader = NO_PROMOTION;
+		for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		{
+			if (GC.getPromotionInfo((PromotionTypes)iI).isLeader())
+			{
+				eLeader = (PromotionTypes)iI;
+			}
+		}
+		
+		if (isHasPromotion(eLeader) && eLeader != NO_PROMOTION)
+		{
+			iValue += GC.getPromotionInfo(ePromotion).getAdjacentTileHealChange() + GC.getPromotionInfo(ePromotion).getSameTileHealChange();
+		}
+	}
+	// Unofficial Patch End
 
 	iTemp = GC.getPromotionInfo(ePromotion).getCombatPercent();
 	if ((AI_getUnitAIType() == UNITAI_ATTACK) ||
@@ -8963,9 +9245,18 @@ bool CvUnitAI::AI_lead(std::vector<UnitAITypes>& aeUnitAITypes)
 	CvUnit* pBestUnit = NULL;
 	CvPlot* pBestPlot = NULL;
 
+	// Unofficial Patch Start
+	// * AI may now try to use Warlords to create super-medic units Pt 2/2
+	CvUnit* pBestStrUnit = NULL;
+	CvPlot* pBestStrPlot = NULL;
+
+	CvUnit* pBestHealUnit = NULL;
+	CvPlot* pBestHealPlot = NULL;
+
 	if (bNeedLeader)
 	{
 		int iBestStrength = 0;
+		int iBestHealing = 0;
 		int iLoop;
 		for (CvUnit* pLoopUnit = kOwner.firstUnit(&iLoop); pLoopUnit; pLoopUnit = kOwner.nextUnit(&iLoop))
 		{
@@ -8986,8 +9277,29 @@ bool CvUnitAI::AI_lead(std::vector<UnitAITypes>& aeUnitAITypes)
 									if (iCombatStrength > iBestStrength)
 									{
 										iBestStrength = iCombatStrength;
-										pBestUnit = pLoopUnit;
-										pBestPlot = getPathEndTurnPlot();
+										pBestStrUnit = pLoopUnit;
+										pBestStrPlot = getPathEndTurnPlot();
+									}
+									
+									// or the unit with the best healing ability
+									int iHealing = pLoopUnit->getSameTileHeal() + pLoopUnit->getAdjacentTileHeal();
+                                    if (iHealing > iBestHealing)
+									{
+										iBestHealing = iHealing;
+										pBestHealUnit = pLoopUnit;
+										pBestHealPlot = getPathEndTurnPlot();
+									}
+									
+									if (GC.getGame().getSorenRandNum(3, "AI Warlord mash unit") != 0)
+									{
+										pBestPlot = pBestStrPlot;
+										pBestUnit = pBestStrUnit;
+									}
+									else
+									{
+										pBestPlot = pBestHealPlot;
+										pBestUnit = pBestHealUnit;
+										// Unofficial Patch End
 									}
 								}
 							}
@@ -9065,6 +9377,13 @@ bool CvUnitAI::AI_join(int iMaxCount)
 						if (canJoin(pLoopCity->plot(), ((SpecialistTypes)iI)))
 						{
 							iValue = pLoopCity->AI_specialistValue(((SpecialistTypes)iI), pLoopCity->AI_avoidGrowth(), false);
+							// Unofficial Patch Start
+							// * AI will no longer settle Great People in cities that are in danger of being captured
+							if (GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(pLoopCity->plot(), 2) > 0)
+							{
+								iValue = 0;
+							}
+							// Unofficial Patch End
 
 							if (iValue > iBestValue)
 							{
@@ -9205,10 +9524,13 @@ bool CvUnitAI::AI_switchHurry()
 
 	pCity = plot()->getPlotCity();
 
-	if (pCity == NULL)
+    // Unofficial Patch Start
+    // * Fixed bug where AI Great Engineers would hurry wonders in rival cities.
+	if ( (pCity == NULL) || (pCity->getOwner() != getOwner()) )
 	{
 		return false;
 	}
+	// Unofficial Patch End
 
 	iBestValue = 0;
 	eBestBuilding = NO_BUILDING;
@@ -15083,6 +15405,14 @@ bool CvUnitAI::AI_airBombPlots()
 						{
 							//This should only be reached when the unit is desperate to die
 							iValue += AI_pillageValue(pLoopPlot);
+							// Unofficial Patch Start
+							// * AI guided missiles will lean towards destroying resource-producing tiles as opposed to improvements like Towns
+							if (pLoopPlot->getBonusType(pLoopPlot->getTeam()) != NO_BONUS)
+							{
+								//and even more so if it's a resource
+								iValue += GET_PLAYER(pLoopPlot->getOwnerINLINE()).AI_bonusVal(pLoopPlot->getBonusType(pLoopPlot->getTeam()));
+							}
+							// Unofficial Patch End
 						}
 
 						if (iValue > 0)

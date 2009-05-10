@@ -5313,7 +5313,18 @@ void CvPlot::setImprovementType(ImprovementTypes eNewValue)
 			}
 		}
 
-		if (NO_FEATURE != eOldImprovement && GC.getImprovementInfo(eOldImprovement).isActsAsCity())
+		// Unofficial Patch Start
+		// * Building or removing a fort will now force a plotgroup update to verify resource connections.
+		if ( (NO_IMPROVEMENT != getImprovementType() && GC.getImprovementInfo(getImprovementType()).isActsAsCity()) ||
+			 (NO_IMPROVEMENT != eOldImprovement && GC.getImprovementInfo(eOldImprovement).isActsAsCity()) )
+		{
+			//GC.getGameINLINE().updatePlotGroups();
+			updatePlotGroup();
+		}
+
+		// Also, a nearly inconsequential fix here using the proper NO_IMPROVEMENT instead of NO_FEATURE
+		if (NO_IMPROVEMENT != eOldImprovement && GC.getImprovementInfo(eOldImprovement).isActsAsCity())
+		// Unofficial Patch End
 		{
 			verifyUnitValidPlot();
 		}

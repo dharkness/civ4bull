@@ -12,6 +12,9 @@
 #include "LinkedList.h"
 #include "CvTalkingHeadMessage.h"
 
+// Needed to check compilation options
+#include "UnofficialPatch.h"
+
 class CvDiploParameters;
 class CvPopupInfo;
 class CvEventTriggerInfo;
@@ -68,6 +71,13 @@ public:
 	DllExport CvSelectionGroup* cycleSelectionGroups(CvUnit* pUnit, bool bForward, bool bWorkers, bool* pbWrap);
 
 	bool hasTrait(TraitTypes eTrait) const;																																			// Exposed to Python						
+	// Unofficial Patch Start
+	// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+	void setHumanDisabled(bool newVal);
+	bool isHumanDisabled() const;
+#endif
+	// Unofficial Patch End
 	DllExport bool isHuman() const;																																							// Exposed to Python						
 	DllExport void updateHuman();
 	DllExport bool isBarbarian() const;																																					// Exposed to Python						
@@ -1141,6 +1151,12 @@ protected:
 	bool m_bFoundedFirstCity;
 	bool m_bStrike;
 	bool m_bHuman;
+	// Unofficial Patch Start
+	// * Added jdog5000's AIAutoPlay changes to help with testing.
+#ifdef _USE_AIAUTOPLAY
+	bool m_bDisableHuman;				// Set to true to disable isHuman() check
+#endif
+	// Unofficial Patch End
 
 	PlayerTypes m_eID;
 	LeaderHeadTypes m_ePersonalityType;

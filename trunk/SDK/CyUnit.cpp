@@ -1393,7 +1393,10 @@ int CyUnit::getExtraHillsDefensePercent()
 
 int CyUnit::getRevoltProtection() const
 {
-	return m_pUnit ? m_pUnit->getExtraHillsDefensePercent() : -1;
+	// Unofficial Patch Start
+	// * Fixed bug with CyUnit::getRevoltProtection() returning the wrong value.
+	return m_pUnit ? m_pUnit->getRevoltProtection() : -1;
+	// Unofficial Patch End
 }
 
 int CyUnit::getCollateralDamageProtection() const

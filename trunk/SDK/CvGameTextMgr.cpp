@@ -844,7 +844,10 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szString, const CvUnit* pUnit, 
 			if (pUnit->getExtraCollateralDamage() == 0)
 			{
 				szString.append(NEWLINE);
-				szString.append(gDLL->getText("TXT_KEY_UNIT_COLLATERAL_DAMAGE"));
+				// Unofficial Patch Start
+				// * Civilopedia and mouseover help for units that cause collateral damage will now show the collateral damage limit (50% for Catapults, etc.)
+				szString.append(gDLL->getText("TXT_KEY_UNIT_COLLATERAL_DAMAGE", ( 100 * pUnit->getUnitInfo().getCollateralDamageLimit() / GC.getMAX_HIT_POINTS())));
+				// Unofficial Patch End
 			}
 			else
 			{
@@ -2083,7 +2086,10 @@ void createTestFontString(CvWStringBuffer& szString)
 {
 	int iI;
 	szString.assign(L"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[×]^_`abcdefghijklmnopqrstuvwxyz\n");
-	szString.append(L"{}~\\ßÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖØÙÚÛÜİŞŸßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ¿¡«»°ŠŒšœ™©®€£¢”‘“…’");
+	// Unofficial Patch Start
+	// (unsure on details of this change)
+//	szString.append(L"{}~\\ßÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖØÙÚÛÜİŞŸßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ¿¡«»°ŠŒšœ™©®€£¢”‘“…’");
+	// Unofficial Patch End
 	for (iI=0;iI<NUM_YIELD_TYPES;++iI)
 		szString.append(CvWString::format(L"%c", GC.getYieldInfo((YieldTypes) iI).getChar()));
 
@@ -5657,7 +5663,11 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	if (GC.getUnitInfo(eUnit).getCollateralDamage() > 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_COLLATERAL_DAMAGE"));
+		// Unofficial Patch Start
+		// * Civilopedia and mouseover help for units that cause collateral damage will now show the collateral damage limit (50% for Catapults, etc.)
+		//szBuffer.append(gDLL->getText("TXT_KEY_UNIT_COLLATERAL_DAMAGE"));
+		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_COLLATERAL_DAMAGE", ( 100 * GC.getUnitInfo(eUnit).getCollateralDamageLimit() / GC.getMAX_HIT_POINTS())));
+		// Unofficial Patch End
 	}
 
 	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
@@ -6531,6 +6541,29 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBu
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_REPLACES_UNIT", GC.getBuildingInfo(eDefaultBuilding).getTextKeyWide()));
 	}
+
+	// Unofficial Patch Start
+	// * Civilopedia will now display "replaced by" lines for buildings that get replaced by UBs
+	if (bCivilopediaText)
+	{
+		if(NO_UNIT != eDefaultBuilding && eDefaultBuilding == eBuilding)
+		{
+			for(iI = 0; iI < GC.getNumBuildingInfos(); ++iI)
+			{
+				if(((BuildingTypes)iI) == eBuilding)
+				{
+					continue;
+				}
+
+				if(eBuildingClass == ((UnitClassTypes)GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType()))
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_REPLACED_BY_BUILDING", GC.getBuildingInfo((BuildingTypes)iI).getTextKeyWide()));
+				}
+			}
+		}
+	}
+	// Unofficial Patch End
 
 	if (bCivilopediaText)
 	{

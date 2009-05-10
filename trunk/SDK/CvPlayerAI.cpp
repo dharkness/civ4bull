@@ -5280,6 +5280,39 @@ PlayerVoteTypes CvPlayerAI::AI_diploVote(const VoteSelectionSubData& kVoteData, 
 		{
 			if (GC.getVoteInfo(eVote).isNoNukes())
 			{
+			    // Unofficial Patch Start
+			    // * AI logic on banning nukes tweaked to account for AI leader personality and the global situation
+				int iValue = 0;
+				bool bAnyHasSdi = false;
+
+				iValue += GET_TEAM(getTeam()).getNukeInterception();
+				iValue /= 3;
+				iValue += GC.getLeaderHeadInfo(getPersonalityType()).getBuildUnitProb();
+				iValue *= std::max(1, GC.getLeaderHeadInfo(getPersonalityType()).getWarmongerRespect());
+				if (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI))
+				{
+					iValue *= 2;
+				}
+
+				for (iI = 0; iI < MAX_TEAMS; iI++)
+				{
+					if (GET_TEAM((TeamTypes)iI).isAlive() && iI != getTeam())
+					{
+						if (GET_TEAM((TeamTypes)iI).getNukeInterception() > 0)
+						{
+							bAnyHasSdi = true;
+						}
+					}
+				}
+
+				if (!bAnyHasSdi && GET_TEAM(getTeam()).getNukeInterception() > 0 && GET_TEAM(getTeam()).getNumNukeUnits() > 0)
+				{
+					iValue *= 2;
+				}
+
+				bValid = GC.getGameINLINE().getSorenRandNum(100, "AI nuke ban vote") > iValue;
+				// Unofficial Patch End
+				
 				if (AI_isDoStrategy(AI_STRATEGY_OWABWNW))
 				{
 					bValid = false;
@@ -6414,7 +6447,14 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus)
 		int iTempValue;
 		int iI, iJ;
 
-		if ((GC.getBonusInfo(eBonus).getTechObsolete() == NO_TECH) || !GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechObsolete())))
+		// Unofficial Patch Start
+		// * Obsolete resources no longer considered worthless in trade; their value is now controlled by the BONUS_OBSOLETE_VALUE_MODIFIER Global Define. 1/2
+		int iObsoleteValueModifier = std::min(0,GC.getDefineINT("BONUS_OBSOLETE_VALUE_MODIFIER"));
+		bool bBonusIsObsolete = ((GC.getBonusInfo(eBonus).getTechObsolete() != NO_TECH) && GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechObsolete())));
+
+		// This block is skipped if the bonus is obsolete and obsolete bonuses have no value.
+		if ( !bBonusIsObsolete || (iObsoleteValueModifier != 0) )
+		// Unofficial Patch End
 		{
 		iValue += (GC.getBonusInfo(eBonus).getHappiness() * 100);
 		iValue += (GC.getBonusInfo(eBonus).getHealth() * 100);
@@ -6711,7 +6751,15 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus)
 		iValue /= 10;
 		}
 
-	    
+		// Unofficial Patch Start
+		// * Obsolete resources no longer considered worthless in trade; their value is now controlled by the BONUS_OBSOLETE_VALUE_MODIFIER Global Define. 2/2
+		if (bBonusIsObsolete)
+		{
+			iValue *= iObsoleteValueModifier;
+			iValue /= 100;
+		}
+		// Unofficial Patch End
+
 		//clamp value non-negative
 		m_aiBonusValue[eBonus] = std::max(0, iValue);
 	}
@@ -6877,7 +6925,10 @@ DenialTypes CvPlayerAI::AI_bonusTrade(BonusTypes eBonus, PlayerTypes ePlayer) co
 
 	// XXX marble and stone???
 
-	eAttitude = AI_getAttitude(ePlayer);
+	// Unofficial Patch Start
+	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
+	eAttitude = GET_PLAYER(getID()).AI_getAttitude(ePlayer);
+	// Unofficial Patch End
 
 	if (bStrategic)
 	{
@@ -7228,25 +7279,35 @@ DenialTypes CvPlayerAI::AI_civicTrade(CivicTypes eCivic, PlayerTypes ePlayer) co
 		return NO_DENIAL;
 	}
 
-	if (getCivicPercentAnger(eCivic) > 0)
+	// Unofficial Patch Start
+	// * Fixed bug where AI misinterprets the civicPercentAnger attribute when evaluating civic deals.
+	if (getCivicPercentAnger(getCivics((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())),true) > getCivicPercentAnger(eCivic))
+	// Unofficial Patch End
 	{
 		return DENIAL_ANGER_CIVIC;
 	}
 
-	if (GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic() != NO_CIVIC)
+	// Unofficial Patch Start
+	// * AI will now only redline its actual Favorite Civic with DENIAL_FAVORITE_CIVIC rather than all of them. [DanF5571]
+	CivicTypes eFavoriteCivic = (CivicTypes)GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic();
+	if (eFavoriteCivic != NO_CIVIC)
 	{
-		if (isCivic((CivicTypes)(GC.getLeaderHeadInfo(getPersonalityType()).getFavoriteCivic())))
+		if (isCivic(eFavoriteCivic) && (GC.getCivicInfo(eCivic).getCivicOptionType() == GC.getCivicInfo(eFavoriteCivic).getCivicOptionType()))
 		{
 			return DENIAL_FAVORITE_CIVIC;
 		}
 	}
+	// Unofficial Patch End
 
 	if (GC.getCivilizationInfo(getCivilizationType()).getCivilizationInitialCivics(GC.getCivicInfo(eCivic).getCivicOptionType()) == eCivic)
 	{
 		return DENIAL_JOKING;
 	}
 
-	if (AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getAdoptCivicRefuseAttitudeThreshold())
+	// Unofficial Patch Start
+	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
+	if (GET_PLAYER(getID()).AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getAdoptCivicRefuseAttitudeThreshold())
+	// Unofficial Patch End
 	{
 		return DENIAL_ATTITUDE;
 	}
@@ -7320,7 +7381,10 @@ DenialTypes CvPlayerAI::AI_religionTrade(ReligionTypes eReligion, PlayerTypes eP
 		}
 	}
 
-	if (AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getConvertReligionRefuseAttitudeThreshold())
+	// Unofficial Patch Start
+	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
+	if (GET_PLAYER(getID()).AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getConvertReligionRefuseAttitudeThreshold())
+	// Unofficial Patch End
 	{
 		return DENIAL_ATTITUDE;
 	}
@@ -9115,7 +9179,15 @@ int CvPlayerAI::AI_civicValue(CivicTypes eCivic)
 
 	iConnectedForeignCities = countPotentialForeignTradeCitiesConnected();
 	iTotalReligonCount = countTotalHasReligion();
-	iHighestReligionCount = findHighestHasReligionCount();
+    // Unofficial Patch Start
+    // * Modified AI civic valuation to more accurately consider state religion preference.
+	ReligionTypes eBestReligion = AI_bestReligion();
+	if (eBestReligion == NO_RELIGION)
+	{
+		eBestReligion = getStateReligion();
+	}
+	iHighestReligionCount = ((eBestReligion == NO_RELIGION) ? 0 : getHasReligionCount(eBestReligion));
+	// Unofficial Patch End
 	iWarmongerPercent = 25000 / std::max(100, (100 + GC.getLeaderHeadInfo(getPersonalityType()).getMaxWarRand())); 
 
 	iValue = (getNumCities() * 6);
@@ -10747,13 +10819,16 @@ void CvPlayerAI::AI_doCivics()
 		return;
 	}
 
-	if (getMaxAnarchyTurns() > 0)
+	// Unofficial Patch Start
+	// * AI will change civics during Golden Ages
+	/*if (getMaxAnarchyTurns() > 0)
 	{
 		if (isGoldenAge())
 		{
 			return;
 		}
-	}
+	}*/
+	// Unofficial Patch End
 
 	if (!canRevolution(NULL))
 	{
@@ -10797,13 +10872,16 @@ void CvPlayerAI::AI_doReligion()
 		return;
 	}
 
-	if (getMaxAnarchyTurns() > 0)
+	// Unofficial Patch Start
+	// * AI will change religion during Golden Ages
+	/*if (getMaxAnarchyTurns() > 0)
 	{
 		if (isGoldenAge())
 		{
 			return;
 		}
-	}
+	}*/
+	// Unofficial Patch End
 
 	if (!canChangeReligion())
 	{
@@ -14880,7 +14958,11 @@ int CvPlayerAI::AI_playerCloseness(PlayerTypes eIndex, int iMaxDistance)
 	FAssert(eIndex != getID());
 	
 	iValue = 0;
-	for (pLoopCity = GET_PLAYER(eIndex).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(eIndex).nextCity(&iLoop))
+	// Unofficial Patch Start
+	// * Fixed bug in player closeness calculations causing the AI to be blind to its actual proximity to other players. [jdog5000/BetterAI]
+	//for (pLoopCity = GET_PLAYER(eIndex).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER(eIndex).nextCity(&iLoop))
+	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
+	// Unofficial Patch End
 	{
 		iValue += pLoopCity->AI_playerCloseness(eIndex, iMaxDistance);
 	}

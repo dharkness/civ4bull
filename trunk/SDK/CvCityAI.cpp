@@ -4409,7 +4409,10 @@ int CvCityAI::AI_neededDefenders()
 	{
 		if (bOffenseWar)
 		{
-			if (!hasActiveWorldWonder() || isHolyCity())
+		    // Unofficial Patch Start
+		    // * Fixed AI defender bug for newly captured cities.
+			if (!hasActiveWorldWonder() && !isHolyCity())
+			// Unofficial Patch End
 			{
 				iDefenders /= 2;
 				iDefenders = std::max(1, iDefenders);

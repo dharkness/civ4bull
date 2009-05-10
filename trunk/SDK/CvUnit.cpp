@@ -6277,7 +6277,11 @@ bool CvUnit::isIntruding() const
 		return false;
 	}
 
-	if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
+	// Unofficial Patch Start
+	// * Vassal's spies no longer caught in master's territory
+	//if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
+	if (GET_TEAM(eLocalTeam).isVassal(getTeam()) || GET_TEAM(getTeam()).isVassal(eLocalTeam))
+	// Unofficial Patch End
 	{
 		return false;
 	}
@@ -11510,7 +11514,10 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 
 	iCollateralStrength = ((((getDomainType() == DOMAIN_AIR) ? airBaseCombatStr() : baseCombatStr()) * collateralDamage()) / 100);
 
-	if (iCollateralStrength == 0)
+	// Unofficial Patch Start
+	// * Barrage promotions made working again on Tanks and other units with no base collateral ability
+	if (iCollateralStrength == 0 && getExtraCollateralDamage() == 0)
+	// Unofficial Patch End
 	{
 		return;
 	}
@@ -11574,16 +11581,27 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 			{
 				iTheirStrength = pBestUnit->baseCombatStr();
 
+				// Unofficial Patch Start
+				// * Revised collateral damage formula for non-native collateral units, if modded in
+				// * Fixed collateral damage calculation related to defensive modifiers like those on Drill 2+ units. [DanF5771]
+				if (iCollateralStrength == 0)
+				{
+					iCollateralStrength = baseCombatStr();
+				}
+
 				iStrengthFactor = ((iCollateralStrength + iTheirStrength + 1) / 2);
 
 				iCollateralDamage = (GC.getDefineINT("COLLATERAL_COMBAT_DAMAGE") * (iCollateralStrength + iStrengthFactor)) / (iTheirStrength + iStrengthFactor);
 
-				int iModifier = 100;
-				iModifier += getExtraCollateralDamage();
-				iModifier -= pBestUnit->getCollateralDamageProtection();
+				int iModifier = getUnitInfo().getCollateralDamage() > 0 ? (100 + getExtraCollateralDamage()) : getExtraCollateralDamage();
+				iModifier *= (100 - pBestUnit->getCollateralDamageProtection());
+				iModifier /= 100;
+
 				if (pCity != NULL)
 				{
-					iModifier += pCity->getAirModifier();
+					iModifier *= (100 + pCity->getAirModifier());
+					iModifier /= 100;
+					// Unofficial Patch End
 				}
 				iCollateralDamage *= iModifier;
 				iCollateralDamage /= 100;
@@ -12313,6 +12331,14 @@ int CvUnit::getTriggerValue(EventTriggerTypes eTrigger, const CvPlot* pPlot, boo
 	{
 		return MIN_INT;
 	}
+
+	// Unofficial Patch Start
+	// * Fixed bug that allowed an event to trigger on a unit who just died.
+	if (isDead())
+	{
+		return MIN_INT;
+	}
+	// Unofficial Patch End
 
 	if (!isEmpty(kTrigger.getPythonCanDoUnit()))
 	{
