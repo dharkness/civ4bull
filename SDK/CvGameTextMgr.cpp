@@ -13370,7 +13370,6 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	FAssertMsg(iModProduction == city.getCurrentProductionDifference(false, !bIsProcess), "Modified Production does not match actual value");
 
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PROD_FINAL_YIELD", iModProduction));
-	szBuffer.append(NEWLINE);
 
 // BUG - Building Additional Production - start
 	if (bBuildingAdditionalYield)
@@ -13390,17 +13389,19 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 				{
 					if (bFirst)
 					{
-						szBuffer.append(L"-----------------------" NEWLINE);
+						szBuffer.append(SEPARATOR);
 						bFirst = false;
 					}
 					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtraYield, GC.getYieldInfo(YIELD_PRODUCTION).getChar()));
 					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtraYield, GC.getYieldInfo(YIELD_PRODUCTION).getChar()));
 				}
 			}
 		}
 	}
 // BUG - Building Additional Production - end
+
+	szBuffer.append(NEWLINE);
 }
 
 
@@ -13783,7 +13784,6 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 
 	CvWString szYield = CvWString::format(L"%d.%02d", iModYield/100, iModYield%100);
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_COMMERCE_FINAL_YIELD_FLOAT", info.getTextKeyWide(), szYield.GetCString(), info.getChar()));
-	szBuffer.append(NEWLINE);
 
 // BUG - Building Additional Commerce - start
 	if (bBuildingAdditionalCommerce)
@@ -13812,7 +13812,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 					{
 						if (bFirst)
 						{
-							szBuffer.append(L"-----------------------" NEWLINE);
+							szBuffer.append(SEPARATOR);
 							bFirst = false;
 						}
 						if (iExtraYield > 0)
@@ -13837,14 +13837,16 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 								szYield.Format(L"-%d.%02d", (-iExtraYield) / 100, (-iExtraYield) % 100);
 							}
 						}
-						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT", infoBuilding.getDescription(), szYield.GetCString(), info.getChar()));
 						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT", infoBuilding.getDescription(), szYield.GetCString(), info.getChar()));
 					}
 				}
 			}
 		}
 	}
 // BUG - Building Additional Commerce - end
+
+	szBuffer.append(NEWLINE);
 }
 
 void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType)
@@ -14129,6 +14131,52 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 		return;
 	}
 
+// BUG - Great People Rate Breakdown - start
+	if (getBugOptionBOOL("MiscHover__GreatPeopleRateBreakdown", true, "BUG_GREAT_PEOPLE_RATE_BREAKDOWN_HOVER"))
+	{
+		bool bFirst = true;
+		int iRate = 0;
+		for (int i = 0; i < GC.getNumSpecialistInfos(); i++)
+		{
+			int iCount = city.getSpecialistCount((SpecialistTypes)i) + city.getFreeSpecialistCount((SpecialistTypes)i);
+			if (iCount > 0)
+			{
+				iRate += iCount * GC.getSpecialistInfo((SpecialistTypes)i).getGreatPeopleRateChange();
+			}
+		}
+		if (iRate > 0)
+		{
+			if (bFirst)
+			{
+				szBuffer.append(SEPARATOR);
+				bFirst = false;
+			}
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPECIALIST_COMMERCE", iRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), L"TXT_KEY_CONCEPT_SPECIALISTS"));
+		}
+		
+		iRate = 0;
+		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+		{
+			int iCount = city.getNumBuilding((BuildingTypes)i);
+			if (iCount > 0)
+			{
+				iRate += iCount * GC.getBuildingInfo((BuildingTypes)i).getGreatPeopleRateChange();
+			}
+		}
+		if (iRate > 0)
+		{
+			if (bFirst)
+			{
+				szBuffer.append(SEPARATOR);
+				bFirst = false;
+			}
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_COMMERCE", iRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR)));
+		}
+	}
+// BUG - Great People Rate Breakdown - end
+
 	szBuffer.append(SEPARATOR);
 	szBuffer.append(NEWLINE);
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_BASE_RATE", city.getBaseGreatPeopleRate()));
@@ -14229,7 +14277,6 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	FAssertMsg(iModGreatPeople == city.getGreatPeopleRate(), "Great person rate does not match actual value");
 
 	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_GREATPEOPLE_FINAL", iModGreatPeople));
-	szBuffer.append(NEWLINE);
 
 // BUG - Building Additional Great People - start
 	if (bBuildingAdditionalGreatPeople)
@@ -14245,17 +14292,19 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 				{
 					if (bFirst)
 					{
-						szBuffer.append(L"-----------------------" NEWLINE);
+						szBuffer.append(SEPARATOR);
 						bFirst = false;
 					}
 					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtra, gDLL->getSymbolID(GREAT_PEOPLE_CHAR)));
 					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtra, gDLL->getSymbolID(GREAT_PEOPLE_CHAR)));
 				}
 			}
 		}
 	}
 // BUG - Building Additional Great People - end
+	
+	szBuffer.append(NEWLINE);
 }
 
 
@@ -14324,9 +14373,9 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 			if (eAirportClass != -1)
 			{
 				int eAirport = GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationBuildings(eAirportClass);
-				if (eAirport != -1 && pCity->getNumRealBuilding((BuildingTypes)eAirport) > 0)
+				if (eAirport != -1 && pCity->getNumBuilding((BuildingTypes)eAirport) > 0)
 				{
-					szBuffer.append(CvWString::format(L"%c", gDLL->getSymbolID(MAP_CHAR))); // GC.getCommerceInfo(COMMERCE_GOLD).getChar() + 31));
+					szBuffer.append(CvWString::format(L"%c", gDLL->getSymbolID(POWER_CHAR) + 1));
 				}
 			}
 		}
