@@ -146,6 +146,10 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
+		<DefineName>BUG_GREAT_PEOPLE_RATE_BREAKDOWN_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
 		<DefineName>BUG_BUILDING_ADDITIONAL_PRODUCTION_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
