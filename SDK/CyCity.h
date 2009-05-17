@@ -203,6 +203,10 @@ public:
 	int getNumNationalWonders();
 	int getNumBuildings();
 	bool isGovernmentCenter();
+// BUG - Building Saved Maintenance - start
+	int getSavedMaintenanceByBuilding(int /*BuildingTypes*/ iBuilding) const;
+	int getSavedMaintenanceTimes100ByBuilding(int /*BuildingTypes*/ iBuilding) const;
+// BUG - Building Saved Maintenance - end
 	int getMaintenance() const;
 	int getMaintenanceTimes100() const;
 	int calculateDistanceMaintenance() const;														 
