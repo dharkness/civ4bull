@@ -372,15 +372,8 @@ void CvGame::regenerateMap()
 
 	gDLL->getEngineIFace()->AutoSave(true);
 
-	if (NO_PLAYER != getActivePlayer())
-	{
-		CvPlot* pPlot = GET_PLAYER(getActivePlayer()).getStartingPlot();
-
-		if (NULL != pPlot)
-		{
-			gDLL->getInterfaceIFace()->lookAt(pPlot->getPoint(), CAMERALOOKAT_NORMAL);
-		}
-	}
+	// EF - This doesn't work until after the game has had time to update.
+	//      Centering on the starting location is now done by MapUtil using BugUtil.delayCall().
 }
 
 void CvGame::uninit()
