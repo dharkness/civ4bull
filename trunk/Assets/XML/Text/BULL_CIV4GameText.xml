@@ -191,6 +191,14 @@
 		<Italian>[NEWLINE][ICON_BULLET]Accelera[SPACE]</Italian>
 		<Spanish>[NEWLINE][ICON_BULLET]Acelera[SPACE]</Spanish>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_BUILDING_ACTUAL_EFFECTS</Tag>
+		<English>Actual:[SPACE]</English>
+		<French>Actual:[SPACE]</French>
+		<German>Actual:[SPACE]</German>
+		<Italian>Actual:[SPACE]</Italian>
+		<Spanish>Actual:[SPACE]</Spanish>
+	</TEXT>
 
 <!-- Main Interface -->
 

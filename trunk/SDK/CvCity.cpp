@@ -5430,6 +5430,39 @@ void CvCity::changeGovernmentCenterCount(int iChange)
 }
 
 
+// BUG - Building Saved Maintenance - start
+/*
+ * Returns the rounded total additional gold from saved maintenance that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getSavedMaintenanceByBuilding(BuildingTypes eBuilding) const
+{
+	return getSavedMaintenanceTimes100ByBuilding(eBuilding) / 100;
+}
+
+/*
+ * Returns the total additional gold from saved maintenance times 100 that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getSavedMaintenanceTimes100ByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iModifier = kBuilding.getMaintenanceModifier();
+	if (iModifier != 0 && !isDisorder() && !isWeLoveTheKingDay() && (getPopulation() > 0))
+	{
+		int iNewMaintenance = calculateBaseMaintenanceTimes100() * std::max(0, getMaintenanceModifier() + iModifier + 100) / 100;
+		return std::max(0, getMaintenanceTimes100() - iNewMaintenance);
+	}
+
+	return 0;
+}
+// BUG - Building Saved Maintenance - end
+
 int CvCity::getMaintenance() const
 {
 	return m_iMaintenance / 100;

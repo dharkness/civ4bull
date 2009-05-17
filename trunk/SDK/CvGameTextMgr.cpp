@@ -8250,7 +8250,7 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 			{
 				aiYields[iI] = pCity->getAdditionalYieldByBuilding((YieldTypes)iI, eBuilding);
 			}
-			bool bStarted = setResumableYieldChangeHelp(szBuffer, L"Actual: ", L"", L"", aiYields, false, true);
+			bool bStarted = setResumableYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiYields, false, true);
 			
 			// Commerce
 			int aiCommerces[NUM_COMMERCE_TYPES];
@@ -8258,14 +8258,16 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 			{
 				aiCommerces[iI] = pCity->getAdditionalCommerceTimes100ByBuilding((CommerceTypes)iI, eBuilding);
 			}
-			bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, L"Actual: ", L"", L"", aiCommerces, true, bStarted);
+			// Maintenance - add to gold
+			aiCommerces[COMMERCE_GOLD] += pCity->getSavedMaintenanceTimes100ByBuilding(eBuilding);
+			bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiCommerces, true, bStarted);
 
 			// Great People
 			int iGreatPeopleRate = pCity->getAdditionalGreatPeopleRateByBuilding(eBuilding);
 			if (iGreatPeopleRate != 0)
 			{
 				szTempBuffer.Format(L"%s%d%c", iGreatPeopleRate > 0 ? "+" : "", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR));
-				setListHelp(szBuffer, L"Actual: ", szTempBuffer, L", ", !bStarted);
+				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
 				bStarted = true;
 			}
 		}
