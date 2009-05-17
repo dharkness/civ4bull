@@ -308,6 +308,11 @@ public:
 	DllExport bool isGovernmentCenter() const;														// Exposed to Python
 	void changeGovernmentCenterCount(int iChange);													
 
+// BUG - Building Saved Maintenance - start
+	int getSavedMaintenanceByBuilding(BuildingTypes eBuilding) const;										// Exposed to Python
+	int getSavedMaintenanceTimes100ByBuilding(BuildingTypes eBuilding) const;								// Exposed to Python
+// BUG - Building Saved Maintenance - end
+
 	DllExport int getMaintenance() const;																	// Exposed to Python
 	int getMaintenanceTimes100() const;																	// Exposed to Python
 	void updateMaintenance();

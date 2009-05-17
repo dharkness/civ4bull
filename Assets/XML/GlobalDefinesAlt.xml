@@ -150,6 +150,10 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
+		<DefineName>BUG_BUILDING_SAVED_MAINTENANCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
 		<DefineName>BUG_BUILDING_ADDITIONAL_PRODUCTION_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>

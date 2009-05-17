@@ -3725,6 +3725,41 @@ void CvDLLWidgetData::parseMaintenanceHelp(CvWidgetDataStruct &widgetDataStruct,
 				swprintf(szTempBuffer, L" (%s%d%%)", ((iMaintenanceValue > 0) ? L"+" : L""), iMaintenanceValue);
 				szBuffer.append(szTempBuffer);
 			}
+
+// BUG - Building Saved Maintenance - start
+			if (getBugOptionBOOL("MiscHover__BuildingSavedMaintenance", true, "BUG_BUILDING_SAVED_MAINTENANCE_HOVER"))
+			{
+				bool bFirst = true;
+				CvWString szYield;
+
+				for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+				{
+					if (pHeadSelectedCity->canConstruct((BuildingTypes)i, false, true, false))
+					{
+						int iSaved = - pHeadSelectedCity->getSavedMaintenanceTimes100ByBuilding((BuildingTypes)i);
+						if (iSaved != 0)
+						{
+							if (bFirst)
+							{
+								szBuffer.append(SEPARATOR);
+								bFirst = false;
+							}
+							if (iSaved > 0)
+							{
+								szYield.Format(L"+%d.%02d", iSaved / 100, iSaved % 100);
+							}
+							else
+							{
+								szYield.Format(L"-%d.%02d", (-iSaved) / 100, (-iSaved) % 100);
+							}
+							CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
+							szBuffer.append(NEWLINE);
+							szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT", kBuilding.getDescription(), szYield.GetCString(), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
+						}
+					}
+				}
+			}
+// BUG - Building Saved Maintenance - end
 		}
 	}
 }
