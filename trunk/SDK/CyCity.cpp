@@ -863,6 +863,18 @@ bool CyCity::isGovernmentCenter()
 	return m_pCity ? m_pCity->isGovernmentCenter() : false;
 }
 
+// BUG - Building Saved Maintenance - start
+int CyCity::getSavedMaintenanceByBuilding(int /*BuildingTypes*/ iBuilding) const
+{
+	return m_pCity ? m_pCity->getSavedMaintenanceByBuilding((BuildingTypes)iBuilding) : -1;
+}
+
+int CyCity::getSavedMaintenanceTimes100ByBuilding(int /*BuildingTypes*/ iBuilding) const
+{
+	return m_pCity ? m_pCity->getSavedMaintenanceTimes100ByBuilding((BuildingTypes)iBuilding) : -1;
+}
+// BUG - Building Saved Maintenance - end
+
 int CyCity::getMaintenance() const
 {
 	return m_pCity ? m_pCity->getMaintenance() : -1;

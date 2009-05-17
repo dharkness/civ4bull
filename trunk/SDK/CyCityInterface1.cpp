@@ -194,6 +194,10 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getNumBuildings", &CyCity::getNumBuildings, "int ()")
 		.def("changeGreatPeopleProgress", &CyCity::changeGreatPeopleProgress, "void (int iChange) - adjusts great person progress by iChange")
 		.def("isGovernmentCenter", &CyCity::isGovernmentCenter, "bool () - is city the government center?")
+// BUG - Building Saved Maintenance - start
+		.def("getSavedMaintenanceByBuilding", &CyCity::getSavedMaintenanceByBuilding, "int (int /*BuildingTypes*/)")
+		.def("getSavedMaintenanceTimes100ByBuilding", &CyCity::getSavedMaintenanceTimes100ByBuilding, "int (int /*BuildingTypes*/)")
+// BUG - Building Saved Maintenance - end
 		.def("getMaintenance", &CyCity::getMaintenance, "int () - cities current maintenance cost")
 		.def("getMaintenanceTimes100", &CyCity::getMaintenanceTimes100, "int () - cities current maintenance cost")
 		.def("calculateDistanceMaintenance", &CyCity::calculateDistanceMaintenance, "int ()")

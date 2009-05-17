@@ -7749,6 +7749,31 @@ int CvCity::getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingType
 		}
 		iExtraRate += kBuilding.getYieldChange(eIndex);
 		iExtraRate += getBuildingYieldChange((BuildingClassTypes)kBuilding.getBuildingClassType(), eIndex);
+
+		// Trade
+		int iPlayerTradeYieldModifier = GET_PLAYER(getOwnerINLINE()).getTradeYieldModifier(eIndex);
+		if (iPlayerTradeYieldModifier > 0 && (kBuilding.getTradeRouteModifier() != 0 || kBuilding.getForeignTradeRouteModifier() != 0))
+		{
+			for (int iI = 0; iI < getTradeRoutes(); ++iI)
+			{
+				CvCity* pCity = getTradeCity(iI);
+				if (pCity)
+				{
+					int iTradeProfit = getBaseTradeProfit(pCity);
+					int iTradeModifier = totalTradeModifier(pCity);
+					int iTradeYield = iTradeProfit * iTradeModifier / 10000 * iPlayerTradeYieldModifier / 100;
+
+					iTradeModifier += kBuilding.getTradeRouteModifier();
+					if (pCity->getOwnerINLINE() != getOwnerINLINE())
+					{
+						iTradeModifier += kBuilding.getForeignTradeRouteModifier();
+					}
+					int iNewTradeYield = iTradeProfit * iTradeModifier / 10000 * iPlayerTradeYieldModifier / 100;
+
+					iExtraRate += iNewTradeYield - iTradeYield;
+				}
+			}
+		}
 	}
 
 	return iExtraRate;
