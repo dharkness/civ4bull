@@ -408,6 +408,10 @@ void CyEnumsPythonInterface()
 		.value("WIDGET_TRADE_ROUTES", WIDGET_TRADE_ROUTES)
 // BUG - Foreign Advisor INFO Trade - end
 
+// BUG - Food Rate Hover - start
+		.value("WIDGET_FOOD_MOD_HELP", WIDGET_FOOD_MOD_HELP)
+// BUG - Food Rate Hover - end
+
 		.value("NUM_WIDGET_TYPES", NUM_WIDGET_TYPES)
 		;
 

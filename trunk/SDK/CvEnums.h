@@ -560,6 +560,10 @@ enum DllExport WidgetTypes					// Exposed to Python
 	WIDGET_TRADE_ROUTES,
 // BUG - Foreign Advisor INFO Trade - end
 
+// BUG - Food Rate Hover - start
+	WIDGET_FOOD_MOD_HELP,
+// BUG - Food Rate Hover - end
+
 #ifdef _USRDLL
 	NUM_WIDGET_TYPES
 #endif
