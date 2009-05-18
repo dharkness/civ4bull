@@ -181,7 +181,7 @@
 		<Spanish>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced for %d2 [NUM2:turn:turns][COLOR_REVERT]</Spanish>
 	</TEXT>
 	
-<!-- Miscellaneous Hovers -->
+<!-- Tech Hover -->
 
 	<TEXT>
 		<Tag>TXT_KEY_MISC_SPEEDS_UP</Tag>
@@ -214,32 +214,121 @@
 	</TEXT>
 
 <!-- City Screen -->
+	
+	<!-- Yield Hovers -->
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_WORKED_TILES</Tag>
+		<English>Worked Tiles: %d1%F2</English>
+		<French>Cases Travaillées: %d1%F2</French>
+		<German>Geländefelder: %d1%F2</German>
+		<Italian>Caselle lavorate: %d1%F2</Italian>
+		<Spanish>Azulejos Trabajados: %d1%F2</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_TOTAL_YIELD</Tag>
+		<English>-----------------------[NEWLINE]Total %s1_yield_type: %d2%F3</English>
+		<French>-----------------------[NEWLINE]Total %s1_yield_type : %d2%F3</French>
+		<German>-----------------------[NEWLINE]%s1_yield_type gesamt: %d2%F3</German>
+		<Italian>-----------------------[NEWLINE]%s1_yield_type totale: %d2%F3</Italian>
+		<Spanish>-----------------------[NEWLINE]Total %s1_yield_type: %d2%F3</Spanish>
+	</TEXT>
 
-	<!-- Commerce Hover -->
+	<!-- Food Hover -->
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_EATEN_FOOD</Tag>
+		<English>[ICON_BULLET]%D1%F2 for Population</English>
+		<French>[ICON_BULLET]%D1%F2 pour la population</French>
+		<German>[ICON_BULLET]%D1%F2 f&#252;r Bev&#246;lkerung</German>
+		<Italian>[ICON_BULLET]%D1%F2 per la popolazione</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 Por poblaci&#243;n</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_SPOILED_FOOD</Tag>
+		<English>[ICON_BULLET]%D1%F2 for Health</English>
+		<French>[ICON_BULLET]%D1%F2 pour la Sant&#233;</French>
+		<German>[ICON_BULLET]%D1%F2 f&#252;r Gesundheit</German>
+		<Italian>[ICON_BULLET]%D1%F2 per la salute</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 Por salud</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_PRODUCTION_FOOD</Tag>
+		<English>[ICON_BULLET]%D1%F2 for %s3_production_type</English>
+		<French>[ICON_BULLET]%D1%F2 pour %s3_production_type</French>
+		<German>[ICON_BULLET]%D1%F2 f&#252;r %s3_production_type</German>
+		<Italian>[ICON_BULLET]%D1%F2 per %s3_production_type</Italian>
+		<Spanish>[ICON_BULLET]%D1%F2 Por %s3_production_type</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_GROW</Tag>
+		<English>-----------------------[NEWLINE]Net %s1_yield_type: %D2%F3</English>
+		<French>-----------------------[NEWLINE]Net %s1_yield_type : %D2%F3</French>
+		<German>-----------------------[NEWLINE]%s1_yield_type Net: %D2%F3</German>
+		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: %D2%F3</Italian>
+		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: %D2%F3</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_SHRINK</Tag>
+		<English>-----------------------[NEWLINE]Net %s1_yield_type: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</English>
+		<French>-----------------------[NEWLINE]Net %s1_yield_type : [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</French>
+		<German>-----------------------[NEWLINE]%s1_yield_type Net: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</German>
+		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</Italian>
+		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE</Tag>
+		<English>-----------------------[NEWLINE]Net %s1_yield_type: 0%F2</English>
+		<French>-----------------------[NEWLINE]Net %s1_yield_type : 0%F2</French>
+		<German>-----------------------[NEWLINE]%s1_yield_type Net: 0%F2</German>
+		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: 0%F2</Italian>
+		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: 0%F2</Spanish>
+	</TEXT>
+
+	<!-- Commerce Hovers -->
 	
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_COMMERCE_SUBTOTAL_YIELD_FLOAT</Tag>
-		<English>-----------------------[NEWLINE]Base %s1_commerce_type: %s2 %F3</English>
-		<French>-----------------------[NEWLINE]Total partiel %s1_commerce_type : %s2 %F3</French>
-		<German>-----------------------[NEWLINE]%s1_commerce_type Basiswert: %s2 %F3</German>
-		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale parziale: %s2 %F3</Italian>
-		<Spanish>-----------------------[NEWLINE]Subtotal %s1_commerce_type: %s2 %F3</Spanish>
+		<English>-----------------------[NEWLINE]Base %s1_commerce_type: %s2%F3</English>
+		<French>-----------------------[NEWLINE]Total partiel %s1_commerce_type : %s2%F3</French>
+		<German>-----------------------[NEWLINE]%s1_commerce_type Basiswert: %s2%F3</German>
+		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale parziale: %s2%F3</Italian>
+		<Spanish>-----------------------[NEWLINE]Subtotal %s1_commerce_type: %s2%F3</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_SLIDER_PERCENT_FLOAT</Tag>
+		<English>-----------------------[NEWLINE]%d1%% of %d2[ICON_COMMERCE] = %s3%F4</English>
+		<French>-----------------------[NEWLINE]%d1%% sur %d2[ICON_COMMERCE] = %s3%F4</French>
+		<German>-----------------------[NEWLINE]%d1%% von %d2[ICON_COMMERCE] = %s3%F4</German>
+		<Italian>-----------------------[NEWLINE]%d1%% di %d2[ICON_COMMERCE] = %s3%F4</Italian>
+		<Spanish>-----------------------[NEWLINE]%d1%% de %d2 [ICON_COMMERCE] = %s3%F4</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_COMMERCE_FINAL_YIELD_FLOAT</Tag>
+		<English>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</English>
+		<French>-----------------------[NEWLINE]Total %s1_commerce_type : %s2%F3</French>
+		<German>-----------------------[NEWLINE]%s1_commerce_type gesamt: %s2%F3</German>
+		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale: %s2%F3</Italian>
+		<Spanish>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</Spanish>
+	</TEXT>
+	
+	<!-- Building Additional Yield/Commerce/Maintenance/GP -->
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD</Tag>
+		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %D2%F3</English>
+		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
+		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
+		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
+		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT</Tag>
-		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2 %F3</English>
-		<French>[ICON_BULLET]%s1_building_type : %s2 %F3</French>
-		<German>[ICON_BULLET]%s1_building_type: %s2 %F3</German>
-		<Italian>[ICON_BULLET]%s1_building_type: %s2 %F3</Italian>
-		<Spanish>[ICON_BULLET]%s1_building_type: %s2 %F3</Spanish>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD</Tag>
-		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %D2 %F3</English>
-		<French>[ICON_BULLET]%s1_building_type : %s2 %F3</French>
-		<German>[ICON_BULLET]%s1_building_type: %s2 %F3</German>
-		<Italian>[ICON_BULLET]%s1_building_type: %s2 %F3</Italian>
-		<Spanish>[ICON_BULLET]%s1_building_type: %s2 %F3</Spanish>
+		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</English>
+		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
+		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
+		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
+		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
 	</TEXT>
 
 <!-- Hurry Hover -->
