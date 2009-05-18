@@ -602,6 +602,12 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 	case WIDGET_MINIMAP_HIGHLIGHT:
 		break;
 
+// BUG - Food Rate Hover - start
+	case WIDGET_FOOD_MOD_HELP:
+		parseFoodModHelp(widgetDataStruct, szBuffer);
+		break;
+// BUG - Food Rate Hover - end
+
 	case WIDGET_PRODUCTION_MOD_HELP:
 		parseProductionModHelp(widgetDataStruct, szBuffer);
 		break;
@@ -4702,6 +4708,17 @@ void CvDLLWidgetData::doRefreshMilitaryAdvisor(CvWidgetDataStruct &widgetDataStr
 	argsList.add(widgetDataStruct.m_iData2);
 	gDLL->getPythonIFace()->callFunction(PYScreensModule, "refreshMilitaryAdvisor", argsList.makeFunctionArgs());
 }
+
+// BUG - Food Rate Hover - start
+void CvDLLWidgetData::parseFoodModHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	CvCity* pCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+	if (NULL != pCity)
+	{
+		GAMETEXT.setFoodHelp(szBuffer, *pCity);
+	}
+}
+// BUG - Food Rate Hover - end
 
 void CvDLLWidgetData::parseProductionModHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {

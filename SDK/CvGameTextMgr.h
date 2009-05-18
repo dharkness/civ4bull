@@ -115,6 +115,9 @@ public:
 	DllExport void setImprovementHelp(CvWStringBuffer &szBuffer, ImprovementTypes eImprovement, bool bCivilopediaText = false);
 	DllExport void setTerrainHelp(CvWStringBuffer &szBuffer, TerrainTypes eTerrain, bool bCivilopediaText = false);
 	DllExport void setFeatureHelp(CvWStringBuffer &szBuffer, FeatureTypes eFeature, bool bCivilopediaText = false);
+// BUG - Food Rate Hover - start
+	DllExport void setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city);
+// BUG - Food Rate Hover - end
 	DllExport void setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city);
 	DllExport void setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, CommerceTypes eCommerceType);
 	DllExport void setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType);

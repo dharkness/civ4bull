@@ -13122,6 +13122,185 @@ void CvGameTextMgr::buildFinanceForeignIncomeString(CvWStringBuffer& szBuffer, P
 	}
 }
 
+// BUG - Food Rate Hover - start
+void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
+{
+	FAssertMsg(NO_PLAYER != city.getOwnerINLINE(), "City must have an owner");
+	
+	CvYieldInfo& info = GC.getYieldInfo(YIELD_FOOD);
+	bool bNeedSubtotal = false;
+	int iBaseRate = 0;
+	int i;
+
+	// Worked Tiles
+	int iTileFood = 0;
+	for (i = 0; i < NUM_CITY_PLOTS; i++)
+	{
+		if (city.isWorkingPlot(i))
+		{
+			CvPlot* pPlot = city.getCityIndexPlot(i);
+
+			if (pPlot != NULL)
+			{
+				iTileFood += pPlot->getYield(YIELD_FOOD);
+			}
+		}
+	}
+	if (iTileFood != 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_WORKED_TILES", iTileFood, info.getChar()));
+		iBaseRate += iTileFood;
+	}
+
+	// Trade
+	int iTradeFood = city.getTradeYield(YIELD_FOOD);
+	if (iTradeFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPECIALIST_COMMERCE", iTradeFood, info.getChar(), L"TXT_KEY_HEADING_TRADEROUTE_LIST"));
+		iBaseRate += iTradeFood;
+		bNeedSubtotal = true;
+	}
+
+	// Specialists
+	int iSpecialistFood = 0;
+	for (i = 0; i < GC.getNumSpecialistInfos(); i++)
+	{
+		iSpecialistFood += GET_PLAYER(city.getOwnerINLINE()).specialistYield((SpecialistTypes)i, YIELD_FOOD) * (city.getSpecialistCount((SpecialistTypes)i) + city.getFreeSpecialistCount((SpecialistTypes)i));
+	}
+	if (iSpecialistFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPECIALIST_COMMERCE", iSpecialistFood, info.getChar(), L"TXT_KEY_CONCEPT_SPECIALISTS"));
+		iBaseRate += iSpecialistFood;
+		bNeedSubtotal = true;
+	}
+
+	// Corporations
+	int iCorporationFood = city.getCorporationYield(YIELD_FOOD);
+	if (iCorporationFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_CORPORATION_COMMERCE", iCorporationFood, info.getChar()));
+		iBaseRate += iCorporationFood;
+		bNeedSubtotal = true;
+	}
+	
+	// Buildings
+	int iBuildingFood = 0;
+	for (i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		int iCount = city.getNumActiveBuilding((BuildingTypes)i);
+		if (iCount > 0)
+		{
+			CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
+			iBuildingFood += iCount * (kBuilding.getYieldChange(YIELD_FOOD) + city.getBuildingYieldChange((BuildingClassTypes)kBuilding.getBuildingClassType(), YIELD_FOOD));
+		}
+	}
+	if (iBuildingFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_COMMERCE", iBuildingFood, info.getChar()));
+		iBaseRate += iBuildingFood;
+		bNeedSubtotal = true;
+	}
+
+	// Base and modifiers
+	if (bNeedSubtotal || city.getBaseYieldRateModifier(YIELD_FOOD) != 100)
+	{
+		szBuffer.append(SEPARATOR);
+		szBuffer.append(NEWLINE);
+		// shows Base Food and lists all modifiers
+		setYieldHelp(szBuffer, city, YIELD_FOOD);
+	}
+	else
+	{
+		szBuffer.append(NEWLINE);
+	}
+
+	// Total
+	int iBaseModifier = city.getBaseYieldRateModifier(YIELD_FOOD);
+	int iRate = iBaseModifier * iBaseRate / 100;
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_YIELD", info.getTextKeyWide(), iRate, info.getChar()));
+
+	// Eaten
+	int iEatenFood = - city.getPopulation() * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	if (iEatenFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_EATEN_FOOD", iEatenFood, gDLL->getSymbolID(EATEN_FOOD_CHAR)));
+		iRate += iEatenFood;
+	}
+
+	// Health
+	int iSpoiledFood = city.healthRate();
+	if (iSpoiledFood != 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPOILED_FOOD", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR)));
+		iRate += iSpoiledFood;
+	}
+
+	// Production
+	if (city.isFoodProduction() && iRate > 0)
+	{
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PRODUCTION_FOOD", -iRate, gDLL->getSymbolID(EATEN_FOOD_CHAR), city.getProductionNameKey()));
+		iRate = 0;
+	}
+
+	// cannot starve a size 1 city
+	if (iRate < 0 && city.getPopulation() == 1 && city.getFood() == 0)
+	{
+		iRate = 0;
+	}
+
+	// Net Food
+	szBuffer.append(NEWLINE);
+	if (iRate > 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_GROW", info.getTextKeyWide(), iRate, info.getChar()));
+	}
+	else if (iRate < 0)
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_SHRINK", info.getTextKeyWide(), iRate, gDLL->getSymbolID(BAD_FOOD_CHAR)));
+	}
+	else
+	{
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE", info.getTextKeyWide(), info.getChar()));
+	}
+
+// BUG - Building Additional Food - start
+	if (getBugOptionBOOL("MiscHover__BuildingAdditionalFood", true, "BUG_BUILDING_ADDITIONAL_FOOD_HOVER"))
+	{
+		bool bFirst = true;
+
+//		logMsg("Food, City %d.%d", city.getOwnerINLINE(), city.getID());
+		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+		{
+			if (city.canConstruct((BuildingTypes)i, false, true, false))
+			{
+				int iExtraYield = city.getAdditionalYieldByBuilding(YIELD_FOOD, (BuildingTypes)i);
+				if (iExtraYield != 0)
+				{
+					if (bFirst)
+					{
+						szBuffer.append(SEPARATOR);
+						bFirst = false;
+					}
+					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtraYield, GC.getYieldInfo(YIELD_FOOD).getChar()));
+				}
+			}
+		}
+	}
+// BUG - Building Additional Food - end
+
+	szBuffer.append(NEWLINE);
+}
+// BUG - Food Rate Hover - end
+
 void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 {
 	FAssertMsg(NO_PLAYER != city.getOwnerINLINE(), "City must have an owner");
