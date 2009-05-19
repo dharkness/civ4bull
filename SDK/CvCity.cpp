@@ -6256,6 +6256,174 @@ void CvCity::updateExtraBuildingHappiness()
 	}
 }
 
+// BUG - Building Additional Happiness - start
+/*
+ * Returns the total additional happiness that adding one of the given buildings will provide
+ * and sets the good and bad levels individually.
+ *
+ * Doesn't reset iGood or iBad to zero.
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+	int iStarting = iGood - iBad;
+
+	// Basic
+	addGoodOrBad(kBuilding.getHappiness(), iGood, iBad);
+
+	// Building Class
+	addGoodOrBad(getBuildingHappyChange((BuildingClassTypes)kBuilding.getBuildingClassType()), iGood, iBad);
+
+	// Player Building
+	addGoodOrBad(GET_PLAYER(getOwnerINLINE()).getExtraBuildingHappiness(eBuilding), iGood, iBad);
+
+	// Area
+	addGoodOrBad(kBuilding.getAreaHappiness(), iGood, iBad);
+
+	// Religion
+	if (kBuilding.getReligionType() != NO_RELIGION && kBuilding.getReligionType() == GET_PLAYER(getOwnerINLINE()).getStateReligion())
+	{
+		iGood += kBuilding.getStateReligionHappiness();
+	}
+
+	// Bonus
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if ((hasBonus((BonusTypes)iI) || kBuilding.getFreeBonus() == iI) && kBuilding.getNoBonus() != iI)
+		{
+			addGoodOrBad(kBuilding.getBonusHappinessChanges(iI), iGood, iBad);
+		}
+	}
+
+	// No Unhappiness
+	if (kBuilding.isNoUnhappiness())
+	{
+		iBad -= unhappyLevel();
+	}
+
+	// Commerce
+	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+	{
+		addGoodOrBad(kBuilding.getCommerceHappiness(iI) * GET_PLAYER(getOwnerINLINE()).getCommercePercent((CommerceTypes)iI) / 100, iGood, iBad);
+	}
+
+	return iGood - iBad - iStarting;
+}
+
+/*
+ * Returns the total additional health that adding one of the given buildings will provide
+ * and sets the good and bad levels individually.
+ *
+ * Doesn't reset iGood or iBad to zero.
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iI;
+	int iStarting = iGood - iBad;
+	int iStartingBad = iBad;
+
+	// Basic
+	addGoodOrBad(kBuilding.getHealth(), iGood, iBad);
+
+	// Building Class
+	addGoodOrBad(getBuildingHappyChange((BuildingClassTypes)kBuilding.getBuildingClassType()), iGood, iBad);
+
+	// Player Building
+	addGoodOrBad(GET_PLAYER(getOwnerINLINE()).getExtraBuildingHappiness(eBuilding), iGood, iBad);
+
+	// Area
+	addGoodOrBad(kBuilding.getAreaHealth(), iGood, iBad);
+
+	// Bonus
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		if ((hasBonus((BonusTypes)iI) || kBuilding.getFreeBonus() == iI) && kBuilding.getNoBonus() != iI)
+		{
+			addGoodOrBad(kBuilding.getBonusHealthChanges(iI), iGood, iBad);
+		}
+	}
+
+	// Power
+	if (kBuilding.isPower() || kBuilding.isAreaCleanPower())
+	{
+		// adding power
+		if (!isPower())
+		{
+			addGoodOrBad(GC.getDefineINT("POWER_HEALTH_CHANGE"), iGood, iBad);
+
+			// adding dirty power
+			if (kBuilding.isDirtyPower())
+			{
+				addGoodOrBad(GC.getDefineINT("DIRTY_POWER_HEALTH_CHANGE"), iGood, iBad);
+			}
+		}
+		else
+		{
+			// replacing dirty power with clean power
+			if (isDirtyPower() && (!kBuilding.isDirtyPower() || kBuilding.isAreaCleanPower()))
+			{
+				subtractGoodOrBad(GC.getDefineINT("DIRTY_POWER_HEALTH_CHANGE"), iGood, iBad);
+			}
+		}
+	}
+
+	// No Unhealthiness from Buildings
+	if (kBuilding.isBuildingOnlyHealthy())
+	{
+		// reset bad to undo any additional bad from above
+		iBad = iStartingBad - getBuildingBadHealth();
+	}
+
+	// No Unhealthiness from Population
+	if (kBuilding.isNoUnhealthyPopulation())
+	{
+		iBad -= getPopulation();
+	}
+
+	return iGood - iBad - iStarting;
+}
+
+/*
+ * Adds iValue to iGood if it is positive or its negative to iBad if it is negative.
+ */
+void addGoodOrBad(int iValue, int& iGood, int& iBad)
+{
+	if (iValue > 0)
+	{
+		iGood += iValue;
+	}
+	else if (iValue < 0)
+	{
+		iBad -= iValue;
+	}
+}
+
+/*
+ * Subtracts iValue from iGood if it is positive or its negative from iBad if it is negative.
+ */
+void subtractGoodOrBad(int iValue, int& iGood, int& iBad)
+{
+	if (iValue > 0)
+	{
+		iGood -= iValue;
+	}
+	else if (iValue < 0)
+	{
+		iBad += iValue;
+	}
+}
+// BUG - Building Additional Happiness - end
+
 
 int CvCity::getExtraBuildingGoodHealth() const
 {

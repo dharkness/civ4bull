@@ -13,6 +13,11 @@ class CvPlotGroup;
 class CvArea;
 class CvGenericBuilding;
 
+// BUG - start
+void addGoodOrBad(int iValue, int& iGood, int& iBad);
+void subtractGoodOrBad(int iValue, int& iGood, int& iBad);
+// BUG - end
+
 class CvCity : public CvDLLEntity
 {
 
@@ -383,9 +388,17 @@ public:
 	int getExtraBuildingBadHappiness() const;															// Exposed to Python
 	void updateExtraBuildingHappiness();
 
+// BUG - Building Additional Happiness - start
+	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const;
+// BUG - Building Additional Happiness - end
+
 	int getExtraBuildingGoodHealth() const;														// Exposed to Python
 	int getExtraBuildingBadHealth() const;															// Exposed to Python
 	void updateExtraBuildingHealth();
+
+// BUG - Building Additional Health - start
+	int getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const;
+// BUG - Building Additional Health - end
 
 	int getFeatureGoodHappiness() const;																	// Exposed to Python
 	int getFeatureBadHappiness() const;																		// Exposed to Python

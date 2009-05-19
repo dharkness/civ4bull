@@ -193,11 +193,11 @@
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUILDING_ACTUAL_EFFECTS</Tag>
-		<English>Actual:[SPACE]</English>
-		<French>Actual:[SPACE]</French>
-		<German>Actual:[SPACE]</German>
-		<Italian>Actual:[SPACE]</Italian>
-		<Spanish>Actual:[SPACE]</Spanish>
+		<English>Actual</English>
+		<French>Actual</French>
+		<German>Actual</German>
+		<Italian>Actual</Italian>
+		<Spanish>Actual</Spanish>
 	</TEXT>
 
 <!-- Main Interface -->
@@ -325,6 +325,14 @@
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT</Tag>
 		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</English>
+		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
+		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
+		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
+		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_GOOD_BAD</Tag>
+		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %D2%F3, %D2%F3</English>
 		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
 		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
 		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>

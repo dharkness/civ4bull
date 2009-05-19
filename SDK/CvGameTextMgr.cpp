@@ -8244,13 +8244,66 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 // BUG - Building Actual Effects - start
 		if (bActual && NULL != pCity && getBugOptionBOOL("MiscHover__BuildingActualEffects", true, "BUG_BUILDING_HOVER_ACTUAL_EFFECTS"))
 		{
+			bool bStarted = false;
+
+			// Happiness
+			int iGood = 0;
+			int iBad = 0;
+			int iHappiness = pCity->getAdditionalHappinessByBuilding(eBuilding, iGood, iBad);
+			setResumableGoodBadChangeHelp(szBuffer, , L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(HAPPY_CHAR), false, true, bStarted);
+			if (iGood != 0)
+			{
+				if (!bStarted)
+				{
+					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+				}
+				szTempBuffer.Format(L"%+d%c", iGood, gDLL->getSymbolID(HAPPY_CHAR));
+				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
+				bStarted = true;
+			}
+			if (iBad != 0)
+			{
+				if (!bStarted)
+				{
+					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+				}
+				szTempBuffer.Format(L"%+d%c", iBad, gDLL->getSymbolID(UNHAPPY_CHAR));
+				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
+				bStarted = true;
+			}
+
+			// Health
+			iGood = 0;
+			iBad = 0;
+			int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad);
+			if (iGood != 0)
+			{
+				if (!bStarted)
+				{
+					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+				}
+				szTempBuffer.Format(L"%+d%c", iGood, gDLL->getSymbolID(HEALTHY_CHAR));
+				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
+				bStarted = true;
+			}
+			if (iBad != 0)
+			{
+				if (!bStarted)
+				{
+					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+				}
+				szTempBuffer.Format(L"%+d%c", iBad, gDLL->getSymbolID(UNHEALTHY_CHAR));
+				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
+				bStarted = true;
+			}
+
 			// Yield
 			int aiYields[NUM_YIELD_TYPES];
 			for (int iI = 0; iI < NUM_YIELD_TYPES; ++iI)
 			{
 				aiYields[iI] = pCity->getAdditionalYieldByBuilding((YieldTypes)iI, eBuilding);
 			}
-			bool bStarted = setResumableYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiYields, false, true);
+			bStarted = setResumableYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiYields, false, true, bStarted);
 			
 			// Commerce
 			int aiCommerces[NUM_COMMERCE_TYPES];
@@ -10559,8 +10612,55 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	}
 }
 
+// BUG - Building Additional Happiness - start
+bool CvGameTextMgr::setBuildingAdditionalHappinessHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	if (getBugOptionBOOL("MiscHover__BuildingAdditionalHappiness", true, "BUG_BUILDING_ADDITIONAL_HAPPINESS_HOVER"))
+	{
+		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+		{
+			if (city.canConstruct((BuildingTypes)i, false, true, false))
+			{
+				int iGood = 0;
+				int iBad = 0;
+				int iExtra = city.getAdditionalHappinessByBuilding((BuildingTypes)i, iGood, iBad);
+				
+				if (iGood != 0 || iBad != 0)
+				{
+					if (!bStarted)
+					{
+						szBuffer.append(szStart);
+						bStarted = true;
+					}
 
-// BUG - Resumable Commerce/Yield Help - start
+					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
+
+					if (iGood != 0 && iBad != 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_GOOD_BAD", kBuilding.getDescription(), iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR)));
+					}
+					else if (iGood != 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iGood, gDLL->getSymbolID(HAPPY_CHAR)));
+					}
+					else if (iBad != 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iBad, gDLL->getSymbolID(UNHAPPY_CHAR)));
+					}
+				}
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Additional Happiness - end
+
+
+// BUG - Resumable Value Change Help - start
 void CvGameTextMgr::setYieldChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, const int* piYieldChange, bool bPercent, bool bNewLine)
 {
 	setResumableYieldChangeHelp(szBuffer, szStart, szSpace, szEnd, piYieldChange, bPercent, bNewLine);
@@ -10568,7 +10668,7 @@ void CvGameTextMgr::setYieldChangeHelp(CvWStringBuffer &szBuffer, const CvWStrin
 
 /*
  * Adds the ability to pass in and get back the value of bStarted so that
- * it can be used with setResumableCommerceChangeHelp() on a single line.
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
  */
 bool CvGameTextMgr::setResumableYieldChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, const int* piYieldChange, bool bPercent, bool bNewLine, bool bStarted)
 {
@@ -10626,7 +10726,7 @@ void CvGameTextMgr::setCommerceChangeHelp(CvWStringBuffer &szBuffer, const CvWSt
 
 /*
  * Adds the ability to pass in and get back the value of bStarted so that
- * it can be used with setResumableYieldChangeHelp() on a single line.
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
  */
 bool CvGameTextMgr::setResumableCommerceChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, const int* piCommerceChange, bool bPercent, bool bNewLine, bool bStarted)
 {
@@ -10667,13 +10767,17 @@ bool CvGameTextMgr::setResumableCommerceChangeHelp(CvWStringBuffer &szBuffer, co
 	return bStarted;
 }
 
+/*
+ * Displays float values by dividing each value by 100.
+ */
 void CvGameTextMgr::setCommerceTimes100ChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, const int* piCommerceChange, bool bNewLine, bool bStarted)
 {
 	setResumableCommerceTimes100ChangeHelp(szBuffer, szStart, szSpace, szEnd, piCommerceChange, bNewLine);
 }
 
 /*
- * Displays float values by dividing each value by 100.
+ * Adds the ability to pass in and get back the value of bStarted so that
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
  */
 bool CvGameTextMgr::setResumableCommerceTimes100ChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, const int* piCommerceChange, bool bNewLine, bool bStarted)
 {
@@ -10727,7 +10831,47 @@ bool CvGameTextMgr::setResumableCommerceTimes100ChangeHelp(CvWStringBuffer &szBu
 
 	return bStarted;
 }
-// BUG - Resumable Commerce/Yield Help - end
+
+/*
+ * Adds the ability to pass in and get back the value of bStarted so that
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
+ */
+bool CvGameTextMgr::setResumableGoodBadChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, int iGood, int iGoodSymbol, int iBad, int iBadSymbol, bool bPercent, bool bNewLine, bool bStarted)
+{
+	bStarted = setResumableValueChangeHelp(szBuffer, szStart, szSpace, szEnd, iGood, iGoodSymbol, bPercent, bNewLine, bStarted);
+	bStarted = setResumableValueChangeHelp(szBuffer, szStart, szSpace, szEnd, iBad, iBadSymbol, bPercent, bNewLine, bStarted);
+
+	return bStarted;
+}
+
+/*
+ * Adds the ability to pass in and get back the value of bStarted so that
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
+ */
+bool CvGameTextMgr::setResumableValueChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, int iValue, int iSymbol, bool bPercent, bool bNewLine, bool bStarted)
+{
+	CvWString szTempBuffer;
+
+	if (iValue != 0)
+	{
+		if (!bStarted)
+		{
+			if (bNewLine)
+			{
+				szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+			}
+			szTempBuffer += CvWString::format(L"%s%s", szStart.GetCString(), szSpace.GetCString());
+		}
+
+		szTempBuffer += CvWString::format(L"%+d%s%c", iValue, bPercent ? L"%" : L"", iSymbol);
+		szBuffer.append(szTempBuffer);
+		bStarted = true;
+	}
+
+	return bStarted;
+}
+// BUG - Resumable Value Change Help - end
+
 
 void CvGameTextMgr::setBonusHelp(CvWStringBuffer &szBuffer, BonusTypes eBonus, bool bCivilopediaText)
 {
@@ -13205,8 +13349,8 @@ void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		bNeedSubtotal = true;
 	}
 
-	// Base and modifiers
-	if (bNeedSubtotal || city.getBaseYieldRateModifier(YIELD_FOOD) != 100)
+	// Base and modifiers (only if there are modifiers since total is always shown)
+	if (city.getBaseYieldRateModifier(YIELD_FOOD) != 100)
 	{
 		szBuffer.append(SEPARATOR);
 		szBuffer.append(NEWLINE);
