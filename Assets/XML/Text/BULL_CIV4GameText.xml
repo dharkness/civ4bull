@@ -87,10 +87,6 @@
         <Spanish>[NEWLINE]%d1 [ICON_PRODUCTION] (%d2 [ICON_PRODUCTION]/turno)</Spanish>
     </TEXT>
 	
-	<!-- Hurry Assist -->
-	
-	
-	
 	<!-- Culture Turns -->
 	
 	<TEXT>
@@ -191,6 +187,9 @@
 		<Italian>[NEWLINE][ICON_BULLET]Accelera[SPACE]</Italian>
 		<Spanish>[NEWLINE][ICON_BULLET]Acelera[SPACE]</Spanish>
 	</TEXT>
+
+<!-- Building Hover -->
+
 	<TEXT>
 		<Tag>TXT_KEY_BUILDING_ACTUAL_EFFECTS</Tag>
 		<English>Actual</English>
@@ -198,6 +197,25 @@
 		<German>Actual</German>
 		<Italian>Actual</Italian>
 		<Spanish>Actual</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_REPLACED_BY_BUILDING</Tag>
+		<English>Replaced by [LINK=literal]%s1_default_building[\LINK]</English>
+		<French>Remplac&#233; par [LINK=literal]%s1_default_building[\LINK]</French>
+		<German>Ersetzt durch Geb&#228;ude [LINK=literal]%s1_default_building[\LINK]</German>
+		<Italian>Sostituita dall'edifici&#224; [LINK=literal]%s1_default_building[\LINK]</Italian>
+		<Spanish>Sustituida por una edifico de [LINK=literal]%s1_default_building[\LINK]</Spanish>
+	</TEXT>
+
+<!-- Unit Hover -->
+
+	<TEXT>
+		<Tag>TXT_KEY_UNIT_COLLATERAL_DAMAGE</Tag>
+		<English>[ICON_BULLET]Causes Collateral Damage (max. %d1%%)</English>
+		<French>[ICON_BULLET]Provoque des dommages collat&#233;raux (max. %d1%%)</French>
+		<German>[ICON_BULLET]Verursacht Kollateralschaden (max. %d1%%)</German>
+		<Italian>[ICON_BULLET]Provoca danni collaterali (max. %d1%%)</Italian>
+		<Spanish>[ICON_BULLET]Inflige da&#241;os colaterales (max. %d1%%)</Spanish>
 	</TEXT>
 
 <!-- Main Interface -->
@@ -310,33 +328,6 @@
 		<German>-----------------------[NEWLINE]%s1_commerce_type gesamt: %s2%F3</German>
 		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale: %s2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</Spanish>
-	</TEXT>
-	
-	<!-- Building Additional Yield/Commerce/Maintenance/GP -->
-	
-	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD</Tag>
-		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %D2%F3</English>
-		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
-		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
-		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
-		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT</Tag>
-		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</English>
-		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
-		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
-		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
-		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_GOOD_BAD</Tag>
-		<English>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %D2%F3, %D2%F3</English>
-		<French>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT] : %s2%F3</French>
-		<German>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</German>
-		<Italian>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Italian>
-		<Spanish>[ICON_BULLET][COLOR_BUILDING_TEXT]%s1_building_type[COLOR_REVERT]: %s2%F3</Spanish>
 	</TEXT>
 
 <!-- Hurry Hover -->
