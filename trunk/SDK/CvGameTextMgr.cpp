@@ -13290,6 +13290,29 @@ void CvGameTextMgr::buildFinanceForeignIncomeString(CvWStringBuffer& szBuffer, P
 }
 
 // BUG - Food Rate Hover - start
+
+/*
+	+14 from Worked Tiles
+	+2 from Specialists
+	+5 from Corporations
+	+1 from Buildings
+	----------------------- |
+	Base Food Produced: 22  |-- only if there are modifiers
+	+25% from Buildings     |
+	-----------------------
+	Total Food Produced: 27
+	=======================
+	+16 for Population
+	+2 for Health
+	-----------------------
+	Total Food Consumed: 18
+	=======================
+	Net Food: +9            or
+	Net Food for Settler: 9
+	=======================
+	* Lighthouse: +3
+	* Supermarket: +1
+*/
 void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 {
 	FAssertMsg(NO_PLAYER != city.getOwnerINLINE(), "City must have an owner");
@@ -13315,7 +13338,7 @@ void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	}
 	if (iTileFood != 0)
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_WORKED_TILES", iTileFood, info.getChar()));
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_WORKED_TILES_YIELD", iTileFood, info.getChar()));
 		iBaseRate += iTileFood;
 	}
 
@@ -13385,57 +13408,71 @@ void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		szBuffer.append(NEWLINE);
 	}
 
-	// Total
+	// Total Produced
 	int iBaseModifier = city.getBaseYieldRateModifier(YIELD_FOOD);
 	int iRate = iBaseModifier * iBaseRate / 100;
-	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_YIELD", info.getTextKeyWide(), iRate, info.getChar()));
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_FOOD_PRODUCED", iRate));
+
+	// ==========================
+	szBuffer.append(DOUBLE_SEPARATOR);
+
+	int iFoodConsumed = 0;
 
 	// Eaten
-	int iEatenFood = - city.getPopulation() * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	int iEatenFood = city.getPopulation() * GC.getFOOD_CONSUMPTION_PER_POPULATION();
 	if (iEatenFood != 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_EATEN_FOOD", iEatenFood, gDLL->getSymbolID(EATEN_FOOD_CHAR)));
-		iRate += iEatenFood;
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_EATEN_FOOD", iEatenFood));
+		iFoodConsumed += iEatenFood;
 	}
 
 	// Health
-	int iSpoiledFood = city.healthRate();
+	int iSpoiledFood = - city.healthRate();
 	if (iSpoiledFood != 0)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPOILED_FOOD", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR)));
-		iRate += iSpoiledFood;
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_SPOILED_FOOD", iSpoiledFood));
+		iFoodConsumed += iSpoiledFood;
 	}
+
+	// Total Consumed
+	szBuffer.append(NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_FOOD_CONSUMED", iFoodConsumed));
+
+	// ==========================
+	szBuffer.append(DOUBLE_SEPARATOR NEWLINE);
+	iRate -= iFoodConsumed;
 
 	// Production
 	if (city.isFoodProduction() && iRate > 0)
 	{
-		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_PRODUCTION_FOOD", -iRate, gDLL->getSymbolID(EATEN_FOOD_CHAR), city.getProductionNameKey()));
-		iRate = 0;
-	}
-
-	// cannot starve a size 1 city
-	if (iRate < 0 && city.getPopulation() == 1 && city.getFood() == 0)
-	{
-		iRate = 0;
-	}
-
-	// Net Food
-	szBuffer.append(NEWLINE);
-	if (iRate > 0)
-	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_GROW", info.getTextKeyWide(), iRate, info.getChar()));
-	}
-	else if (iRate < 0)
-	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_SHRINK", info.getTextKeyWide(), iRate, gDLL->getSymbolID(BAD_FOOD_CHAR)));
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_PRODUCTION", iRate, city.getProductionNameKey()));
 	}
 	else
 	{
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE", info.getTextKeyWide(), info.getChar()));
+		// cannot starve a size 1 city with no food in
+		if (iRate < 0 && city.getPopulation() == 1 && city.getFood() == 0)
+		{
+			iRate = 0;
+		}
+
+		// Net Food
+		if (iRate > 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_GROW", iRate));
+		}
+		else if (iRate < 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_SHRINK", iRate));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE"));
+		}
 	}
+
+	// ==========================
 
 // BUG - Building Additional Food - start
 	if (getBugOptionBOOL("MiscHover__BuildingAdditionalFood", true, "BUG_BUILDING_ADDITIONAL_FOOD_HOVER"))
