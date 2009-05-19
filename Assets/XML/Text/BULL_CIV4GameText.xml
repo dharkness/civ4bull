@@ -98,7 +98,7 @@
 		<Spanish>[NEWLINE][ICON_CULTURE]: %d1/%d2</Spanish>
 	</TEXT>
 	
-	<!-- Finance Advisor -->
+<!-- Finance Advisor -->
 	
 	<TEXT>
 		<Tag>TXT_KEY_BUG_FINANCIAL_ADVISOR_DOMESTIC_TRADE</Tag>
@@ -218,9 +218,7 @@
 		<Spanish>[ICON_BULLET]Inflige da&#241;os colaterales (max. %d1%%)</Spanish>
 	</TEXT>
 
-<!-- Main Interface -->
-
-	<!-- Min/Max Commerce Rate Buttons -->
+<!-- Min/Max Commerce Rate Buttons -->
 	
 	<TEXT>
 		<Tag>TXT_KEY_MISC_SET_RATE</Tag>
@@ -276,7 +274,7 @@
 		<English>-----------------------[NEWLINE]Base Food Produced: %d1[ICON_FOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale partiel produit : %d1[ICON_FOOD]</French>
 		<German>-----------------------[NEWLINE]Teilsummenahrung produzierte: %d1[ICON_FOOD]</German>
-		<Italian>-----------------------[NEWLINE]Alimento totale parziale prodotto: %d1[ICON_FOOD]</Italian>
+		<Italian>-----------------------[NEWLINE]Cibo totale parziale prodotto: %d1[ICON_FOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento subtotal produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -284,7 +282,7 @@
 		<English>-----------------------[NEWLINE]Total Food Produced: %d1[ICON_FOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale produit : %d1[ICON_FOOD]</French>
 		<German>-----------------------[NEWLINE]Gesamtnahrung produzierte: %d1[ICON_FOOD]</German>
-		<Italian>-----------------------[NEWLINE]Alimento totale prodotto: %d1[ICON_FOOD]</Italian>
+		<Italian>-----------------------[NEWLINE]Cibo totale prodotto: %d1[ICON_FOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento total produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -292,7 +290,7 @@
 		<English>-----------------------[NEWLINE]Total Food Consumed: %d1[ICON_EATENFOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale consommé : %d1[ICON_EATENFOOD]</French>
 		<German>-----------------------[NEWLINE]Gesamtnahrung verbraucht : %d1[ICON_EATENFOOD]</German>
-		<Italian>-----------------------[NEWLINE]Alimento totale consumato: %d1[ICON_EATENFOOD]</Italian>
+		<Italian>-----------------------[NEWLINE]Cibo totale consumato: %d1[ICON_EATENFOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento total consumido: %d1[ICON_EATENFOOD]</Spanish>
 	</TEXT>
 	
@@ -301,7 +299,7 @@
 		<English>Net Food: %D1[ICON_FOOD]</English>
 		<French>Nourriture nette : %D1[ICON_FOOD]</French>
 		<German>Nettonahrung: %D1[ICON_FOOD]</German>
-		<Italian>Alimento netto: %D1[ICON_FOOD]</Italian>
+		<Italian>Cibo netto: %D1[ICON_FOOD]</Italian>
 		<Spanish>Alimento neto: %D1[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -309,7 +307,7 @@
 		<English>Net Food: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</English>
 		<French>Nourriture nette : [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</French>
 		<German>Nettonahrung: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</German>
-		<Italian>Alimento netto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Italian>
+		<Italian>Cibo netto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Italian>
 		<Spanish>Alimento neto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -317,7 +315,7 @@
 		<English>Net Food: +0[ICON_FOOD]</English>
 		<French>Nourriture nette : +0[ICON_FOOD]</French>
 		<German>Nettonahrung: +0[ICON_FOOD]</German>
-		<Italian>Alimento netto: +0[ICON_FOOD]</Italian>
+		<Italian>Cibo netto: +0[ICON_FOOD]</Italian>
 		<Spanish>Alimento neto: +0[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -325,7 +323,7 @@
 		<English>Net Food: %D1[ICON_FOOD] for %s2_production_type</English>
 		<French>Nourriture nette : %D1[ICON_FOOD] pour %s2_production_type</French>
 		<German>Nettonahrung: %D1[ICON_FOOD] f&#252;r %s2_production_type</German>
-		<Italian>Alimento netto: %D1[ICON_FOOD] per %s2_production_type</Italian>
+		<Italian>Cibo netto: %D1[ICON_FOOD] per %s2_production_type</Italian>
 		<Spanish>Alimento neto: %D1[ICON_FOOD] por %s2_production_type</Spanish>
 	</TEXT>
 
