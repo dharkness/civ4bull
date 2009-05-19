@@ -8245,57 +8245,19 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 		if (bActual && NULL != pCity && getBugOptionBOOL("MiscHover__BuildingActualEffects", true, "BUG_BUILDING_HOVER_ACTUAL_EFFECTS"))
 		{
 			bool bStarted = false;
+			CvWString szStart = gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS");
 
 			// Happiness
 			int iGood = 0;
 			int iBad = 0;
 			int iHappiness = pCity->getAdditionalHappinessByBuilding(eBuilding, iGood, iBad);
-			setResumableGoodBadChangeHelp(szBuffer, , L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(HAPPY_CHAR), false, true, bStarted);
-			if (iGood != 0)
-			{
-				if (!bStarted)
-				{
-					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
-				}
-				szTempBuffer.Format(L"%+d%c", iGood, gDLL->getSymbolID(HAPPY_CHAR));
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
-				bStarted = true;
-			}
-			if (iBad != 0)
-			{
-				if (!bStarted)
-				{
-					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
-				}
-				szTempBuffer.Format(L"%+d%c", iBad, gDLL->getSymbolID(UNHAPPY_CHAR));
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
-				bStarted = true;
-			}
+			bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, true, bStarted);
 
 			// Health
 			iGood = 0;
 			iBad = 0;
 			int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad);
-			if (iGood != 0)
-			{
-				if (!bStarted)
-				{
-					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
-				}
-				szTempBuffer.Format(L"%+d%c", iGood, gDLL->getSymbolID(HEALTHY_CHAR));
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
-				bStarted = true;
-			}
-			if (iBad != 0)
-			{
-				if (!bStarted)
-				{
-					szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
-				}
-				szTempBuffer.Format(L"%+d%c", iBad, gDLL->getSymbolID(UNHEALTHY_CHAR));
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
-				bStarted = true;
-			}
+			bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true, bStarted);
 
 			// Yield
 			int aiYields[NUM_YIELD_TYPES];
@@ -8303,7 +8265,7 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 			{
 				aiYields[iI] = pCity->getAdditionalYieldByBuilding((YieldTypes)iI, eBuilding);
 			}
-			bStarted = setResumableYieldChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiYields, false, true, bStarted);
+			bStarted = setResumableYieldChangeHelp(szBuffer, szStart, L": ", L"", aiYields, false, true, bStarted);
 			
 			// Commerce
 			int aiCommerces[NUM_COMMERCE_TYPES];
@@ -8313,16 +8275,11 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 			}
 			// Maintenance - add to gold
 			aiCommerces[COMMERCE_GOLD] += pCity->getSavedMaintenanceTimes100ByBuilding(eBuilding);
-			bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), L"", L"", aiCommerces, true, bStarted);
+			bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, szStart, L": ", L"", aiCommerces, true, bStarted);
 
 			// Great People
 			int iGreatPeopleRate = pCity->getAdditionalGreatPeopleRateByBuilding(eBuilding);
-			if (iGreatPeopleRate != 0)
-			{
-				szTempBuffer.Format(L"%s%d%c", iGreatPeopleRate > 0 ? "+" : "", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR));
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS"), szTempBuffer, L", ", !bStarted);
-				bStarted = true;
-			}
+			bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, true, bStarted);
 		}
 // BUG - Building Actual Effects - end
 	}
@@ -10218,6 +10175,35 @@ void CvGameTextMgr::setGoodHealthHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	}
 }
 
+// BUG - Building Additional Health - start
+bool CvGameTextMgr::setBuildingAdditionalHealthHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
+		{
+			int iGood = 0, iBad = 0, iChange = city.getAdditionalHealthByBuilding((BuildingTypes)i, iGood, iBad);
+			
+			if (iGood != 0 || iBad != 0)
+			{
+				if (!bStarted)
+				{
+					szBuffer.append(szStart);
+					bStarted = true;
+				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true);
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Additional Health - end
+
 void CvGameTextMgr::setAngerHelp(CvWStringBuffer &szBuffer, CvCity& city)
 {
 	int iOldAngerPercent;
@@ -10615,42 +10601,24 @@ void CvGameTextMgr::setHappyHelp(CvWStringBuffer &szBuffer, CvCity& city)
 // BUG - Building Additional Happiness - start
 bool CvGameTextMgr::setBuildingAdditionalHappinessHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
 {
-	if (getBugOptionBOOL("MiscHover__BuildingAdditionalHappiness", true, "BUG_BUILDING_ADDITIONAL_HAPPINESS_HOVER"))
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
 	{
-		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
 		{
-			if (city.canConstruct((BuildingTypes)i, false, true, false))
+			int iGood = 0, iBad = 0, iChange = city.getAdditionalHappinessByBuilding((BuildingTypes)i, iGood, iBad);
+			
+			if (iGood != 0 || iBad != 0)
 			{
-				int iGood = 0;
-				int iBad = 0;
-				int iExtra = city.getAdditionalHappinessByBuilding((BuildingTypes)i, iGood, iBad);
-				
-				if (iGood != 0 || iBad != 0)
+				if (!bStarted)
 				{
-					if (!bStarted)
-					{
-						szBuffer.append(szStart);
-						bStarted = true;
-					}
-
-					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-
-					if (iGood != 0 && iBad != 0)
-					{
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_GOOD_BAD", kBuilding.getDescription(), iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR)));
-					}
-					else if (iGood != 0)
-					{
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iGood, gDLL->getSymbolID(HAPPY_CHAR)));
-					}
-					else if (iBad != 0)
-					{
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iBad, gDLL->getSymbolID(UNHAPPY_CHAR)));
-					}
+					szBuffer.append(szStart);
+					bStarted = true;
 				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, true);
 			}
 		}
 	}
@@ -10862,9 +10830,64 @@ bool CvGameTextMgr::setResumableValueChangeHelp(CvWStringBuffer &szBuffer, const
 			}
 			szTempBuffer += CvWString::format(L"%s%s", szStart.GetCString(), szSpace.GetCString());
 		}
-
-		szTempBuffer += CvWString::format(L"%+d%s%c", iValue, bPercent ? L"%" : L"", iSymbol);
+		else
+		{
+			szTempBuffer = L", ";
+		}
 		szBuffer.append(szTempBuffer);
+
+		szTempBuffer.Format(L"%+d%s%c", iValue, bPercent ? L"%" : L"", iSymbol);
+		szBuffer.append(szTempBuffer);
+
+		bStarted = true;
+	}
+
+	return bStarted;
+}
+
+/*
+ * Adds the ability to pass in and get back the value of bStarted so that
+ * it can be used with other setResumable<xx>ChangeHelp() calls on a single line.
+ */
+bool CvGameTextMgr::setResumableValueTimes100ChangeHelp(CvWStringBuffer &szBuffer, const CvWString& szStart, const CvWString& szSpace, const CvWString& szEnd, int iValue, int iSymbol, bool bNewLine, bool bStarted)
+{
+	CvWString szTempBuffer;
+
+	if (iValue != 0)
+	{
+		if (!bStarted)
+		{
+			if (bNewLine)
+			{
+				szTempBuffer.Format(L"\n%c", gDLL->getSymbolID(BULLET_CHAR));
+			}
+			szTempBuffer += CvWString::format(L"%s%s", szStart.GetCString(), szSpace.GetCString());
+		}
+		else
+		{
+			szTempBuffer = L", ";
+		}
+		szBuffer.append(szTempBuffer);
+
+		if (iValue % 100 == 0)
+		{
+			szTempBuffer.Format(L"%+d%c", iValue / 100, iSymbol);
+		}
+		else
+		{
+			if (iValue >= 0)
+			{
+				szBuffer.append(L"+");
+			}
+			else
+			{
+				iValue = - iValue;
+				szBuffer.append(L"-");
+			}
+			szTempBuffer.Format(L"%d.%02d%c", iValue / 100, iValue % 100, iSymbol);
+		}
+		szBuffer.append(szTempBuffer);
+
 		bStarted = true;
 	}
 
@@ -13417,33 +13440,101 @@ void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 // BUG - Building Additional Food - start
 	if (getBugOptionBOOL("MiscHover__BuildingAdditionalFood", true, "BUG_BUILDING_ADDITIONAL_FOOD_HOVER"))
 	{
-		bool bFirst = true;
+		setBuildingAdditionalYieldHelp(szBuffer, city, YIELD_FOOD, DOUBLE_SEPARATOR);
+	}
+// BUG - Building Additional Food - end
+}
+// BUG - Food Rate Hover - end
 
-//		logMsg("Food, City %d.%d", city.getOwnerINLINE(), city.getID());
-		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+// BUG - Building Additional Yield - start
+bool CvGameTextMgr::setBuildingAdditionalYieldHelp(CvWStringBuffer &szBuffer, const CvCity& city, YieldTypes eIndex, const CvWString& szStart, bool bStarted)
+{
+	CvYieldInfo& info = GC.getYieldInfo(eIndex);
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
 		{
-			if (city.canConstruct((BuildingTypes)i, false, true, false))
+			int iChange = city.getAdditionalYieldByBuilding(eIndex, (BuildingTypes)i);
+
+			if (iChange != 0)
 			{
-				int iExtraYield = city.getAdditionalYieldByBuilding(YIELD_FOOD, (BuildingTypes)i);
-				if (iExtraYield != 0)
+				if (!bStarted)
 				{
-					if (bFirst)
-					{
-						szBuffer.append(SEPARATOR);
-						bFirst = false;
-					}
-					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtraYield, GC.getYieldInfo(YIELD_FOOD).getChar()));
+					szBuffer.append(szStart);
+					bStarted = true;
 				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iChange, info.getChar(), false, true);
 			}
 		}
 	}
-// BUG - Building Additional Food - end
 
-	szBuffer.append(NEWLINE);
+	return bStarted;
 }
-// BUG - Food Rate Hover - end
+// BUG - Building Additional Yield - end
+
+// BUG - Building Additional Commerce - start
+bool CvGameTextMgr::setBuildingAdditionalCommerceHelp(CvWStringBuffer &szBuffer, const CvCity& city, CommerceTypes eIndex, const CvWString& szStart, bool bStarted)
+{
+	CvCommerceInfo& info = GC.getCommerceInfo(eIndex);
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
+		{
+			int iChange = city.getAdditionalCommerceTimes100ByBuilding(eIndex, (BuildingTypes)i);
+
+			if (iChange != 0)
+			{
+				if (!bStarted)
+				{
+					szBuffer.append(szStart);
+					bStarted = true;
+				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueTimes100ChangeHelp(szBuffer, szLabel, L": ", L"", iChange, info.getChar(), true);
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Additional Commerce - end
+
+// BUG - Building Saved Maintenance - start
+bool CvGameTextMgr::setBuildingSavedMaintenanceHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	CvCommerceInfo& info = GC.getCommerceInfo(COMMERCE_GOLD);
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
+		{
+			int iChange = city.getSavedMaintenanceTimes100ByBuilding((BuildingTypes)i);
+			
+			if (iChange != 0)
+			{
+				if (!bStarted)
+				{
+					szBuffer.append(szStart);
+					bStarted = true;
+				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueTimes100ChangeHelp(szBuffer, szLabel, L": ", L"", iChange, info.getChar(), true);
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Saved Maintenance - end
 
 void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 {
@@ -13699,34 +13790,9 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 // BUG - Building Additional Production - start
 	if (bBuildingAdditionalYield)
 	{
-		int iRate = city.getBaseYieldRate(YIELD_PRODUCTION);
-		int iModifier = city.getBaseYieldRateModifier(YIELD_PRODUCTION);
-		int iBaseYield = (iModifier * iRate) / 100;
-		bool bFirst = true;
-
-//		logMsg("Production, City %d.%d", city.getOwnerINLINE(), city.getID());
-		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
-		{
-			if (city.canConstruct((BuildingTypes)i, false, true, false))
-			{
-				int iExtraYield = city.getAdditionalYieldByBuilding(YIELD_PRODUCTION, (BuildingTypes)i);
-				if (iExtraYield != 0)
-				{
-					if (bFirst)
-					{
-						szBuffer.append(SEPARATOR);
-						bFirst = false;
-					}
-					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtraYield, GC.getYieldInfo(YIELD_PRODUCTION).getChar()));
-				}
-			}
-		}
+		setBuildingAdditionalYieldHelp(szBuffer, city, YIELD_PRODUCTION, DOUBLE_SEPARATOR);
 	}
 // BUG - Building Additional Production - end
-
-	szBuffer.append(NEWLINE);
 }
 
 
@@ -14113,65 +14179,9 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 // BUG - Building Additional Commerce - start
 	if (bBuildingAdditionalCommerce)
 	{
-		int iBaseYield = (iModifier * iBaseCommerceRate) / 100;
-		bool bFirst = true;
-
-		logMsg("Commerce %d, City %d.%d", eCommerceType, city.getOwnerINLINE(), city.getID());
-		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
-		{
-			if (city.canConstruct((BuildingTypes)i, false, true, false))
-			{
-				int iExtraRate = 0;
-				int iExtraModifier = 0;
-				iExtraRate = city.getAdditionalBaseCommerceRateByBuilding(eCommerceType, (BuildingTypes)i);
-				iExtraModifier = city.getAdditionalCommerceRateModifierByBuilding(eCommerceType, (BuildingTypes)i);
-				CvBuildingInfo& infoBuilding = GC.getBuildingInfo((BuildingTypes)i);
-
-				if (iExtraRate != 0 || iExtraModifier != 0)
-				{
-					int iExtraYield = ((iModifier + iExtraModifier) * (100 * iExtraRate + iBaseCommerceRate) / 100) - iBaseYield;
-					CvString msg;
-					msg.Format("%s: %d, %d -> %d vs. %d", infoBuilding.getType(), iExtraRate, iExtraModifier, iExtraYield, city.getAdditionalCommerceTimes100ByBuilding(eCommerceType, (BuildingTypes)i));
-					logMsg(msg.c_str());
-					if (iExtraYield != 0)
-					{
-						if (bFirst)
-						{
-							szBuffer.append(SEPARATOR);
-							bFirst = false;
-						}
-						if (iExtraYield > 0)
-						{
-							if (iExtraYield % 100 == 0)
-							{
-								szYield.Format(L"+%d", iExtraYield / 100);
-							}
-							else
-							{
-								szYield.Format(L"+%d.%02d", iExtraYield / 100, iExtraYield % 100);
-							}
-						}
-						else
-						{
-							if (iExtraYield % 100 == 0)
-							{
-								szYield.Format(L"-%d", iExtraYield / 100);
-							}
-							else
-							{
-								szYield.Format(L"-%d.%02d", (-iExtraYield) / 100, (-iExtraYield) % 100);
-							}
-						}
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT", infoBuilding.getDescription(), szYield.GetCString(), info.getChar()));
-					}
-				}
-			}
-		}
+		setBuildingAdditionalCommerceHelp(szBuffer, city, eCommerceType, DOUBLE_SEPARATOR);
 	}
 // BUG - Building Additional Commerce - end
-
-	szBuffer.append(NEWLINE);
 }
 
 void CvGameTextMgr::setYieldHelp(CvWStringBuffer &szBuffer, CvCity& city, YieldTypes eYieldType)
@@ -14606,31 +14616,39 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 // BUG - Building Additional Great People - start
 	if (bBuildingAdditionalGreatPeople)
 	{
-		bool bFirst = true;
+		setBuildingAdditionalGreatPeopleHelp(szBuffer, city, DOUBLE_SEPARATOR);
+	}
+// BUG - Building Additional Great People - end
+}
 
-		for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+// BUG - Building Additional Great People - start
+bool CvGameTextMgr::setBuildingAdditionalGreatPeopleHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
 		{
-			if (city.canConstruct((BuildingTypes)i, false, true, false))
+			int iChange = city.getAdditionalGreatPeopleRateByBuilding((BuildingTypes)i);
+			
+			if (iChange != 0)
 			{
-				int iExtra = city.getAdditionalGreatPeopleRateByBuilding((BuildingTypes)i);
-				if (iExtra != 0)
+				if (!bStarted)
 				{
-					if (bFirst)
-					{
-						szBuffer.append(SEPARATOR);
-						bFirst = false;
-					}
-					CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_YIELD", kBuilding.getDescription(), iExtra, gDLL->getSymbolID(GREAT_PEOPLE_CHAR)));
+					szBuffer.append(szStart);
+					bStarted = true;
 				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iChange, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, true);
 			}
 		}
 	}
-// BUG - Building Additional Great People - end
-	
-	szBuffer.append(NEWLINE);
+
+	return bStarted;
 }
+// BUG - Building Additional Great People - end
 
 
 void CvGameTextMgr::parseGreatGeneralHelp(CvWStringBuffer &szBuffer, CvPlayer& kPlayer)

@@ -3735,35 +3735,7 @@ void CvDLLWidgetData::parseMaintenanceHelp(CvWidgetDataStruct &widgetDataStruct,
 // BUG - Building Saved Maintenance - start
 			if (getBugOptionBOOL("MiscHover__BuildingSavedMaintenance", true, "BUG_BUILDING_SAVED_MAINTENANCE_HOVER"))
 			{
-				bool bFirst = true;
-				CvWString szYield;
-
-				for (int i = 0; i < GC.getNumBuildingInfos(); i++)
-				{
-					if (pHeadSelectedCity->canConstruct((BuildingTypes)i, false, true, false))
-					{
-						int iSaved = - pHeadSelectedCity->getSavedMaintenanceTimes100ByBuilding((BuildingTypes)i);
-						if (iSaved != 0)
-						{
-							if (bFirst)
-							{
-								szBuffer.append(SEPARATOR);
-								bFirst = false;
-							}
-							if (iSaved > 0)
-							{
-								szYield.Format(L"+%d.%02d", iSaved / 100, iSaved % 100);
-							}
-							else
-							{
-								szYield.Format(L"-%d.%02d", (-iSaved) / 100, (-iSaved) % 100);
-							}
-							CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)i);
-							szBuffer.append(NEWLINE);
-							szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_ADDITIONAL_COMMERCE_FLOAT", kBuilding.getDescription(), szYield.GetCString(), GC.getCommerceInfo(COMMERCE_GOLD).getChar()));
-						}
-					}
-				}
+				GAMETEXT.setBuildingSavedMaintenanceHelp(szBuffer, *pHeadSelectedCity, DOUBLE_SEPARATOR);
 			}
 // BUG - Building Saved Maintenance - end
 		}
@@ -3779,6 +3751,13 @@ void CvDLLWidgetData::parseHealthHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 		GAMETEXT.setBadHealthHelp(szBuffer, *pHeadSelectedCity);
 		szBuffer.append(L"\n=======================\n");
 		GAMETEXT.setGoodHealthHelp(szBuffer, *pHeadSelectedCity);
+
+// BUG - Building Additional Health - start
+		if (getBugOptionBOOL("MiscHover__BuildingAdditionalHealth", true, "BUG_BUILDING_ADDITIONAL_HEALTH_HOVER"))
+		{
+			GAMETEXT.setBuildingAdditionalHealthHelp(szBuffer, *pHeadSelectedCity, DOUBLE_SEPARATOR);
+		}
+// BUG - Building Additional Health- end
 	}
 }
 
@@ -3845,7 +3824,13 @@ void CvDLLWidgetData::parseHappinessHelp(CvWidgetDataStruct &widgetDataStruct, C
 		GAMETEXT.setAngerHelp(szBuffer, *pHeadSelectedCity);
 		szBuffer.append(L"\n=======================\n");
 		GAMETEXT.setHappyHelp(szBuffer, *pHeadSelectedCity);
-		GAMETEXT.setBuildingAdditionalHappinessHelp(szBuffer, *pHeadSelectedCity, L"\n=======================", false);
+
+// BUG - Building Additional Happiness - start
+		if (getBugOptionBOOL("MiscHover__BuildingAdditionalHappiness", true, "BUG_BUILDING_ADDITIONAL_HAPPINESS_HOVER"))
+		{
+			GAMETEXT.setBuildingAdditionalHappinessHelp(szBuffer, *pHeadSelectedCity, DOUBLE_SEPARATOR);
+		}
+// BUG - Building Additional Happiness - end
 	}
 }
 
