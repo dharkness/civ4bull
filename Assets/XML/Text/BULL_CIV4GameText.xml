@@ -236,12 +236,12 @@
 	<!-- Yield Hovers -->
 	
 	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_WORKED_TILES</Tag>
-		<English>Worked Tiles: %d1%F2</English>
-		<French>Cases Travaillées: %d1%F2</French>
-		<German>Geländefelder: %d1%F2</German>
-		<Italian>Caselle lavorate: %d1%F2</Italian>
-		<Spanish>Azulejos Trabajados: %d1%F2</Spanish>
+		<Tag>TXT_KEY_MISC_HELP_WORKED_TILES_YIELD</Tag>
+		<English>[ICON_BULLET]%D1%F2 from Worked Tiles</English>
+		<French>[ICON_BULLET]%D1%F2 en raison des Cases Travaillées</French>
+		<German>[ICON_BULLET]%D1%F2 durch Geländefelder</German>
+		<Italian>[ICON_BULLET]%D1%F2 dagli Caselle Lavorate</Italian>
+		<Spanish>[ICON_BULLET]%D1 %F2 por Azulejos Trabajados</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_TOTAL_YIELD</Tag>
@@ -256,51 +256,77 @@
 	
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_EATEN_FOOD</Tag>
-		<English>[ICON_BULLET]%D1%F2 for Population</English>
-		<French>[ICON_BULLET]%D1%F2 pour la population</French>
-		<German>[ICON_BULLET]%D1%F2 f&#252;r Bev&#246;lkerung</German>
-		<Italian>[ICON_BULLET]%D1%F2 per la popolazione</Italian>
-		<Spanish>[ICON_BULLET]%D1%F2 Por poblaci&#243;n</Spanish>
+		<English>[ICON_BULLET]%D1[ICON_EATENFOOD] for Population</English>
+		<French>[ICON_BULLET]%D1[ICON_EATENFOOD] pour la population</French>
+		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] f&#252;r Bev&#246;lkerung</German>
+		<Italian>[ICON_BULLET]%D1[ICON_EATENFOOD] per la popolazione</Italian>
+		<Spanish>[ICON_BULLET]%D1[ICON_EATENFOOD] Por poblaci&#243;n</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_SPOILED_FOOD</Tag>
-		<English>[ICON_BULLET]%D1%F2 for Health</English>
-		<French>[ICON_BULLET]%D1%F2 pour la Sant&#233;</French>
-		<German>[ICON_BULLET]%D1%F2 f&#252;r Gesundheit</German>
-		<Italian>[ICON_BULLET]%D1%F2 per la salute</Italian>
-		<Spanish>[ICON_BULLET]%D1%F2 Por salud</Spanish>
+		<English>[ICON_BULLET]%D1[ICON_EATENFOOD] for Health</English>
+		<French>[ICON_BULLET]%D1[ICON_EATENFOOD] pour la Sant&#233;</French>
+		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] f&#252;r Gesundheit</German>
+		<Italian>[ICON_BULLET]%D1[ICON_EATENFOOD] per la salute</Italian>
+		<Spanish>[ICON_BULLET]%D1[ICON_EATENFOOD] Por salud</Spanish>
+	</TEXT>
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_BASE_FOOD_PRODUCED</Tag>
+		<English>-----------------------[NEWLINE]Base Food Produced: %d1[ICON_FOOD]</English>
+		<French>-----------------------[NEWLINE]Nourriture totale partiel produit : %d1[ICON_FOOD]</French>
+		<German>-----------------------[NEWLINE]Teilsummenahrung produzierte: %d1[ICON_FOOD]</German>
+		<Italian>-----------------------[NEWLINE]Alimento totale parziale prodotto: %d1[ICON_FOOD]</Italian>
+		<Spanish>-----------------------[NEWLINE]Alimento subtotal produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_MISC_HELP_PRODUCTION_FOOD</Tag>
-		<English>[ICON_BULLET]%D1%F2 for %s3_production_type</English>
-		<French>[ICON_BULLET]%D1%F2 pour %s3_production_type</French>
-		<German>[ICON_BULLET]%D1%F2 f&#252;r %s3_production_type</German>
-		<Italian>[ICON_BULLET]%D1%F2 per %s3_production_type</Italian>
-		<Spanish>[ICON_BULLET]%D1%F2 Por %s3_production_type</Spanish>
+		<Tag>TXT_KEY_MISC_HELP_TOTAL_FOOD_PRODUCED</Tag>
+		<English>-----------------------[NEWLINE]Total Food Produced: %d1[ICON_FOOD]</English>
+		<French>-----------------------[NEWLINE]Nourriture totale produit : %d1[ICON_FOOD]</French>
+		<German>-----------------------[NEWLINE]Gesamtnahrung produzierte: %d1[ICON_FOOD]</German>
+		<Italian>-----------------------[NEWLINE]Alimento totale prodotto: %d1[ICON_FOOD]</Italian>
+		<Spanish>-----------------------[NEWLINE]Alimento total produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_TOTAL_FOOD_CONSUMED</Tag>
+		<English>-----------------------[NEWLINE]Total Food Consumed: %d1[ICON_EATENFOOD]</English>
+		<French>-----------------------[NEWLINE]Nourriture totale consommé : %d1[ICON_EATENFOOD]</French>
+		<German>-----------------------[NEWLINE]Gesamtnahrung verbraucht : %d1[ICON_EATENFOOD]</German>
+		<Italian>-----------------------[NEWLINE]Alimento totale consumato: %d1[ICON_EATENFOOD]</Italian>
+		<Spanish>-----------------------[NEWLINE]Alimento total consumido: %d1[ICON_EATENFOOD]</Spanish>
+	</TEXT>
+	
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_GROW</Tag>
-		<English>-----------------------[NEWLINE]Net %s1_yield_type: %D2%F3</English>
-		<French>-----------------------[NEWLINE]Net %s1_yield_type : %D2%F3</French>
-		<German>-----------------------[NEWLINE]%s1_yield_type Net: %D2%F3</German>
-		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: %D2%F3</Italian>
-		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: %D2%F3</Spanish>
+		<English>Net Food: %D1[ICON_FOOD]</English>
+		<French>Nourriture nette : %D1[ICON_FOOD]</French>
+		<German>Nettonahrung: %D1[ICON_FOOD]</German>
+		<Italian>Alimento netto: %D1[ICON_FOOD]</Italian>
+		<Spanish>Alimento neto: %D1[ICON_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_SHRINK</Tag>
-		<English>-----------------------[NEWLINE]Net %s1_yield_type: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</English>
-		<French>-----------------------[NEWLINE]Net %s1_yield_type : [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</French>
-		<German>-----------------------[NEWLINE]%s1_yield_type Net: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</German>
-		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</Italian>
-		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: [COLOR_NEGATIVE_TEXT]%D2[COLOR_REVERT]%F3</Spanish>
+		<English>Net Food: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</English>
+		<French>Nourriture nette : [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</French>
+		<German>Nettonahrung: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</German>
+		<Italian>Alimento netto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Italian>
+		<Spanish>Alimento neto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE</Tag>
-		<English>-----------------------[NEWLINE]Net %s1_yield_type: 0%F2</English>
-		<French>-----------------------[NEWLINE]Net %s1_yield_type : 0%F2</French>
-		<German>-----------------------[NEWLINE]%s1_yield_type Net: 0%F2</German>
-		<Italian>-----------------------[NEWLINE]%s1_yield_type Net: 0%F2</Italian>
-		<Spanish>-----------------------[NEWLINE]Net %s1_yield_type: 0%F2</Spanish>
+		<English>Net Food: +0[ICON_FOOD]</English>
+		<French>Nourriture nette : +0[ICON_FOOD]</French>
+		<German>Nettonahrung: +0[ICON_FOOD]</German>
+		<Italian>Alimento netto: +0[ICON_FOOD]</Italian>
+		<Spanish>Alimento neto: +0[ICON_FOOD]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_PRODUCTION</Tag>
+		<English>Net Food: %D1[ICON_FOOD] for %s2_production_type</English>
+		<French>Nourriture nette : %D1[ICON_FOOD] pour %s2_production_type</French>
+		<German>Nettonahrung: %D1[ICON_FOOD] f&#252;r %s2_production_type</German>
+		<Italian>Alimento netto: %D1[ICON_FOOD] per %s2_production_type</Italian>
+		<Spanish>Alimento neto: %D1[ICON_FOOD] por %s2_production_type</Spanish>
 	</TEXT>
 
 	<!-- Commerce Hovers -->
