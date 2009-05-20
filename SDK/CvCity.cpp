@@ -6354,7 +6354,7 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	}
 
 	// Power
-	if (kBuilding.isPower() || kBuilding.isAreaCleanPower())
+	if (kBuilding.isPower() || kBuilding.isAreaCleanPower() || (kBuilding.getPowerBonus() != NO_BONUS && hasBonus((BonusTypes)kBuilding.getPowerBonus())))
 	{
 		// adding power
 		if (!isPower())
@@ -6370,7 +6370,7 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 		else
 		{
 			// replacing dirty power with clean power
-			if (isDirtyPower() && (!kBuilding.isDirtyPower() || kBuilding.isAreaCleanPower()))
+			if (isDirtyPower() && !kBuilding.isDirtyPower())
 			{
 				subtractGoodOrBad(GC.getDefineINT("DIRTY_POWER_HEALTH_CHANGE"), iGood, iBad);
 			}
@@ -7966,13 +7966,28 @@ int CvCity::getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, Building
 	if (!bObsolete)
 	{
 		iExtraModifier += kBuilding.getYieldModifier(eIndex);
-		if ((kBuilding.isPower() || kBuilding.isAreaCleanPower()) && !isPower())
+		if (!isPower())
 		{
-			iExtraModifier += kBuilding.getPowerYieldModifier(eIndex);
+			if (kBuilding.isPower() || kBuilding.isAreaCleanPower() || (kBuilding.getPowerBonus() != NO_BONUS && hasBonus((BonusTypes)kBuilding.getPowerBonus())))
+			{
+				for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+				{
+					iExtraModifier += getNumActiveBuilding((BuildingTypes)i) * GC.getBuildingInfo((BuildingTypes)i).getPowerYieldModifier(eIndex);
+				}
+			}
 		}
 		if (eIndex == YIELD_PRODUCTION)
 		{
 			iExtraModifier += kBuilding.getMilitaryProductionModifier();
+			iExtraModifier += kBuilding.getSpaceProductionModifier();
+			iExtraModifier += kBuilding.getGlobalSpaceProductionModifier();
+
+			int iMaxModifier = 0;
+			for (int i = 0; i < NUM_DOMAIN_TYPES; i++)
+			{
+				iMaxModifier = std::max(iMaxModifier, kBuilding.getDomainProductionModifier((DomainTypes)i));
+			}
+			iExtraModifier += iMaxModifier;
 		}
 		for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 		{

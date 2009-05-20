@@ -13969,7 +13969,9 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 					szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", kTeam.getName().GetCString()));
 				}
 
-				if (kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam())
+// BUG - Worst Enemy of Human Fix - start
+				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam())
+// BUG - Worst Enemy of Human Fix - end
 				{
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", kTeam.getName().GetCString()));
