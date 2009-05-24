@@ -202,7 +202,7 @@
 		<Tag>TXT_KEY_REPLACED_BY_BUILDING</Tag>
 		<English>Replaced by [LINK=literal]%s1_default_building[\LINK]</English>
 		<French>Remplac&#233; par [LINK=literal]%s1_default_building[\LINK]</French>
-		<German>Ersetzt durch Geb&#228;ude [LINK=literal]%s1_default_building[\LINK]</German>
+		<German>Ersetzt durch [LINK=literal]%s1_default_building[\LINK]</German>
 		<Italian>Sostituita dall'edifici&#224; [LINK=literal]%s1_default_building[\LINK]</Italian>
 		<Spanish>Sustituida por una edifico de [LINK=literal]%s1_default_building[\LINK]</Spanish>
 	</TEXT>
@@ -213,7 +213,7 @@
 		<Tag>TXT_KEY_UNIT_COLLATERAL_DAMAGE</Tag>
 		<English>[ICON_BULLET]Causes Collateral Damage (max. %d1%%)</English>
 		<French>[ICON_BULLET]Provoque des dommages collat&#233;raux (max. %d1%%)</French>
-		<German>[ICON_BULLET]Verursacht Kollateralschaden (max. %d1%%)</German>
+		<German>[ICON_BULLET]verursacht Kollateralschäden (max. %d1%%)</German>
 		<Italian>[ICON_BULLET]Provoca danni collaterali (max. %d1%%)</Italian>
 		<Spanish>[ICON_BULLET]Inflige da&#241;os colaterales (max. %d1%%)</Spanish>
 	</TEXT>
@@ -237,7 +237,7 @@
 		<Tag>TXT_KEY_MISC_HELP_WORKED_TILES_YIELD</Tag>
 		<English>[ICON_BULLET]%D1%F2 from Worked Tiles</English>
 		<French>[ICON_BULLET]%D1%F2 en raison des Cases Travaillées</French>
-		<German>[ICON_BULLET]%D1%F2 durch Geländefelder</German>
+		<German>[ICON_BULLET]%D1%F2 durch bearbeitete Geländefelder</German>
 		<Italian>[ICON_BULLET]%D1%F2 dagli Caselle Lavorate</Italian>
 		<Spanish>[ICON_BULLET]%D1 %F2 por Azulejos Trabajados</Spanish>
 	</TEXT>
@@ -245,7 +245,7 @@
 		<Tag>TXT_KEY_MISC_HELP_TOTAL_YIELD</Tag>
 		<English>-----------------------[NEWLINE]Total %s1_yield_type: %d2%F3</English>
 		<French>-----------------------[NEWLINE]Total %s1_yield_type : %d2%F3</French>
-		<German>-----------------------[NEWLINE]%s1_yield_type gesamt: %d2%F3</German>
+		<German>-----------------------[NEWLINE]Gesamtertrag %s1_yield_type: %d2%F3</German>
 		<Italian>-----------------------[NEWLINE]%s1_yield_type totale: %d2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Total %s1_yield_type: %d2%F3</Spanish>
 	</TEXT>
@@ -256,7 +256,7 @@
 		<Tag>TXT_KEY_MISC_HELP_EATEN_FOOD</Tag>
 		<English>[ICON_BULLET]%D1[ICON_EATENFOOD] for Population</English>
 		<French>[ICON_BULLET]%D1[ICON_EATENFOOD] pour la population</French>
-		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] f&#252;r Bev&#246;lkerung</German>
+		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] für Bevölkerung</German>
 		<Italian>[ICON_BULLET]%D1[ICON_EATENFOOD] per la popolazione</Italian>
 		<Spanish>[ICON_BULLET]%D1[ICON_EATENFOOD] Por poblaci&#243;n</Spanish>
 	</TEXT>
@@ -264,7 +264,7 @@
 		<Tag>TXT_KEY_MISC_HELP_SPOILED_FOOD</Tag>
 		<English>[ICON_BULLET]%D1[ICON_EATENFOOD] for Health</English>
 		<French>[ICON_BULLET]%D1[ICON_EATENFOOD] pour la Sant&#233;</French>
-		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] f&#252;r Gesundheit</German>
+		<German>[ICON_BULLET]%D1[ICON_EATENFOOD] für Gesundheit</German>
 		<Italian>[ICON_BULLET]%D1[ICON_EATENFOOD] per la salute</Italian>
 		<Spanish>[ICON_BULLET]%D1[ICON_EATENFOOD] Por salud</Spanish>
 	</TEXT>
@@ -273,7 +273,7 @@
 		<Tag>TXT_KEY_MISC_HELP_BASE_FOOD_PRODUCED</Tag>
 		<English>-----------------------[NEWLINE]Base Food Produced: %d1[ICON_FOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale partiel produit : %d1[ICON_FOOD]</French>
-		<German>-----------------------[NEWLINE]Teilsummenahrung produzierte: %d1[ICON_FOOD]</German>
+		<German>-----------------------[NEWLINE]Basisertrag produzierte Nahrung: %d1[ICON_FOOD]</German>
 		<Italian>-----------------------[NEWLINE]Cibo totale parziale prodotto: %d1[ICON_FOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento subtotal produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
@@ -281,7 +281,7 @@
 		<Tag>TXT_KEY_MISC_HELP_TOTAL_FOOD_PRODUCED</Tag>
 		<English>-----------------------[NEWLINE]Total Food Produced: %d1[ICON_FOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale produit : %d1[ICON_FOOD]</French>
-		<German>-----------------------[NEWLINE]Gesamtnahrung produzierte: %d1[ICON_FOOD]</German>
+		<German>-----------------------[NEWLINE]Insgesamt produzierte Nahrung: %d1[ICON_FOOD]</German>
 		<Italian>-----------------------[NEWLINE]Cibo totale prodotto: %d1[ICON_FOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento total produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
@@ -289,7 +289,7 @@
 		<Tag>TXT_KEY_MISC_HELP_TOTAL_FOOD_CONSUMED</Tag>
 		<English>-----------------------[NEWLINE]Total Food Consumed: %d1[ICON_EATENFOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale consommé : %d1[ICON_EATENFOOD]</French>
-		<German>-----------------------[NEWLINE]Gesamtnahrung verbraucht : %d1[ICON_EATENFOOD]</German>
+		<German>-----------------------[NEWLINE]Insgesamt verbrauchte Nahrung: %d1[ICON_EATENFOOD]</German>
 		<Italian>-----------------------[NEWLINE]Cibo totale consumato: %d1[ICON_EATENFOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento total consumido: %d1[ICON_EATENFOOD]</Spanish>
 	</TEXT>
@@ -298,7 +298,7 @@
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_GROW</Tag>
 		<English>Net Food: %D1[ICON_FOOD]</English>
 		<French>Nourriture nette : %D1[ICON_FOOD]</French>
-		<German>Nettonahrung: %D1[ICON_FOOD]</German>
+		<German>Nettoertrag Nahrung: %D1[ICON_FOOD]</German>
 		<Italian>Cibo netto: %D1[ICON_FOOD]</Italian>
 		<Spanish>Alimento neto: %D1[ICON_FOOD]</Spanish>
 	</TEXT>
@@ -306,7 +306,7 @@
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_SHRINK</Tag>
 		<English>Net Food: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</English>
 		<French>Nourriture nette : [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</French>
-		<German>Nettonahrung: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</German>
+		<German>Nettoertrag Nahrung: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</German>
 		<Italian>Cibo netto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Italian>
 		<Spanish>Alimento neto: [COLOR_NEGATIVE_TEXT]%D1[COLOR_REVERT][ICON_BAD_FOOD]</Spanish>
 	</TEXT>
@@ -314,7 +314,7 @@
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_STAGNATE</Tag>
 		<English>Net Food: +0[ICON_FOOD]</English>
 		<French>Nourriture nette : +0[ICON_FOOD]</French>
-		<German>Nettonahrung: +0[ICON_FOOD]</German>
+		<German>Nettoertrag Nahrung: +0[ICON_FOOD]</German>
 		<Italian>Cibo netto: +0[ICON_FOOD]</Italian>
 		<Spanish>Alimento neto: +0[ICON_FOOD]</Spanish>
 	</TEXT>
@@ -322,7 +322,7 @@
 		<Tag>TXT_KEY_MISC_HELP_NET_FOOD_PRODUCTION</Tag>
 		<English>Net Food: %D1[ICON_FOOD] for %s2_production_type</English>
 		<French>Nourriture nette : %D1[ICON_FOOD] pour %s2_production_type</French>
-		<German>Nettonahrung: %D1[ICON_FOOD] f&#252;r %s2_production_type</German>
+		<German>Nettoertrag Nahrung: %D1[ICON_FOOD] für %s2_production_type</German>
 		<Italian>Cibo netto: %D1[ICON_FOOD] per %s2_production_type</Italian>
 		<Spanish>Alimento neto: %D1[ICON_FOOD] por %s2_production_type</Spanish>
 	</TEXT>
@@ -333,7 +333,7 @@
 		<Tag>TXT_KEY_MISC_HELP_COMMERCE_SUBTOTAL_YIELD_FLOAT</Tag>
 		<English>-----------------------[NEWLINE]Base %s1_commerce_type: %s2%F3</English>
 		<French>-----------------------[NEWLINE]Total partiel %s1_commerce_type : %s2%F3</French>
-		<German>-----------------------[NEWLINE]%s1_commerce_type Basiswert: %s2%F3</German>
+		<German>-----------------------[NEWLINE]Basisertrag %s1_commerce_type: %s2%F3</German>
 		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale parziale: %s2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Subtotal %s1_commerce_type: %s2%F3</Spanish>
 	</TEXT>
@@ -349,7 +349,7 @@
 		<Tag>TXT_KEY_MISC_HELP_COMMERCE_FINAL_YIELD_FLOAT</Tag>
 		<English>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</English>
 		<French>-----------------------[NEWLINE]Total %s1_commerce_type : %s2%F3</French>
-		<German>-----------------------[NEWLINE]%s1_commerce_type gesamt: %s2%F3</German>
+		<German>-----------------------[NEWLINE]Gesamtertrag %s1_commerce_type: %s2%F3</German>
 		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale: %s2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</Spanish>
 	</TEXT>
