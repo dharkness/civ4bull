@@ -7985,7 +7985,7 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 // BUG - Production Decay - start
 				if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
 				{
-					setProductionDecayHelp(szBuffer, pCity, pCity->getUnitProductionTime(eUnit), GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME"), iProduction - ((iProduction * GC.getDefineINT("UNIT_PRODUCTION_DECAY_PERCENT")) / 100), pCity->getProductionUnit() == eUnit);
+					setProductionDecayHelp(szBuffer, pCity->getUnitProductionDecayTurns(eUnit), pCity->getUnitProductionDecay(eUnit), pCity->getProductionUnit() == eUnit);
 				}
 // BUG - Production Decay - end
 			}
@@ -9214,7 +9214,7 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 // BUG - Production Decay - start
 				if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
 				{
-					setProductionDecayHelp(szBuffer, pCity, pCity->getBuildingProductionTime(eBuilding), GC.getDefineINT("BUILDING_PRODUCTION_DECAY_TIME"), iProduction - ((iProduction * GC.getDefineINT("BUILDING_PRODUCTION_DECAY_PERCENT")) / 100), pCity->getProductionBuilding() == eBuilding);
+					setProductionDecayHelp(szBuffer, pCity->getBuildingProductionDecayTurns(eBuilding), pCity->getBuildingProductionDecay(eBuilding), pCity->getProductionBuilding() == eBuilding);
 				}
 // BUG - Production Decay - end
 			}
@@ -9639,38 +9639,34 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 }
 
 // BUG - Production Decay - start
-void CvGameTextMgr::setProductionDecayHelp(CvWStringBuffer &szBuffer, CvCity* pCity, int iUsedTurns, int iDecayTurns, int iDecay, bool bProducing)
+void CvGameTextMgr::setProductionDecayHelp(CvWStringBuffer &szBuffer, int iTurnsLeft, int iDecay, bool bProducing)
 {
-	if (iUsedTurns > 0 && iDecay > 0)
+	if (iTurnsLeft <= 0)
 	{
-		if (iUsedTurns >= iDecayTurns)
+		if (bProducing)
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_PRODUCING", iDecay));
+		}
+		else
+		{
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY", iDecay));
+		}
+	}
+	else
+	{
+		if (iTurnsLeft <= getBugOptionINT("CityScreen__ProductionDecayHoverThreshold", true, "BUG_PRODUCTION_DECAY_HOVER_THRESHOLD"))
 		{
 			if (bProducing)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY", iDecay));
+				szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_TURNS_PRODUCING", iDecay, iTurnsLeft));
 			}
 			else
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_PRODUCING", iDecay));
-			}
-		}
-		else
-		{
-			int iTurnsLeft = iDecayTurns - iUsedTurns;
-			if (iTurnsLeft <= getBugOptionINT("CityScreen__ProductionDecayHoverThreshold", true, "BUG_PRODUCTION_DECAY_HOVER_THRESHOLD"))
-			{
-				if (bProducing)
-				{
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_TURNS", iDecay, iTurnsLeft));
-				}
-				else
-				{
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_TURNS_PRODUCING", iDecay, iTurnsLeft));
-				}
+				szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_DECAY_TURNS", iDecay, iTurnsLeft));
 			}
 		}
 	}
