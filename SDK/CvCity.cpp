@@ -6272,6 +6272,7 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 	int iI;
 	int iStarting = iGood - iBad;
+	int iStartingBad = iBad;
 
 	// Basic
 	addGoodOrBad(kBuilding.getHappiness(), iGood, iBad);
@@ -6300,16 +6301,46 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 		}
 	}
 
-	// No Unhappiness
-	if (kBuilding.isNoUnhappiness())
-	{
-		iBad -= unhappyLevel();
-	}
-
 	// Commerce
 	for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
 		addGoodOrBad(kBuilding.getCommerceHappiness(iI) * GET_PLAYER(getOwnerINLINE()).getCommercePercent((CommerceTypes)iI) / 100, iGood, iBad);
+	}
+
+	// War Weariness Modifier
+	if (kBuilding.getWarWearinessModifier() != 0)
+	{
+		int iBaseAngerPercent = 0;
+
+		iBaseAngerPercent += getOvercrowdingPercentAnger();
+		iBaseAngerPercent += getNoMilitaryPercentAnger();
+		iBaseAngerPercent += getCulturePercentAnger();
+		iBaseAngerPercent += getReligionPercentAnger();
+		iBaseAngerPercent += getHurryPercentAnger();
+		iBaseAngerPercent += getConscriptPercentAnger();
+		iBaseAngerPercent += getDefyResolutionPercentAnger();
+		for (iI = 0; iI < GC.getNumCivicInfos(); iI++)
+		{
+			iBaseAngerPercent += GET_PLAYER(getOwnerINLINE()).getCivicPercentAnger((CivicTypes)iI);
+		}
+
+		int iCurrentAngerPercent = iBaseAngerPercent + getWarWearinessPercentAnger();
+		int iCurrentUnhappiness = iCurrentAngerPercent * getPopulation() / GC.getPERCENT_ANGER_DIVISOR();
+
+		int iNewWarAngerPercent = GET_PLAYER(getOwnerINLINE()).getWarWearinessPercentAnger();
+		iNewWarAngerPercent *= std::max(0, (kBuilding.getWarWearinessModifier() + getWarWearinessModifier() + GET_PLAYER(getOwnerINLINE()).getWarWearinessModifier() + 100));
+		iNewWarAngerPercent /= 100;
+		int iNewAngerPercent = iBaseAngerPercent + iNewWarAngerPercent;
+		int iNewUnhappiness = iNewAngerPercent * getPopulation() / GC.getPERCENT_ANGER_DIVISOR();
+
+		iBad += iNewUnhappiness - iCurrentUnhappiness;
+	}
+
+	// No Unhappiness
+	if (kBuilding.isNoUnhappiness())
+	{
+		// override extra unhappiness and completely negate all existing unhappiness
+		iBad = iStartingBad - unhappyLevel();
 	}
 
 	return iGood - iBad - iStarting;
