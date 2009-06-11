@@ -92,10 +92,6 @@
 	
 	<!-- Building -->
 	<Define>
-		<DefineName>UP_UNIQUE_BUILDINGS_HOVER</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
-	</Define>
-	<Define>
 		<DefineName>BUG_BUILDING_HOVER_ACTUAL_EFFECTS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
@@ -103,10 +99,6 @@
 	<!-- Unit -->
 	<Define>
 		<DefineName>BUG_UPDATE_UNIT_NAME_ON_UPGRADE</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>UP_COLLATERAL_DAMAGE_LIMIT_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
@@ -197,7 +189,4 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
-<!-- Unofficial Patch -->
-	
-
 </Civ4Defines>
