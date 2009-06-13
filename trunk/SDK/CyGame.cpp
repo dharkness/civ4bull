@@ -18,6 +18,10 @@
 #include "CvDLLEngineIFaceBase.h"
 // BUG - MapFinder - end
 
+// BUG - EXE/DLL Paths - start
+#include "CvInitCore.h"
+// BUG - EXE/DLL Paths - end
+
 CyGame::CyGame() : m_pGame(NULL)
 {
 	m_pGame = &GC.getGameINLINE();
@@ -1188,3 +1192,15 @@ bool CyGame::takeJPEGScreenShot(std::string fileName) const
 	return (NULL != m_pGame ? m_pGame->takeJPEGScreenShot(fileName) : false);
 }
 // BUG - MapFinder - end
+
+// BUG - EXE/DLL Paths - start
+std::string CyGame::getDLLPath() const
+{
+	return GC.getInitCore().getDLLPath();
+}
+
+std::string CyGame::getExePath() const
+{
+	return GC.getInitCore().getExePath();
+}
+// BUG - EXE/DLL Paths - end

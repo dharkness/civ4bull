@@ -279,6 +279,11 @@ public:
 	bool takeJPEGScreenShot(std::string fileName) const;
 // BUG - MapFinder - end
 
+// BUG - EXE/DLL Paths - start
+	std::string getDLLPath() const;
+	std::string getExePath() const;
+// BUG - EXE/DLL Paths - end
+
 protected:
 	CvGame* m_pGame;
 };
