@@ -3548,6 +3548,7 @@ int CvGlobals::getNumMissionInfos() const { return NUM_MISSION_TYPES; }
 int CvGlobals::getNumPlayerOptionInfos() const { return NUM_PLAYEROPTION_TYPES; }
 int CvGlobals::getMaxNumSymbols() const { return MAX_NUM_SYMBOLS; }
 int CvGlobals::getNumGraphicLevels() const { return NUM_GRAPHICLEVELS; }
+int CvGlobals::getNumGlobeLayers() const { return NUM_GLOBE_LAYER_TYPES; }
 
 
 //

@@ -16,12 +16,12 @@
 #include "FAStarNode.h"
 #include "CvInfos.h"
 #include "FProfiler.h"
-#include "CvDLLEventReporterIFaceBase.h"
 #include "CyPlot.h"
 #include "CySelectionGroup.h"
 #include "CyArgsList.h"
 #include "CvDLLPythonIFaceBase.h"
 #include <set>
+#include "CvEventReporter.h"
 
 // BUG - start
 #include "CvBugOptions.h"
@@ -103,6 +103,7 @@ void CvSelectionGroup::kill()
 
 bool CvSelectionGroup::sentryAlert() const
 {
+	CvUnit* pHeadUnit = NULL;
 	int iMaxRange = 0;
 	CLLNode<IDInfo>* pUnitNode = headUnitNode();
 	while (pUnitNode != NULL)
@@ -115,10 +116,10 @@ bool CvSelectionGroup::sentryAlert() const
 		if (iRange > iMaxRange)
 		{
 			iMaxRange = iRange;
+			pHeadUnit = pLoopUnit;
 		}
 	}
 
-	CvUnit* pHeadUnit = getHeadUnit();
 	if (NULL != pHeadUnit)
 	{
 		for (int iX = -iMaxRange; iX <= iMaxRange; ++iX)
@@ -206,13 +207,10 @@ void CvSelectionGroup::doTurn()
 		{
 			if (getActivityType() == ACTIVITY_MISSION)
 			{
-				// Unofficial Patch Start
-				// * Spies really no longer interrupt their mission when moving next to an enemy unit
 				bool bNonSpy = false;
 				for (CLLNode<IDInfo>* pUnitNode = headUnitNode(); pUnitNode != NULL; pUnitNode = nextUnitNode(pUnitNode))
 				{
 					CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
-					// For all invisible units, use !pLoopUnit->alwaysInvisible()
 					if (!pLoopUnit->isSpy())
 					{
 						bNonSpy = true;
@@ -221,7 +219,6 @@ void CvSelectionGroup::doTurn()
 				}
 
 				if (bNonSpy && GET_PLAYER(getOwnerINLINE()).AI_getPlotDanger(plot(), 2) > 0)
-				// Unofficial Patch End
 				{
 					clearMissionQueue();
 				}
@@ -468,7 +465,7 @@ void CvSelectionGroup::pushMission(MissionTypes eMission, int iData1, int iData2
 			gDLL->getInterfaceIFace()->setHasMovedUnit(true);
 		}
 
-		gDLL->getEventReporterIFace()->selectionGroupPushMission(this, eMission);
+		CvEventReporter::getInstance().selectionGroupPushMission(this, eMission);
 
 		doDelayedDeath();
 	}
@@ -3406,15 +3403,13 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 
 				if ((pLoopUnit1->getCargo() > 0) && (pLoopUnit1->domainCargo() == DOMAIN_LAND))
 				{
-// BUG - Amphibious Landing OOS Fix - start
-// from http://forums.civfanatics.com/showthread.php?t=310116
 					std::vector<CvUnit*> aCargoUnits;
 					pLoopUnit1->getCargoUnits(aCargoUnits);
 					std::vector<CvSelectionGroup*> aCargoGroups;
 					for (uint i = 0; i < aCargoUnits.size(); ++i)
 					{
 						CvSelectionGroup* pGroup = aCargoUnits[i]->getGroup();
-						if (std::find(aCargoGroups.begin(), aCargoGroups.end(), pGroup) == aCargoGroups.end())						
+						if (std::find(aCargoGroups.begin(), aCargoGroups.end(), pGroup) == aCargoGroups.end())
 						{
 							aCargoGroups.push_back(aCargoUnits[i]->getGroup());
 						}
@@ -3430,7 +3425,6 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 							bLanding = true;
 						}
 					}
-// BUG - Amphibious Landing OOS Fix - end
 				}
 			}
 		}

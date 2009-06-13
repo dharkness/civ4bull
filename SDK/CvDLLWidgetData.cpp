@@ -14,10 +14,11 @@
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
-#include "CvDLLEventReporterIFaceBase.h"
+#include "CvEventReporter.h"
 #include "CvDLLWidgetData.h"
 #include "CvPopupInfo.h"
 #include "FProfiler.h"
+#include "CvMessageControl.h"
 
 // BUG - start
 #include "BugMod.h"
@@ -1144,7 +1145,7 @@ void CvDLLWidgetData::doRenameCity()
 	{
 		if (pHeadSelectedCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
 		{
-			gDLL->getEventReporterIFace()->cityRename(pHeadSelectedCity);
+			CvEventReporter::getInstance().cityRename(pHeadSelectedCity);
 		}
 	}
 }
@@ -1160,7 +1161,7 @@ void CvDLLWidgetData::doRenameUnit()
 	{
 		if (pHeadSelectedUnit->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
 		{
-			gDLL->getEventReporterIFace()->unitRename(pHeadSelectedUnit);
+			CvEventReporter::getInstance().unitRename(pHeadSelectedUnit);
 		}
 	}
 }
@@ -1186,7 +1187,7 @@ void CvDLLWidgetData::doTrain(CvWidgetDataStruct &widgetDataStruct)
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		gDLL->sendPushOrder(widgetDataStruct.m_iData2, ORDER_TRAIN, eUnit, false, false, false);
+		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_TRAIN, eUnit, false, false, false);
 	}
 	else
 	{
@@ -1205,7 +1206,7 @@ void CvDLLWidgetData::doConstruct(CvWidgetDataStruct &widgetDataStruct)
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		gDLL->sendPushOrder(widgetDataStruct.m_iData2, ORDER_CONSTRUCT, eBuilding, false, false, false);
+		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_CONSTRUCT, eBuilding, false, false, false);
 	}
 	else
 	{
@@ -1227,7 +1228,7 @@ void CvDLLWidgetData::doCreate(CvWidgetDataStruct &widgetDataStruct)
 {
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		gDLL->sendPushOrder(widgetDataStruct.m_iData2, ORDER_CREATE, widgetDataStruct.m_iData1, false, false, false);
+		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_CREATE, widgetDataStruct.m_iData1, false, false, false);
 	}
 	else
 	{
@@ -1242,7 +1243,7 @@ void CvDLLWidgetData::doMaintain(CvWidgetDataStruct &widgetDataStruct)
 {
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		gDLL->sendPushOrder(widgetDataStruct.m_iData2, ORDER_MAINTAIN, widgetDataStruct.m_iData1, false, false, false);
+		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_MAINTAIN, widgetDataStruct.m_iData1, false, false, false);
 	}
 	else
 	{
@@ -1291,19 +1292,19 @@ void CvDLLWidgetData::doResearch(CvWidgetDataStruct &widgetDataStruct)
 		}
 	}
 
-	gDLL->sendResearch(((TechTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2, bShift);
+	CvMessageControl::getInstance().sendResearch(((TechTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2, bShift);
 }
 
 
 void CvDLLWidgetData::doChangePercent(CvWidgetDataStruct &widgetDataStruct)
 {
-	gDLL->sendPercentChange(((CommerceTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2);
+	CvMessageControl::getInstance().sendPercentChange(((CommerceTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2);
 }
 
 // BUG - Min/Max Commerce Rate - start
 void CvDLLWidgetData::doSetPercent(CvWidgetDataStruct &widgetDataStruct)
 {
-	gDLL->sendPercentChange(((CommerceTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2 - GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCommercePercent((CommerceTypes)widgetDataStruct.m_iData1));
+	CvMessageControl::getInstance().sendPercentChange(((CommerceTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2 - GET_PLAYER(GC.getGameINLINE().getActivePlayer()).getCommercePercent((CommerceTypes)widgetDataStruct.m_iData1));
 }
 // BUG - Min/Max Commerce Rate - end
 
@@ -1346,7 +1347,7 @@ void CvDLLWidgetData::doContactCiv(CvWidgetDataStruct &widgetDataStruct)
 	{
 		if (GET_TEAM(GC.getGameINLINE().getActiveTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam()))
 		{
-			gDLL->sendChangeWar(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam(), true);
+			CvMessageControl::getInstance().sendChangeWar(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam(), true);
 		}
 		else if (GET_TEAM(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam()).isVassal(GC.getGameINLINE().getActiveTeam()))
 		{
@@ -1366,7 +1367,7 @@ void CvDLLWidgetData::doConvert(CvWidgetDataStruct &widgetDataStruct)
 {
 	if (widgetDataStruct.m_iData2 != 0)
 	{
-		gDLL->sendConvert((ReligionTypes)(widgetDataStruct.m_iData1));
+		CvMessageControl::getInstance().sendConvert((ReligionTypes)(widgetDataStruct.m_iData1));
 	}
 }
 
@@ -2772,7 +2773,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				{
 					if (eBonus != NO_BONUS)
 					{
-						if ((GC.getBonusInfo(eBonus).getTechObsolete() == NO_TECH) || !(GET_TEAM(pHeadSelectedUnit->getTeam()).isHasTech((TechTypes)(GC.getBonusInfo(eBonus).getTechObsolete()))))
+						if (!GET_TEAM(pHeadSelectedUnit->getTeam()).isBonusObsolete(eBonus))
 						{
 							if (GC.getImprovementInfo(eImprovement).isImprovementBonusTrade(eBonus))
 							{
@@ -2940,13 +2941,13 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				szBuffer.append(NEWLINE);
 				szBuffer.append(gDLL->getText("TXT_KEY_ACTION_NUM_TURNS", iTurns));
 
-				if (!isEmpty(GC.getBuildInfo(eBuild).getHelp()))
+				if (!CvWString(GC.getBuildInfo(eBuild).getHelp()).empty())
 				{
 					szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getBuildInfo(eBuild).getHelp()).c_str());
 				}
 			}
 
-			if (!isEmpty(GC.getMissionInfo((MissionTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType())).getHelp()))
+			if (!CvWString(GC.getMissionInfo((MissionTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType())).getHelp()).empty())
 			{
 				szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getMissionInfo((MissionTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType())).getHelp()).c_str());
 			}
@@ -3023,7 +3024,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 				szBuffer.append(gDLL->getText("TXT_KEY_ACTION_ALL_UNITS"));
 			}
 
-			if (!isEmpty(GC.getCommandInfo((CommandTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType())).getHelp()))
+			if (!CvWString(GC.getCommandInfo((CommandTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType())).getHelp()).empty())
 			{
 				szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getCommandInfo((CommandTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType())).getHelp()).c_str());
 			}
@@ -3031,7 +3032,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 		if (GC.getActionInfo(widgetDataStruct.m_iData1).getAutomateType() != NO_AUTOMATE)
 		{
-			if (!isEmpty(GC.getAutomateInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getAutomateType())).getHelp()))
+			if (!CvWString(GC.getAutomateInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getAutomateType())).getHelp()).empty())
 			{
 				szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getAutomateInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getAutomateType())).getHelp()).c_str());
 			}
@@ -3040,7 +3041,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 	if (GC.getActionInfo(widgetDataStruct.m_iData1).getControlType() != NO_CONTROL)
 	{
-		if (!isEmpty(GC.getControlInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getControlType())).getHelp()))
+		if (!CvWString(GC.getControlInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getControlType())).getHelp()).empty())
 		{
 			szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getControlInfo((ControlTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getControlType())).getHelp()).c_str());
 		}
@@ -3048,7 +3049,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 	if (GC.getActionInfo(widgetDataStruct.m_iData1).getInterfaceModeType() != NO_INTERFACEMODE)
 	{
-		if (!isEmpty(GC.getInterfaceModeInfo((InterfaceModeTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getInterfaceModeType())).getHelp()))
+		if (!CvWString(GC.getInterfaceModeInfo((InterfaceModeTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getInterfaceModeType())).getHelp()).empty())
 		{
 			szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getInterfaceModeInfo((InterfaceModeTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getInterfaceModeType())).getHelp()).c_str());
 		}
