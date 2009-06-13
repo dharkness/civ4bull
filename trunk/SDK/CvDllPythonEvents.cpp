@@ -779,6 +779,24 @@ void CvDllPythonEvents::reportUnitKilled(CvUnit* pUnit, PlayerTypes eAttacker)
 	}
 }
 
+// BUG - Unit Captured Event - start
+void CvDllPythonEvents::reportUnitCaptured(PlayerTypes eFromPlayer, UnitTypes eUnitType, CvUnit* pNewUnit)
+{
+	if (preEvent())
+	{
+		CyArgsList eventData;
+		eventData.add("unitCaptured");						// add key to lookup python handler fxn
+
+		eventData.add(eFromPlayer);
+		eventData.add(eUnitType);
+		CyUnit* pyNewUnit = new CyUnit(pNewUnit);
+		eventData.add(gDLL->getPythonIFace()->makePythonObject(pyNewUnit));
+		postEvent(eventData);
+		delete pyNewUnit;
+	}
+}
+// BUG - Unit Captured Event - end
+
 void CvDllPythonEvents::reportUnitLost(CvUnit* pUnit)
 {
 	if (preEvent())

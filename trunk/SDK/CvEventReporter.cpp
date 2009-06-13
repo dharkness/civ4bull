@@ -275,6 +275,13 @@ void CvEventReporter::unitKilled(CvUnit *pUnit, PlayerTypes eAttacker )
 	m_kStatistics.unitKilled(pUnit, eAttacker);
 }
 
+// BUG - Unit Captured Event - start
+void CvEventReporter::unitCaptured(PlayerTypes eFromPlayer, UnitTypes eUnitType, CvUnit* pNewUnit)
+{
+	m_kPythonEventMgr.reportUnitCaptured(eFromPlayer, eUnitType, pNewUnit);
+}
+// BUG - Unit Captured Event - end
+
 void CvEventReporter::unitLost(CvUnit *pUnit)
 {
 	m_kPythonEventMgr.reportUnitLost(pUnit);

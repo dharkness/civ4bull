@@ -62,6 +62,9 @@ public:
 	void reportUnitCreated(CvUnit *pUnit);
 	void reportUnitBuilt(CvCity *pCity, CvUnit *pUnit);
 	void reportUnitKilled(CvUnit *pUnit, PlayerTypes eAttacker);			
+// BUG - Upgrade Unit Event - start
+	void reportUnitCaptured(PlayerTypes eFromPlayer, UnitTypes eUnitType, CvUnit* pNewUnit);
+// BUG - Upgrade Unit Event - end
 	void reportUnitLost(CvUnit *pUnit);
 	void reportUnitPromoted(CvUnit* pUnit, PromotionTypes ePromotion);
 // BUG - Upgrade Unit Event - start
