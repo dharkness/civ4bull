@@ -6302,12 +6302,7 @@ bool CvUnit::isIntruding() const
 		return false;
 	}
 
-	// Unofficial Patch Start
-	// * Vassal's spies no longer caught in master's territory
-	// EF: some might want vassal's spies caught -- what if vassal is about to break away?
-	//if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
-	if (GET_TEAM(eLocalTeam).isVassal(getTeam()) || GET_TEAM(getTeam()).isVassal(eLocalTeam))
-	// Unofficial Patch End
+	if (GET_TEAM(eLocalTeam).isVassal(getTeam()))
 	{
 		return false;
 	}
@@ -11553,10 +11548,7 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 	std::map<CvUnit*, int>::iterator it;
 
 	int iCollateralStrength = (getDomainType() == DOMAIN_AIR ? airBaseCombatStr() : baseCombatStr()) * collateralDamage() / 100;
-	// Unofficial Patch Start
-	// * Barrage promotions made working again on Tanks and other units with no base collateral ability
-	if (iCollateralStrength == 0 && getExtraCollateralDamage() == 0)
-	// Unofficial Patch End
+	if (iCollateralStrength == 0)
 	{
 		return;
 	}

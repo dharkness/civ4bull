@@ -30,9 +30,6 @@
 #include "CvDLLEngineIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 
-// Needed to check compilation options
-#include "UnofficialPatch.h"
-
 // Public Functions...
 
 CvGame::CvGame()
@@ -3895,10 +3892,9 @@ void CvGame::setAIAutoPlay(int iNewValue)
 	{
 		m_iAIAutoPlay = std::max(0, iNewValue);
 
-		// Unofficial Patch Start
-		// * Added jdog5000's AIAutoPlay changes to help with testing.
-#ifdef _USE_AIAUTOPLAY
-		// (AIAutoPlay) Multiplayer compatibility idea from Jeckel
+// BUG - AIAutoPlay - start
+#ifdef _MOD_AIAUTOPLAY
+		// Multiplayer compatibility idea from Jeckel
 		for( int iI = 0; iI < MAX_CIV_PLAYERS; iI++ )
 		{
 			if( GET_PLAYER((PlayerTypes)iI).isHuman() || GET_PLAYER((PlayerTypes)iI).isHumanDisabled() )
@@ -3913,7 +3909,7 @@ void CvGame::setAIAutoPlay(int iNewValue)
 			GET_PLAYER(getActivePlayer()).killCities();
 		}
 #endif
-		// Unofficial Patch End
+// BUG - AIAutoPlay - end
 	}
 }
 
@@ -4667,11 +4663,11 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 		m_eWinner = eNewWinner;
 		m_eVictory = eNewVictory;
 
-		// Unofficial Patch Start
-		// * Added jdog5000's AIAutoPlay changes to help with testing.
-#ifdef _USE_AIAUTOPLAY
+// BUG - AIAutoPlay - start
+#ifdef _MOD_AIAUTOPLAY
 		CvEventReporter::getInstance().victory(eNewWinner, eNewVictory);
 #endif
+// BUG - AIAutoPlay - end
 		if (getVictory() != NO_VICTORY)
 		{
 			if (getWinner() != NO_TEAM)
@@ -4692,10 +4688,11 @@ void CvGame::setWinner(TeamTypes eNewWinner, VictoryTypes eNewVictory)
 
 		gDLL->getInterfaceIFace()->setDirty(Center_DIRTY_BIT, true);
 
-#ifndef _USE_AIAUTOPLAY
+// BUG - AIAutoPlay - start
+#ifndef _MOD_AIAUTOPLAY
 		CvEventReporter::getInstance().victory(eNewWinner, eNewVictory);
 #endif
-		// Unofficial Patch End
+// BUG - AIAutoPlay - end
 
 		gDLL->getInterfaceIFace()->setDirty(Soundtrack_DIRTY_BIT, true);
 	}

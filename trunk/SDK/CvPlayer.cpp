@@ -32,9 +32,6 @@
 #include "CvDLLFAStarIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 
-// Needed to check compilation options
-#include "UnofficialPatch.h"
-
 
 // Public Functions...
 
@@ -480,12 +477,12 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bExtendedGame = false;
 	m_bFoundedFirstCity = false;
 	m_bStrike = false;
-	// Unofficial Patch Start
-	// * Added jdog5000's AIAutoPlay changes to help with testing.
-#ifdef _USE_AIAUTOPLAY
+
+// BUG - AIAutoPlay - start
+#ifdef _MOD_AIAUTOPLAY
 	m_bDisableHuman = false;
 #endif
-	// Unofficial Patch End
+// BUG - AIAutoPlay - end
 
 	m_eID = eID;
 	updateTeamType();
@@ -2235,9 +2232,8 @@ bool CvPlayer::hasTrait(TraitTypes eTrait) const
 	return GC.getLeaderHeadInfo(getLeaderType()).hasTrait(eTrait);
 }
 
-// Unofficial Patch Start
-// * Added jdog5000's AIAutoPlay changes to help with testing.
-#ifdef _USE_AIAUTOPLAY
+// BUG - AIAutoPlay - start
+#ifdef _MOD_AIAUTOPLAY
 void CvPlayer::setHumanDisabled(bool newVal)
 {
 	m_bDisableHuman = newVal;
@@ -2248,7 +2244,7 @@ bool CvPlayer::isHumanDisabled() const
 	return m_bDisableHuman;
 }
 #endif
-// Unofficial Patch End
+// BUG - AIAutoPlay - end
 
 bool CvPlayer::isHuman() const
 {
@@ -2261,23 +2257,17 @@ void CvPlayer::updateHuman()
 	{
 		m_bHuman = false;
 	}
+// BUG - AIAutoPlay - start
+#ifdef _MOD_AIAUTOPLAY
+	else if (m_bDisableHuman)
+	{
+		m_bHuman = false;
+	}
+#endif
+// BUG - AIAutoPlay - end
 	else
 	{
-		// Unofficial Patch Start
-		// * Added jdog5000's AIAutoPlay changes to help with testing.
-#ifdef _USE_AIAUTOPLAY
-		if( m_bDisableHuman )
-		{
-			m_bHuman = false;
-		}
-		else
-		{
-			m_bHuman = GC.getInitCore().getHuman(getID());
-		}
-#else
 		m_bHuman = GC.getInitCore().getHuman(getID());
-#endif
-		// Unofficial Patch End
 	}
 }
 
@@ -13634,11 +13624,6 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 				iCultureAmount /= 10000;
 				iCultureAmount = std::max(1, iCultureAmount);
 				
-				// Unofficial Patch Start
-				// * Fixed espionage spread culture mission to insert the listed 5% of culture rather than the current .05%
-				// Note: This next line is the only thing they had in 3.13
-				//pCity->changeCulture(getID(), iCultureAmount, true, true);
-				
 				int iNumTurnsApplied = (GC.getDefineINT("GREAT_WORKS_CULTURE_TURNS") * GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getUnitGreatWorkPercent()) / 100;
 
 				for (int i = 0; i < iNumTurnsApplied; ++i)
@@ -13650,7 +13635,6 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 				{
 					pCity->changeCulture(getID(), iCultureAmount % iNumTurnsApplied, false, true);
 				}
-				// Unofficial Patch End
 
 				bSomethingHappened = true;
 			}

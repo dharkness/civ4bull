@@ -3302,14 +3302,27 @@ bool CvCity::hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) cons
 	}
 	else if (isProductionBuilding())
 	{
-		BuildingTypes eBldg = getProductionBuilding();
-		FAssertMsg(eBldg != NO_BUILDING, "eBldg is expected to be assigned a valid building type");
-		int iProductionNeeded = getProductionNeeded(eBldg);
-		int iOverflow = getBuildingProduction(eBldg) + hurryProduction(eHurry) - iProductionNeeded;
+		BuildingTypes eBuilding = getProductionBuilding();
+		FAssertMsg(eBuilding != NO_BUILDING, "eBuilding is expected to be assigned a valid building type");
+		int iProductionNeeded = getProductionNeeded(eBuilding);
+		int iOverflow = getBuildingProduction(eBuilding) + hurryProduction(eHurry) - iProductionNeeded;
 		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
 		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
 		iOverflow = std::min(iMaxOverflow, iOverflow);
-		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eBldg)));
+		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eBuilding)));
+		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
+		return true;
+	}
+	else if (isProductionProject())
+	{
+		ProjectTypes eProject = getProductionProject();
+		FAssertMsg(eProject != NO_PROJECT, "eProject is expected to be assigned a valid project type");
+		int iProductionNeeded = getProductionNeeded(eProject);
+		int iOverflow = getProjectProduction(eProject) + hurryProduction(eHurry) - iProductionNeeded;
+		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
+		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+		iOverflow = std::min(iMaxOverflow, iOverflow);
+		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eProject)));
 		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
 		return true;
 	}
@@ -11463,7 +11476,10 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			// max overflow is the value of the item produced (to eliminate prebuild exploits)
 			iOverflow = getUnitProduction(eTrainUnit) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - start
+			int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+			//int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - end
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11471,7 +11487,12 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setUnitProduction(eTrainUnit, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - start
+			iLostProduction *= getBaseYieldRateModifier(YIELD_PRODUCTION);
+			iLostProduction /= std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eTrainUnit)));
+			int iProductionGold = ((iLostProduction * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT")) / 100);
+			//int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - end
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
@@ -11535,7 +11556,10 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			// max overflow is the value of the item produced (to eliminate prebuild exploits)
 			int iOverflow = getBuildingProduction(eConstructBuilding) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - start
+			int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+			//int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - end
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11543,7 +11567,12 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setBuildingProduction(eConstructBuilding, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - start
+			iLostProduction *= getBaseYieldRateModifier(YIELD_PRODUCTION);
+			iLostProduction /= std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eConstructBuilding)));
+			int iProductionGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
+			//int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - end
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);
@@ -11621,7 +11650,10 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			// max overflow is the value of the item produced (to eliminate pre-build exploits)
 			iOverflow = getProjectProduction(eCreateProject) - iProductionNeeded;
 			int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-			int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - start
+			int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+			//int iMaxOverflowForGold = std::max(iProductionNeeded, getProductionDifference(getProductionNeeded(), getProduction(), 0, isFoodProduction(), false));
+// BUG - Overflow Gold Fix - end
 			iOverflow = std::min(iMaxOverflow, iOverflow);
 			if (iOverflow > 0)
 			{
@@ -11629,7 +11661,12 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 			}
 			setProjectProduction(eCreateProject, 0);
 
-			int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - start
+			iLostProduction *= getBaseYieldRateModifier(YIELD_PRODUCTION);
+			iLostProduction /= std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eCreateProject)));
+			int iProductionGold = ((iLostProduction * GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT")) / 100);
+			//int iProductionGold = std::max(0, iOverflow - iMaxOverflowForGold) * GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT") / 100;
+// BUG - Overflow Gold Fix - end
 			if (iProductionGold > 0)
 			{
 				GET_PLAYER(getOwnerINLINE()).changeGold(iProductionGold);

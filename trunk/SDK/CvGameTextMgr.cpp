@@ -3277,10 +3277,7 @@ void createTestFontString(CvWStringBuffer& szString)
 {
 	int iI;
 	szString.assign(L"!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[Χ]^_`abcdefghijklmnopqrstuvwxyz\n");
-	// Unofficial Patch Start
-	// (unsure on details of this change)
-//	szString.append(L"{}~\\ίΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿΏ΅«»°™©®€£Ά”‘“…’");
-	// Unofficial Patch End
+	szString.append(L"{}~\\ίΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿΏ΅«»°™©®€£Ά”‘“…’");
 	for (iI=0;iI<NUM_YIELD_TYPES;++iI)
 		szString.append(CvWString::format(L"%c", GC.getYieldInfo((YieldTypes) iI).getChar()));
 

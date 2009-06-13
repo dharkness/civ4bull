@@ -19,7 +19,6 @@
 #include "FProfiler.h"
 #include "FVariableSystem.h"
 #include "CvInitCore.h"
-#include "UnofficialPatch.h"
 
 // BUG - DLL Info - start
 #include "BugMod.h"
@@ -3591,24 +3590,3 @@ int CvGlobals::getBullApiVersion() const { return BUG_DLL_API_VERSION; }
 const wchar* CvGlobals::getBullName() const { return BUG_DLL_NAME; }
 const wchar* CvGlobals::getBullVersion() const { return BUG_DLL_VERSION; }
 // BUG - DLL Info - end
-
-// Unofficial Patch Start
-// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
-bool CvGlobals::isUnofficialPatch() const 
-{
-#ifdef _USE_UNOFFICIALPATCH
-	return true; 
-#else
-	return false;
-#endif
-}
-
-int CvGlobals::getUnofficialPatchVersion() const 
-{ 
-#ifdef _USE_UNOFFICIALPATCH
-	return UP_PATCH_VERSION; 
-#else
-	return 0;
-#endif
-}
-// Unofficial Patch End

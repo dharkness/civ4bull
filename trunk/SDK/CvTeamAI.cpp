@@ -918,8 +918,6 @@ int CvTeamAI::AI_startWarVal(TeamTypes eTeam) const
 	iValue += (3 * AI_calculateCapitalProximity(eTeam)) / ((iValue > 0) ? 2 : 3);
 	
 	int iClosenessValue = AI_teamCloseness(eTeam);
-	// Unofficial Patch Start
-	// * Modified how closeness is used for determining who to attack, different settings for regular and Aggressive AI. [jdog5000/BetterAI]
 	if (iClosenessValue == 0)
 	{
 		iValue /= (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 4 : 2);

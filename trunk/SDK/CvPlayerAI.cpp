@@ -6903,12 +6903,7 @@ DenialTypes CvPlayerAI::AI_bonusTrade(BonusTypes eBonus, PlayerTypes ePlayer) co
 
 	// XXX marble and stone???
 
-	// Unofficial Patch Start
-	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
-	// EF: I think the original code was correct; there are two AI_getAttitude() functions:
-	//     one takes an int, the other takes a PlayerTypes.
-	eAttitude = GET_PLAYER(getID()).AI_getAttitude(ePlayer);
-	// Unofficial Patch End
+	eAttitude = AI_getAttitude(ePlayer);
 
 	if (bStrategic)
 	{
@@ -7278,11 +7273,7 @@ DenialTypes CvPlayerAI::AI_civicTrade(CivicTypes eCivic, PlayerTypes ePlayer) co
 		return DENIAL_JOKING;
 	}
 
-	// Unofficial Patch Start
-	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
-	// EF: same as above, tho again doesn't cause a problem
-	if (GET_PLAYER(getID()).AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getAdoptCivicRefuseAttitudeThreshold())
-	// Unofficial Patch End
+	if (AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getAdoptCivicRefuseAttitudeThreshold())
 	{
 		return DENIAL_ATTITUDE;
 	}
@@ -7356,10 +7347,7 @@ DenialTypes CvPlayerAI::AI_religionTrade(ReligionTypes eReligion, PlayerTypes eP
 		}
 	}
 
-	// Unofficial Patch Start
-	// * Fixed bug where AI uses player's ID instead of attitude when evaluating deals. [DanF5571]
-	if (GET_PLAYER(getID()).AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getConvertReligionRefuseAttitudeThreshold())
-	// Unofficial Patch End
+	if (AI_getAttitude(ePlayer) <= GC.getLeaderHeadInfo(getPersonalityType()).getConvertReligionRefuseAttitudeThreshold())
 	{
 		return DENIAL_ATTITUDE;
 	}
