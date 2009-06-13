@@ -10,6 +10,18 @@
 #include "CvGameAI.h"
 #include "CvGameCoreUtils.h"
 
+// BUG - EXE/DLL Paths - start
+#include "moduleobject.h"
+#include "CvDLLIniParserIFaceBase.h"
+#include <shlobj.h>
+
+CvString CvInitCore::dllPath;
+CvString CvInitCore::dllName;
+CvString CvInitCore::exePath;
+CvString CvInitCore::exeName;
+bool CvInitCore::bPathsSet;
+// BUG - EXE/DLL Paths - end
+
 // Public Functions...
 
 CvInitCore::CvInitCore()
@@ -53,6 +65,10 @@ CvInitCore::CvInitCore()
 
 	m_aeCustomMapOptions = NULL;
 	m_abVictories = NULL;
+
+// BUG - EXE/DLL Paths - start
+	bPathsSet = false;
+// BUG - EXE/DLL Paths - end
 
 	reset(NO_GAMEMODE);
 }
@@ -2048,3 +2064,73 @@ void CvInitCore::write(FDataStreamBase* pStream)
 	pStream->Write(MAX_PLAYERS, m_abPlayableCiv);
 	pStream->Write(MAX_PLAYERS, m_abMinorNationCiv);
 }
+
+
+// BUG - EXE/DLL Paths - start
+CvString CvInitCore::getDLLPath() const
+{
+	setPathNames();
+	return dllPath;
+}
+
+CvString CvInitCore::getDLLName() const
+{
+	setPathNames();
+	return dllName;
+}
+
+CvString CvInitCore::getExePath() const
+{
+	setPathNames();
+	return exePath;
+}
+
+CvString CvInitCore::getExeName() const
+{
+	setPathNames();
+	return exeName;
+}
+
+extern HANDLE dllModule;
+void CvInitCore::setPathNames()
+{
+	if (bPathsSet)
+	{
+		return;
+	}
+
+	TCHAR pathBuffer[4096];
+	DWORD result;
+	TCHAR* pos;
+	
+	result = GetModuleFileName(NULL, pathBuffer, sizeof(pathBuffer));
+	pos = strchr(pathBuffer, '\\');
+	while (pos != NULL && *pos != NULL)
+	{
+		TCHAR* next = strchr(pos + 1, '\\');
+		if (!next)
+		{
+			*pos = 0;
+			exePath = pathBuffer;
+			exeName = pos + 1;
+		}
+		pos = next;
+	}
+
+	result = GetModuleFileName((HMODULE)dllModule, pathBuffer, sizeof(pathBuffer));
+	pos = strchr(pathBuffer, '\\');
+	while (pos != NULL && *pos != NULL)
+	{
+		TCHAR* next = strchr(pos + 1, '\\');
+		if (!next)
+		{
+			*pos = 0;
+			dllPath = pathBuffer;
+			dllName = pos + 1;
+		}
+		pos = next;
+	}
+
+	bPathsSet = true;
+}
+// BUG - EXE/DLL Paths - end
