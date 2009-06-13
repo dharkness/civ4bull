@@ -622,6 +622,10 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 	eOwner = getOwnerINLINE();
 	eCapturingPlayer = getCapturingPlayer();
 	eCaptureUnitType = ((eCapturingPlayer != NO_PLAYER) ? getCaptureUnitType(GET_PLAYER(eCapturingPlayer).getCivilizationType()) : NO_UNIT);
+// BUG - Unit Captured Event - start
+	PlayerTypes eFromPlayer = getOwner();
+	UnitTypes eCapturedUnitType = getUnitType();
+// BUG - Unit Captured Event - end
 
 	setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true);
 
@@ -639,6 +643,10 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 			if (pkCapturedUnit != NULL)
 			{
+// BUG - Unit Captured Event - start
+				CvEventReporter::getInstance().unitCaptured(eFromPlayer, eCapturedUnitType, pkCapturedUnit);
+// BUG - Unit Captured Event - end
+
 				szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_CAPTURED_UNIT", GC.getUnitInfo(eCaptureUnitType).getTextKeyWide());
 				gDLL->getInterfaceIFace()->addMessage(eCapturingPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITCAPTURE", MESSAGE_TYPE_INFO, pkCapturedUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
