@@ -327,12 +327,6 @@ public:
 	std::wstring pyGetBullName() { return getBullName(); }									// Exposed to Python
 	std::wstring pyGetBullVersion() { return getBullVersion(); }							// Exposed to Python
 // BUG - DLL Info - end
-	
-// Unofficial Patch Start
-	// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
-	bool isUnofficialPatch() const { return GC.isUnofficialPatch(); }
-	int getUnofficialPatchVersion() const { return GC.getUnofficialPatchVersion(); }
-// Unofficial Patch End
 
 };
 

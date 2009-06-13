@@ -875,15 +875,10 @@ public:
 // BUG - DLL Info - start
 	bool isBull() const;
 	int getBullApiVersion() const;
+
 	const wchar* getBullName() const;
 	const wchar* getBullVersion() const;
 // BUG - DLL Info - end
-
-// Unofficial Patch Start
-	// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
-	bool isUnofficialPatch() const;
-	int getUnofficialPatchVersion() const;
-// Unofficial Patch End
 
 	void deleteInfoArrays();
 

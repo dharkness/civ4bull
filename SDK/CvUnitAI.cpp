@@ -9290,7 +9290,6 @@ bool CvUnitAI::AI_switchHurry()
 	{
 		return false;
 	}
-	// Unofficial Patch End
 
 	iBestValue = 0;
 	eBestBuilding = NO_BUILDING;

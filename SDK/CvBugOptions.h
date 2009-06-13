@@ -6,17 +6,9 @@ File:		CvBugOptions.h
 Author:		EmperorFool
 Created:	2009-01-21
 
-Calls out to the BugOptions Python module to check user options.
+Calls out to the CvAppInterface Python module to check user options.
 
 		Copyright (c) 2009 The BUG Mod. All rights reserved.
-
-OPTIONS:
-
-	Unofficial Patch
-
-		- Collateral Damage Limit - Unit Hover - setUnitHelp(unit)
-		- Collateral Damage Limit - Unit Hover Civilopedia/Build - setBasicUnitHelp(type)
-		- Replaced by UB - Building Hover - setBuildingHelp(type)
 
 **********************************************************************/
 

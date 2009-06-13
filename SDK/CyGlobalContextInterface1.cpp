@@ -125,11 +125,5 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getBullVersion", &CyGlobalContext::pyGetBullVersion, "wstring () - returns display version of BULL")
 // BUG - DLL Info - end
 
-// Unofficial Patch Start
-		// Added global context functions isUnofficialPatch() and getUnofficialPatchVersion() which are exposed to Python.
-		.def("isUnofficialPatch", &CyGlobalContext::isUnofficialPatch, "bool () - returns true if DLL uses Unofficial Patch changes")
-		.def("getUnofficialPatchVersion", &CyGlobalContext::getUnofficialPatchVersion, "int () - returns Unofficial Patch version number times 100 if DLL uses Unofficial Patch changes; returns 0 if not")
-// Unofficial Patch End
-
 	;
 }

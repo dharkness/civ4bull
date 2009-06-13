@@ -23,7 +23,6 @@
 // BUG - start
 #include "BugMod.h"
 #include "CvBugOptions.h"
-#include "UnofficialPatch.h"
 // BUG - end
 
 CvDLLWidgetData* CvDLLWidgetData::m_pInst = NULL;
@@ -3649,11 +3648,6 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	// BUG DLL version
 	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), BUG_DLL_NAME, BUG_DLL_VERSION);
 	szBuffer.append(szTempBuffer);
-#ifdef _USE_UNOFFICIALPATCH
-	// Unofficial Patch version
-	szTempBuffer.Format(NEWLINE SETCOLR L"Unofficial Patch %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), UP_PATCH_VERSION / 100.0);
-	szBuffer.append(szTempBuffer);
-#endif
 	// separator line
 	szBuffer.append(NEWLINE L"==============================" NEWLINE);
 // BUG - Version Info - end
