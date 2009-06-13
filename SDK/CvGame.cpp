@@ -30,6 +30,10 @@
 #include "CvDLLEngineIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 
+// BUG - start
+#include "BugMod.h"
+// BUG - end
+
 // Public Functions...
 
 CvGame::CvGame()
@@ -368,8 +372,22 @@ void CvGame::regenerateMap()
 
 	gDLL->getEngineIFace()->AutoSave(true);
 
+// BUG - AutoSave - start
+	gDLL->getPythonIFace()->callFunction(PYBugModule, "gameStartSave");
+// BUG - AutoSave - end
+
 	// EF - This doesn't work until after the game has had time to update.
-	//      Centering on the starting location is now done by MapUtil using BugUtil.delayCall().
+	//      Centering on the starting location is now done by MapFinder using BugUtil.delayCall().
+	//      Must leave this here for non-BUG
+	if (NO_PLAYER != getActivePlayer())
+	{
+		CvPlot* pPlot = GET_PLAYER(getActivePlayer()).getStartingPlot();
+
+		if (NULL != pPlot)
+		{
+			gDLL->getInterfaceIFace()->lookAt(pPlot->getPoint(), CAMERALOOKAT_NORMAL);
+		}
+	}
 }
 
 void CvGame::uninit()
@@ -4717,6 +4735,10 @@ void CvGame::setGameState(GameStateTypes eNewValue)
 		if (eNewValue == GAMESTATE_OVER)
 		{
 			CvEventReporter::getInstance().gameEnd();
+
+// BUG - AutoSave - start
+			gDLL->getPythonIFace()->callFunction(PYBugModule, "gameEndSave");
+// BUG - AutoSave - end
 
 			showEndGameSequence();
 
