@@ -4409,10 +4409,7 @@ int CvCityAI::AI_neededDefenders()
 	{
 		if (bOffenseWar)
 		{
-		    // Unofficial Patch Start
-		    // * Fixed AI defender bug for newly captured cities.
 			if (!hasActiveWorldWonder() && !isHolyCity())
-			// Unofficial Patch End
 			{
 				iDefenders /= 2;
 				iDefenders = std::max(1, iDefenders);
@@ -5915,7 +5912,7 @@ void CvCityAI::AI_doEmphasize()
 	
 	if (GET_PLAYER(getOwnerINLINE()).getCurrentResearch() != NO_TECH)
 	{
-		bFirstTech = GC.getGameINLINE().AI_isFirstTech(GET_PLAYER(getOwnerINLINE()).getCurrentResearch());
+		bFirstTech = GET_PLAYER(getOwnerINLINE()).AI_isFirstTech(GET_PLAYER(getOwnerINLINE()).getCurrentResearch());
 	}
 	else
 	{

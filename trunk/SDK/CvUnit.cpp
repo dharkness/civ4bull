@@ -19,7 +19,7 @@
 #include "CvDLLEntityIFaceBase.h"
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
-#include "CvDLLEventReporterIFaceBase.h"
+#include "CvEventReporter.h"
 #include "CvDLLPythonIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
 #include "CvInfos.h"
@@ -252,7 +252,7 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 
 	AI_init(eUnitAI);
 
-	gDLL->getEventReporterIFace()->unitCreated(this);
+	CvEventReporter::getInstance().unitCreated(this);
 }
 
 
@@ -298,7 +298,6 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iAttackPlotY = INVALID_PLOT_COORD;
 	m_iCombatTimer = 0;
 	m_iCombatFirstStrikes = 0;
-	m_iCombatDamage = 0;
 	m_iFortifyTurns = 0;
 	m_iBlitzCount = 0;
 	m_iAmphibCount = 0;
@@ -362,7 +361,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 		m_aiExtraDomainModifier[iI] = 0;
 	}
 
-	clear(m_szName);
+	m_szName.clear();
 	m_szScriptData ="";
 
 	if (!bConstructorCall)
@@ -526,7 +525,7 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 	if (ePlayer != NO_PLAYER)
 	{
-		gDLL->getEventReporterIFace()->unitKilled(this, ePlayer);
+		CvEventReporter::getInstance().unitKilled(this, ePlayer);
 
 		if (NO_UNIT != getLeaderUnitType())
 		{
@@ -628,7 +627,7 @@ void CvUnit::kill(bool bDelay, PlayerTypes ePlayer)
 
 	joinGroup(NULL, false, false);
 
-	gDLL->getEventReporterIFace()->unitLost(this);
+	CvEventReporter::getInstance().unitLost(this);
 
 	GET_PLAYER(getOwnerINLINE()).deleteUnit(getID());
 
@@ -1084,7 +1083,7 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 		pyArgsCD.add(gDLL->getPythonIFace()->makePythonObject(&cdAttackerDetails));
 		pyArgsCD.add(gDLL->getPythonIFace()->makePythonObject(&cdDefenderDetails));
 		pyArgsCD.add(getCombatOdds(this, pDefender));
-		gDLL->getEventReporterIFace()->genericEvent("combatLogCalc", pyArgsCD.makeFunctionArgs());
+		CvEventReporter::getInstance().genericEvent("combatLogCalc", pyArgsCD.makeFunctionArgs());
 	}
 
 	collateralCombat(pPlot, pDefender);
@@ -1100,14 +1099,9 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					flankingStrikeCombat(pPlot, iAttackerStrength, iAttackerFirepower, iAttackerKillOdds, iDefenderDamage, pDefender);
 
 					changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
-// BUG - Retreat Event - start
-					CyArgsList pyArgs;
-					CyUnit* pyAttacker = new CyUnit(this);
-					CyUnit* pyDefender = new CyUnit(pDefender);
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
-					gDLL->getEventReporterIFace()->genericEvent("combatRetreat", pyArgs.makeFunctionArgs());
-// BUG - Retreat Event - end
+// BUG - Combat Events - start
+					CvEventReporter::getInstance().combatRetreat(this, pDefender);
+// BUG - Combat Events - end
 					break;
 				}
 
@@ -1128,7 +1122,7 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(&cdDefenderDetails));
 					pyArgs.add(1);
 					pyArgs.add(iAttackerDamage);
-					gDLL->getEventReporterIFace()->genericEvent("combatLogHit", pyArgs.makeFunctionArgs());
+					CvEventReporter::getInstance().genericEvent("combatLogHit", pyArgs.makeFunctionArgs());
 				}
 			}
 		}
@@ -1140,14 +1134,9 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 				{
 					changeExperience(GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL"), pDefender->maxXPValue(), true, pPlot->getOwnerINLINE() == getOwnerINLINE(), !pDefender->isBarbarian());
 					pDefender->setDamage(combatLimit(), getOwnerINLINE());
-// BUG - Withdrawal Event - start
-					CyArgsList pyArgs;
-					CyUnit* pyAttacker = new CyUnit(this);
-					CyUnit* pyDefender = new CyUnit(pDefender);
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
-					gDLL->getEventReporterIFace()->genericEvent("combatWithdrawal", pyArgs.makeFunctionArgs());
-// BUG - Withdrawal Event - end
+// BUG - Combat Events - start
+					CvEventReporter::getInstance().combatWithdrawal(this, pDefender);
+// BUG - Combat Events - end
 					break;
 				}
 
@@ -1168,7 +1157,7 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(&cdDefenderDetails));
 					pyArgs.add(0);
 					pyArgs.add(iDefenderDamage);
-					gDLL->getEventReporterIFace()->genericEvent("combatLogHit", pyArgs.makeFunctionArgs());
+					CvEventReporter::getInstance().genericEvent("combatLogHit", pyArgs.makeFunctionArgs());
 				}
 			}
 		}
@@ -1451,7 +1440,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
-			gDLL->getEventReporterIFace()->combatResult(pDefender, this);
+			CvEventReporter::getInstance().combatResult(pDefender, this);
 		}
 		else if (pDefender->isDead())
 		{
@@ -1480,7 +1469,7 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer,GC.getEraInfo(GC.getGameINLINE().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 
 			// report event to Python, along with some other key state
-			gDLL->getEventReporterIFace()->combatResult(this, pDefender);
+			CvEventReporter::getInstance().combatResult(this, pDefender);
 
 			bool bAdvance = false;
 
@@ -1529,15 +1518,6 @@ void CvUnit::updateCombat(bool bQuick)
 			gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_OUR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_GREEN"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
 			szBuffer = gDLL->getText("TXT_KEY_MISC_ENEMY_UNIT_WITHDRAW", getNameKey(), pDefender->getNameKey());
 			gDLL->getInterfaceIFace()->addMessage(pDefender->getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_THEIR_WITHDRAWL", MESSAGE_TYPE_INFO, NULL, (ColorTypes)GC.getInfoTypeForString("COLOR_RED"), pPlot->getX_INLINE(), pPlot->getY_INLINE());
-/*
-// BUG - Unit Withdraw Event - start
-			CyArgsList pyArgs;
-			pyArgs.add(gDLL->getPythonIFace()->makePythonObject(this));
-			pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pUpgradeUnit));
-			pyArgs.add(upgradePrice(eUnit));
-			gDLL->getEventReporterIFace()->genericEvent("combatWithdraw", pyArgs.makeFunctionArgs());
-// BUG - Unit Withdraw Event - end
-*/
 			changeMoves(std::max(GC.getMOVE_DENOMINATOR(), pPlot->movementCost(this, plot())));
 			checkRemoveSelectionAfterAttack();
 
@@ -2195,6 +2175,11 @@ bool CvUnit::canEnterTerritory(TeamTypes eTeam, bool bIgnoreRightOfPassage) cons
 		return true;
 	}
 
+	if (m_pUnitInfo->isHiddenNationality())
+	{
+		return true;
+	}
+
 	if (!bIgnoreRightOfPassage)
 	{
 		if (GET_TEAM(getTeam()).isOpenBorders(eTeam))
@@ -2255,7 +2240,7 @@ TeamTypes CvUnit::getDeclareWarMove(const CvPlot* pPlot) const
 		{
 			if (pPlot->isActiveVisible(false))
 			{
-				if (canMoveInto(pPlot, true, true))
+				if (canMoveInto(pPlot, true, true, true))
 				{
 					pUnit = pPlot->plotCheck(PUF_canDeclareWar, getOwnerINLINE(), isAlwaysHostile(pPlot), NO_PLAYER, NO_TEAM, PUF_isVisible, getOwnerINLINE());
 
@@ -2787,7 +2772,7 @@ void CvUnit::move(CvPlot* pPlot, bool bShow)
 		}
 	}
 
-	gDLL->getEventReporterIFace()->unitMove(pPlot, this, pOldPlot);
+	CvEventReporter::getInstance().unitMove(pPlot, this, pOldPlot);
 }
 
 // false if unit is killed
@@ -3065,7 +3050,7 @@ void CvUnit::gift(bool bTestTransport)
 	gDLL->getInterfaceIFace()->addMessage(pGiftUnit->getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_UNITGIFTED", MESSAGE_TYPE_INFO, pGiftUnit->getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), pGiftUnit->getX_INLINE(), pGiftUnit->getY_INLINE(), true, true);
 
 	// Python Event
-	gDLL->getEventReporterIFace()->unitGifted(pGiftUnit, getOwnerINLINE(), plot());
+	CvEventReporter::getInstance().unitGifted(pGiftUnit, getOwnerINLINE(), plot());
 }
 
 
@@ -4539,12 +4524,15 @@ bool CvUnit::pillage()
 
 	if (pPlot->isWater())
 	{
-		CvUnit* pInterceptor = bestSeaPillageInterceptor(pPlot);
+		CvUnit* pInterceptor = bestSeaPillageInterceptor(this, GC.getDefineINT("COMBAT_DIE_SIDES") / 2);
 		if (NULL != pInterceptor)
 		{
 			setMadeAttack(false);
 
+			int iWithdrawal = withdrawalProbability();
+			changeExtraWithdrawal(-iWithdrawal); // no withdrawal since we are really the defender
 			attack(pInterceptor->plot(), false);
+			changeExtraWithdrawal(iWithdrawal);
 
 			return false;
 		}
@@ -4612,7 +4600,7 @@ bool CvUnit::pillage()
 
 	if (eTempImprovement != NO_IMPROVEMENT || eTempRoute != NO_ROUTE)
 	{
-		gDLL->getEventReporterIFace()->unitPillage(this, eTempImprovement, eTempRoute, getOwnerINLINE());
+		CvEventReporter::getInstance().unitPillage(this, eTempImprovement, eTempRoute, getOwnerINLINE());
 	}
 
 	return true;
@@ -5366,7 +5354,7 @@ bool CvUnit::spread(ReligionTypes eReligion)
 		}
 
 		// Python Event
-		gDLL->getEventReporterIFace()->unitSpreadReligionAttempt(this, eReligion, bSuccess);
+		CvEventReporter::getInstance().unitSpreadReligionAttempt(this, eReligion, bSuccess);
 	}
 
 	if (plot()->isActiveVisible(false))
@@ -5668,7 +5656,7 @@ bool CvUnit::construct(BuildingTypes eBuilding)
 	{
 		pCity->setNumRealBuilding(eBuilding, pCity->getNumRealBuilding(eBuilding) + 1);
 
-		gDLL->getEventReporterIFace()->buildingBuilt(pCity, eBuilding);
+		CvEventReporter::getInstance().buildingBuilt(pCity, eBuilding);
 	}
 
 	if (plot()->isActiveVisible(false))
@@ -6421,7 +6409,7 @@ bool CvUnit::build(BuildTypes eBuild)
 	}
 
 	// Python Event
-	gDLL->getEventReporterIFace()->unitBuildImprovement(this, eBuild, bFinished);
+	CvEventReporter::getInstance().unitBuildImprovement(this, eBuild, bFinished);
 
 	return bFinished;
 }
@@ -6530,7 +6518,7 @@ void CvUnit::promote(PromotionTypes ePromotion, int iLeaderUnitId)
 		setInfoBarDirty(true);
 	}
 
-	gDLL->getEventReporterIFace()->unitPromoted(this, ePromotion);
+	CvEventReporter::getInstance().unitPromoted(this, ePromotion);
 }
 
 bool CvUnit::lead(int iUnitId)
@@ -7027,7 +7015,10 @@ void CvUnit::upgrade(UnitTypes eUnit)
 		return;
 	}
 
-	GET_PLAYER(getOwnerINLINE()).changeGold(-(upgradePrice(eUnit)));
+// BUG - Upgrade Unit Event - start
+	int iPrice = upgradePrice(eUnit);
+	GET_PLAYER(getOwnerINLINE()).changeGold(-iPrice);
+// BUG - Upgrade Unit Event - end
 
 	pUpgradeUnit = GET_PLAYER(getOwnerINLINE()).initUnit(eUnit, getX_INLINE(), getY_INLINE(), AI_getUnitAIType());
 
@@ -7048,13 +7039,7 @@ void CvUnit::upgrade(UnitTypes eUnit)
 	}
 
 // BUG - Upgrade Unit Event - start
-	CyArgsList pyArgs;
-	CyUnit* pyOldUnit = new CyUnit(this);
-	CyUnit* pyNewUnit = new CyUnit(pUpgradeUnit);
-	pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyOldUnit));
-	pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyNewUnit));
-	pyArgs.add(upgradePrice(eUnit));
-	gDLL->getEventReporterIFace()->genericEvent("unitUpgraded", pyArgs.makeFunctionArgs());
+	CvEventReporter::getInstance().unitUpgraded(this, pUpgradeUnit, iPrice);
 // BUG - Upgrade Unit Event - end
 }
 
@@ -8265,20 +8250,15 @@ CvUnit* CvUnit::bestInterceptor(const CvPlot* pPlot) const
 }
 
 
-CvUnit* CvUnit::bestSeaPillageInterceptor(const CvPlot* pPlot) const
+CvUnit* CvUnit::bestSeaPillageInterceptor(CvUnit* pPillager, int iMinOdds) const
 {
-	if (!pPlot->isWater())
-	{
-		return NULL;
-	}
-
 	CvUnit* pBestUnit = NULL;
 
 	for (int iDX = -1; iDX <= 1; ++iDX)
 	{
 		for (int iDY = -1; iDY <= 1; ++iDY)
 		{
-			CvPlot* pLoopPlot = plotXY(pPlot->getX_INLINE(), pPlot->getY_INLINE(), iDX, iDY);
+			CvPlot* pLoopPlot = plotXY(pPillager->getX_INLINE(), pPillager->getY_INLINE(), iDX, iDY);
 
 			if (NULL != pLoopPlot)
 			{
@@ -8291,7 +8271,7 @@ CvUnit* CvUnit::bestSeaPillageInterceptor(const CvPlot* pPlot) const
 
 					if (NULL != pLoopUnit)
 					{
-						if (pLoopUnit->area() == pPlot->area())
+						if (pLoopUnit->area() == pPillager->plot()->area())
 						{
 							if (!pLoopUnit->isInvisible(getTeam(), false))
 							{
@@ -8303,7 +8283,10 @@ CvUnit* CvUnit::bestSeaPillageInterceptor(const CvPlot* pPlot) const
 										{
 											if (NULL == pBestUnit || pLoopUnit->isBetterDefenderThan(pBestUnit, this))
 											{
-												pBestUnit = pLoopUnit;
+												if (getCombatOdds(pPillager, pLoopUnit) < iMinOdds)
+												{
+													pBestUnit = pLoopUnit;
+												}
 											}
 										}
 									}
@@ -9496,10 +9479,13 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	}
 
 	//update glow
-	gDLL->getEntityIFace()->updateEnemyGlow(getUnitEntity());
+	if (pNewPlot != NULL)
+	{
+		gDLL->getEntityIFace()->updateEnemyGlow(getUnitEntity());
+	}
 
 	// report event to Python, along with some other key state
-	gDLL->getEventReporterIFace()->unitSetXY(pNewPlot, this);
+	CvEventReporter::getInstance().unitSetXY(pNewPlot, this);
 }
 
 
@@ -9876,17 +9862,6 @@ void CvUnit::setCombatFirstStrikes(int iNewValue)
 void CvUnit::changeCombatFirstStrikes(int iChange)			
 {
 	setCombatFirstStrikes(getCombatFirstStrikes() + iChange);
-}
-
-int CvUnit::getCombatDamage() const
-{
-	return m_iCombatDamage;
-}
-
-void CvUnit::setCombatDamage(int iNewValue)			
-{
-	m_iCombatDamage = iNewValue;
-	FAssert(getCombatDamage() >= 0);
 }
 
 int CvUnit::getFortifyTurns() const
@@ -10745,7 +10720,6 @@ void CvUnit::setCombatUnit(CvUnit* pCombatUnit, bool bAttacking)
 		m_bCombatFocus = (bAttacking && !(gDLL->getInterfaceIFace()->isFocusedWidget()) && ((getOwnerINLINE() == GC.getGameINLINE().getActivePlayer()) || ((pCombatUnit->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer()) && !(GC.getGameINLINE().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)))));
 		m_combatUnit = pCombatUnit->getIDInfo();
 		setCombatFirstStrikes((pCombatUnit->immuneToFirstStrikes()) ? 0 : (firstStrikes() + GC.getGameINLINE().getSorenRandNum(chanceFirstStrikes() + 1, "First Strike")));
-		setCombatDamage(0);
 	}
 	else
 	{
@@ -10756,7 +10730,6 @@ void CvUnit::setCombatUnit(CvUnit* pCombatUnit, bool bAttacking)
 			m_bCombatFocus = false;
 			m_combatUnit.reset();
 			setCombatFirstStrikes(0);
-			setCombatDamage(0);
 
 			if (IsSelected())
 			{
@@ -10871,7 +10844,7 @@ const CvWString CvUnit::getName(uint uiForm) const
 {
 	CvWString szBuffer;
 
-	if (isEmpty(m_szName))
+	if (m_szName.empty())
 	{
 		return m_pUnitInfo->getDescription(uiForm);
 	}
@@ -10897,7 +10870,7 @@ bool CvUnit::isDescInName() const
 
 const wchar* CvUnit::getNameKey() const
 {
-	if (isEmpty(m_szName))
+	if (m_szName.empty())
 	{
 		return m_pUnitInfo->getTextKeyWide();
 	}
@@ -11352,7 +11325,11 @@ void CvUnit::read(FDataStreamBase* pStream)
 	pStream->Read(&m_iAttackPlotY);
 	pStream->Read(&m_iCombatTimer);
 	pStream->Read(&m_iCombatFirstStrikes);
-	pStream->Read(&m_iCombatDamage);
+	if (uiFlag < 2)
+	{
+		int iCombatDamage;
+		pStream->Read(&iCombatDamage);
+	}
 	pStream->Read(&m_iFortifyTurns);
 	pStream->Read(&m_iBlitzCount);
 	pStream->Read(&m_iAmphibCount);
@@ -11435,7 +11412,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 
 void CvUnit::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=1;
+	uint uiFlag=2;
 	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iID);
@@ -11457,7 +11434,6 @@ void CvUnit::write(FDataStreamBase* pStream)
 	pStream->Write(m_iAttackPlotY);
 	pStream->Write(m_iCombatTimer);
 	pStream->Write(m_iCombatFirstStrikes);
-	pStream->Write(m_iCombatDamage);
 	pStream->Write(m_iFortifyTurns);
 	pStream->Write(m_iBlitzCount);
 	pStream->Write(m_iAmphibCount);
@@ -11564,7 +11540,6 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 	CvUnit* pLoopUnit;
 	CvUnit* pBestUnit;
 	CvWString szBuffer;
-	int iCollateralStrength;
 	int iTheirStrength;
 	int iStrengthFactor;
 	int iCollateralDamage;
@@ -11577,8 +11552,7 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 	std::map<CvUnit*, int> mapUnitDamage;
 	std::map<CvUnit*, int>::iterator it;
 
-	iCollateralStrength = ((((getDomainType() == DOMAIN_AIR) ? airBaseCombatStr() : baseCombatStr()) * collateralDamage()) / 100);
-
+	int iCollateralStrength = (getDomainType() == DOMAIN_AIR ? airBaseCombatStr() : baseCombatStr()) * collateralDamage() / 100;
 	// Unofficial Patch Start
 	// * Barrage promotions made working again on Tanks and other units with no base collateral ability
 	if (iCollateralStrength == 0 && getExtraCollateralDamage() == 0)
@@ -11646,9 +11620,6 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 			{
 				iTheirStrength = pBestUnit->baseCombatStr();
 
-				// Unofficial Patch Start
-				// * Revised collateral damage formula for non-native collateral units, if modded in
-				// * Fixed collateral damage calculation related to defensive modifiers like those on Drill 2+ units. [DanF5771]
 				if (iCollateralStrength == 0)
 				{
 					iCollateralStrength = baseCombatStr();
@@ -11658,17 +11629,17 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 
 				iCollateralDamage = (GC.getDefineINT("COLLATERAL_COMBAT_DAMAGE") * (iCollateralStrength + iStrengthFactor)) / (iTheirStrength + iStrengthFactor);
 
-				int iModifier = getUnitInfo().getCollateralDamage() > 0 ? (100 + getExtraCollateralDamage()) : getExtraCollateralDamage();
-				iModifier *= (100 - pBestUnit->getCollateralDamageProtection());
-				iModifier /= 100;
+				iCollateralDamage *= 100 + getExtraCollateralDamage();
+
+				iCollateralDamage *= std::max(0, 100 - pBestUnit->getCollateralDamageProtection());
+				iCollateralDamage /= 100;
 
 				if (pCity != NULL)
 				{
-					iModifier *= (100 + pCity->getAirModifier());
-					iModifier /= 100;
-					// Unofficial Patch End
+					iCollateralDamage *= 100 + pCity->getAirModifier();
+					iCollateralDamage /= 100;
 				}
-				iCollateralDamage *= iModifier;
+
 				iCollateralDamage /= 100;
 
 				iCollateralDamage = std::max(0, iCollateralDamage);
@@ -11678,17 +11649,11 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 
 				if (pBestUnit->getDamage() != iUnitDamage)
 				{
-// BUG - Collateral Damage Event - start
+// BUG - Combat Events - start
 					int iDamageDone = iUnitDamage - pBestUnit->getDamage();
 					pBestUnit->setDamage(iUnitDamage, getOwnerINLINE());
-					CyArgsList pyArgs;
-					CyUnit* pyAttacker = new CyUnit(this);
-					CyUnit* pyDefender = new CyUnit(pBestUnit);
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
-					pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
-					pyArgs.add(iDamageDone);
-					gDLL->getEventReporterIFace()->genericEvent("combatLogCollateral", pyArgs.makeFunctionArgs());
-// BUG - Collateral Damage Event - end
+					CvEventReporter::getInstance().combatLogCollateral(this, pBestUnit, iDamageDone);
+// BUG - Combat Events - end
 					iDamageCount++;
 				}
 			}
@@ -11770,9 +11735,9 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 		int iIndexHit = GC.getGameINLINE().getSorenRandNum(listFlankedUnits.size(), "Pick Flanked Unit");
 		CvUnit* pUnit = listFlankedUnits[iIndexHit].first;
 		int iDamage = listFlankedUnits[iIndexHit].second;
-// BUG - Flanking Damage Event - start
+// BUG - Combat Events - start
 		int iDamageDone = iDamage - pUnit->getDamage();
-// BUG - Flanking Damage Event - end
+// BUG - Combat Events - end
 		pUnit->setDamage(iDamage, getOwnerINLINE());
 		if (pUnit->isDead())
 		{
@@ -11783,15 +11748,9 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 
 			pUnit->kill(false); 
 		}
-// BUG - Flanking Damage Event - start
-		CyArgsList pyArgs;
-		CyUnit* pyAttacker = new CyUnit(this);
-		CyUnit* pyDefender = new CyUnit(pUnit);
-		pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyAttacker));
-		pyArgs.add(gDLL->getPythonIFace()->makePythonObject(pyDefender));
-		pyArgs.add(iDamageDone);
-		gDLL->getEventReporterIFace()->genericEvent("combatLogFlanking", pyArgs.makeFunctionArgs());
-// BUG - Flanking Damage Event - end
+// BUG - Combat Events - start
+		CvEventReporter::getInstance().combatLogFlanking(this, pUnit, iDamageDone);
+// BUG - Combat Events - end
 		
 		listFlankedUnits.erase(std::remove(listFlankedUnits.begin(), listFlankedUnits.end(), listFlankedUnits[iIndexHit]));
 	}
@@ -12419,15 +12378,12 @@ int CvUnit::getTriggerValue(EventTriggerTypes eTrigger, const CvPlot* pPlot, boo
 		return MIN_INT;
 	}
 
-	// Unofficial Patch Start
-	// * Fixed bug that allowed an event to trigger on a unit who just died.
 	if (isDead())
 	{
 		return MIN_INT;
 	}
-	// Unofficial Patch End
 
-	if (!isEmpty(kTrigger.getPythonCanDoUnit()))
+	if (!CvString(kTrigger.getPythonCanDoUnit()).empty())
 	{
 		long lResult;
 
@@ -12580,6 +12536,62 @@ const TCHAR* CvUnit::getButton() const
 	return m_pUnitInfo->getButton();
 }
 
+int CvUnit::getGroupSize() const
+{
+	return m_pUnitInfo->getGroupSize();
+}
+
+int CvUnit::getGroupDefinitions() const
+{
+	return m_pUnitInfo->getGroupDefinitions();
+}
+
+int CvUnit::getUnitGroupRequired(int i) const
+{
+	return m_pUnitInfo->getUnitGroupRequired(i);
+}
+
+bool CvUnit::isRenderAlways() const
+{
+	return m_pUnitInfo->isRenderAlways();
+}
+
+float CvUnit::getAnimationMaxSpeed() const
+{
+	return m_pUnitInfo->getUnitMaxSpeed();
+}
+
+float CvUnit::getAnimationPadTime() const
+{
+	return m_pUnitInfo->getUnitPadTime();
+}
+
+const char* CvUnit::getFormationType() const
+{
+	return m_pUnitInfo->getFormationType();
+}
+
+bool CvUnit::isMechUnit() const
+{
+	return m_pUnitInfo->isMechUnit();
+}
+
+bool CvUnit::isRenderBelowWater() const
+{
+	return m_pUnitInfo->isRenderBelowWater();
+}
+
+int CvUnit::getRenderPriority(UnitSubEntityTypes eUnitSubEntity, int iMeshGroupType, int UNIT_MAX_SUB_TYPES) const
+{
+	if (eUnitSubEntity == UNIT_SUB_ENTITY_SIEGE_TOWER)
+	{
+		return (getOwner() * (GC.getNumUnitInfos() + 2) * UNIT_MAX_SUB_TYPES) + iMeshGroupType;
+	}
+	else
+	{
+		return (getOwner() * (GC.getNumUnitInfos() + 2) * UNIT_MAX_SUB_TYPES) + m_eUnitType * UNIT_MAX_SUB_TYPES + iMeshGroupType;
+	}
+}
 
 bool CvUnit::isAlwaysHostile(const CvPlot* pPlot) const
 {
@@ -12639,4 +12651,90 @@ bool CvUnit::isCombatVisible(const CvUnit* pDefender) const
 	}
 
 	return bVisible;
+}
+
+// used by the executable for the red glow and plot indicators
+bool CvUnit::shouldShowEnemyGlow(TeamTypes eForTeam) const
+{
+	if (isDelayedDeath())
+	{
+		return false;
+	}
+
+	if (getDomainType() == DOMAIN_AIR)
+	{
+		return false;
+	}
+
+	if (!canFight())
+	{
+		return false;
+	}
+
+	CvPlot* pPlot = plot();
+	if (pPlot == NULL)
+	{
+		return false;
+	}
+
+	TeamTypes ePlotTeam = pPlot->getTeam();
+	if (ePlotTeam != eForTeam)
+	{
+		return false;
+	}
+
+	if (!isEnemy(ePlotTeam))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool CvUnit::shouldShowFoundBorders() const
+{
+	return isFound();
+}
+
+
+void CvUnit::cheat(bool bCtrl, bool bAlt, bool bShift)
+{
+	if (gDLL->getChtLvl() > 0)
+	{
+		if (bCtrl)
+		{
+			setPromotionReady(true);
+		}
+	}
+}
+
+float CvUnit::getHealthBarModifier() const
+{
+	return (GC.getDefineFLOAT("HEALTH_BAR_WIDTH") / (GC.getGameINLINE().getBestLandUnitCombat() * 2));
+}
+
+void CvUnit::getLayerAnimationPaths(std::vector<AnimationPathTypes>& aAnimationPaths) const
+{
+	for (int i=0; i < GC.getNumPromotionInfos(); ++i)
+	{
+		PromotionTypes ePromotion = (PromotionTypes) i;
+		if (isHasPromotion(ePromotion))
+		{
+			AnimationPathTypes eAnimationPath = (AnimationPathTypes) GC.getPromotionInfo(ePromotion).getLayerAnimationPath();
+			if(eAnimationPath != ANIMATIONPATH_NONE)
+			{
+				aAnimationPaths.push_back(eAnimationPath);
+			}
+		}
+	}
+}
+
+int CvUnit::getSelectionSoundScript() const
+{
+	int iScriptId = getArtInfo(0, GET_PLAYER(getOwnerINLINE()).getCurrentEra())->getSelectionSoundScriptId();
+	if (iScriptId == -1)
+	{
+		iScriptId = GC.getCivilizationInfo(getCivilizationType()).getSelectionSoundScriptId();
+	}
+	return iScriptId;
 }

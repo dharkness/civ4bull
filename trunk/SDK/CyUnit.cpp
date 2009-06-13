@@ -773,11 +773,6 @@ CyUnit* CyUnit::bestInterceptor(CyPlot* pPlot)
 	return m_pUnit ? new CyUnit(m_pUnit->bestInterceptor(pPlot->getPlot())) : false;
 }
 
-CyUnit* CyUnit::bestSeaPillageInterceptor(CyPlot* pPlot)
-{
-	return m_pUnit ? new CyUnit(m_pUnit->bestSeaPillageInterceptor(pPlot->getPlot())) : false;
-}
-
 bool CyUnit::isAutomated()
 {
 	return m_pUnit ? m_pUnit->isAutomated() : false;
@@ -1393,10 +1388,7 @@ int CyUnit::getExtraHillsDefensePercent()
 
 int CyUnit::getRevoltProtection() const
 {
-	// Unofficial Patch Start
-	// * Fixed bug with CyUnit::getRevoltProtection() returning the wrong value.
 	return m_pUnit ? m_pUnit->getRevoltProtection() : -1;
-	// Unofficial Patch End
 }
 
 int CyUnit::getCollateralDamageProtection() const
