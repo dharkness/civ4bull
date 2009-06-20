@@ -23,6 +23,10 @@
 #include "CvEventReporter.h"
 #include "CvMessageControl.h"
 
+// BUG - start
+#include "BugMod.h"
+// BUG - end
+
 // Public Functions...
 
 #define PASSWORD_DEFAULT (L"*****")
@@ -81,9 +85,21 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 			switch (info.getData1())
 			{
 			case 0:
+// BUG - Exit Save - start
+				if (GC.getGameINLINE().getVictory() == NO_VICTORY)
+				{
+					gDLL->getPythonIFace()->callFunction(PYBugModule, "gameExitSave");
+				}
+// BUG - Exit Save - end
 				gDLL->SetDone(true);
 				break;
 			case 1:
+// BUG - Exit Save - start
+				if (GC.getGameINLINE().getVictory() == NO_VICTORY)
+				{
+					gDLL->getPythonIFace()->callFunction(PYBugModule, "gameExitSave");
+				}
+// BUG - Exit Save - end
 				gDLL->getInterfaceIFace()->exitingToMainMenu();
 				break;
 			case 2:
