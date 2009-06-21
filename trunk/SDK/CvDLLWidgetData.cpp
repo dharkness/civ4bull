@@ -2059,8 +2059,14 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 			}
 
 			pMissionCity = pMissionPlot->getPlotCity();
-
+			
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+			if (GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_HEAL || GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_SENTRY_WHILE_HEAL)
+#else
 			if (GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_HEAL)
+#endif
+// BUG - Sentry Actions - end
 			{
 				iTurns = 0;
 
@@ -2945,6 +2951,12 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					szBuffer.append(CvWString::format(L"%s%s", NEWLINE, GC.getBuildInfo(eBuild).getHelp()).c_str());
 				}
 			}
+// BUG - Fortify/Sleep All Action - start
+			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_FORTIFY || GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType() == MISSION_SLEEP)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_SAME_UNITS_TYPE"));
+			}
+// BUG - Fortify/Sleep All Action - end
 
 			if (!CvWString(GC.getMissionInfo((MissionTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getMissionType())).getHelp()).empty())
 			{
@@ -3017,6 +3029,12 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 					}
 				}
 			}
+// BUG - Delete All Action - start
+			else if (GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType() == COMMAND_DELETE)
+			{
+				szBuffer.append(gDLL->getText("TXT_KEY_SAME_UNITS_TYPE"));
+			}
+// BUG - Delete All Action - end
 
 			if (GC.getCommandInfo((CommandTypes)(GC.getActionInfo(widgetDataStruct.m_iData1).getCommandType())).getAll())
 			{

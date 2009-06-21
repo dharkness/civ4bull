@@ -955,15 +955,37 @@ void CvGame::selectionListGameNetMessage(int eMessage, int iData2, int iData3, i
 			}
 			else if (eMessage == GAMEMESSAGE_DO_COMMAND)
 			{
-				pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
-
-				while (pSelectedUnitNode != NULL)
+// BUG - Delete All Action - start
+				if ((iData2 == COMMAND_DELETE) && bAlt)
 				{
+					CvPlayerAI& kPlayer = GET_PLAYER(pHeadSelectedUnit->getOwnerINLINE());
+					int iLoop;
+					pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
 					pSelectedUnit = ::getUnit(pSelectedUnitNode->m_data);
-					pSelectedUnitNode = gDLL->getInterfaceIFace()->nextSelectionListNode(pSelectedUnitNode);
+					UnitTypes kType = pSelectedUnit->getUnitType();
 
-					CvMessageControl::getInstance().sendDoCommand(pSelectedUnit->getID(), ((CommandTypes)iData2), iData3, iData4, bAlt);
+					for (CvUnit* pLoopUnit = kPlayer.firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = kPlayer.nextUnit(&iLoop))
+					{
+						if (pLoopUnit->getUnitType() == kType)
+						{
+                            CvMessageControl::getInstance().sendDoCommand(pLoopUnit->getID(), ((CommandTypes)iData2), iData3, iData4, bAlt);
+						}
+					}
 				}
+				else
+				{
+					// unchanged
+					pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
+
+					while (pSelectedUnitNode != NULL)
+					{
+						pSelectedUnit = ::getUnit(pSelectedUnitNode->m_data);
+						pSelectedUnitNode = gDLL->getInterfaceIFace()->nextSelectionListNode(pSelectedUnitNode);
+
+						CvMessageControl::getInstance().sendDoCommand(pSelectedUnit->getID(), ((CommandTypes)iData2), iData3, iData4, bAlt);
+					}
+				}
+// BUG - Delete All Action - end
 			}
 			else if ((eMessage == GAMEMESSAGE_PUSH_MISSION) || (eMessage == GAMEMESSAGE_AUTO_MISSION))
 			{
@@ -974,7 +996,27 @@ void CvGame::selectionListGameNetMessage(int eMessage, int iData2, int iData3, i
 
 				if (eMessage == GAMEMESSAGE_PUSH_MISSION)
 				{
-					CvMessageControl::getInstance().sendPushMission(pHeadSelectedUnit->getID(), ((MissionTypes)iData2), iData3, iData4, iFlags, bShift);
+// BUG - Fortify/Sleep All Action - start
+					if (((iData2 == MISSION_FORTIFY) || (iData2 == MISSION_SLEEP)) && bAlt)
+					{
+						CvPlayerAI& kPlayer = GET_PLAYER(pHeadSelectedUnit->getOwnerINLINE());
+						int iLoop;
+						pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
+						pSelectedUnit = ::getUnit(pSelectedUnitNode->m_data);
+						UnitTypes kType = pSelectedUnit->getUnitType();
+
+						for(CvSelectionGroup* pLoopSelectionGroup = kPlayer.firstSelectionGroup(&iLoop); pLoopSelectionGroup; pLoopSelectionGroup = kPlayer.nextSelectionGroup(&iLoop))
+						{
+							if (pLoopSelectionGroup->onlyUnitTypeGroup(kType))
+                                CvMessageControl::getInstance().sendPushMission(pLoopSelectionGroup->getHeadUnit()->getID(), ((MissionTypes)iData2), iData3, iData4, iFlags, bShift);
+						}
+					}
+					else
+					{
+						// unchanged
+						CvMessageControl::getInstance().sendPushMission(pHeadSelectedUnit->getID(), ((MissionTypes)iData2), iData3, iData4, iFlags, bShift);
+					}
+// BUG - Fortify/Sleep All Action - end
 				}
 				else
 				{
@@ -1182,7 +1224,9 @@ void CvGame::handleAction(int iAction)
 
 	if (GC.getActionInfo(iAction).getMissionType() != NO_MISSION)
 	{
-		selectionListGameNetMessage(GAMEMESSAGE_PUSH_MISSION, GC.getActionInfo(iAction).getMissionType(), GC.getActionInfo(iAction).getMissionData(), -1, 0, false, bShift);
+// BUG - Fortify/Sleep All Action - start
+		selectionListGameNetMessage(GAMEMESSAGE_PUSH_MISSION, GC.getActionInfo(iAction).getMissionType(), GC.getActionInfo(iAction).getMissionData(), -1, 0, bAlt, bShift);
+// BUG - Fortify/Sleep All Action - end
 	}
 
 	if (GC.getActionInfo(iAction).getCommandType() != NO_COMMAND)
