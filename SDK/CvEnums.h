@@ -247,6 +247,11 @@ enum InterfaceModeTypes			// Exposed to Python
 	INTERFACEMODE_REBASE,
 	INTERFACEMODE_PYTHON_PICK_PLOT,
 	INTERFACEMODE_SAVE_PLOT_NIFS,
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	INTERFACEMODE_GO_TO_SENTRY,
+#endif
+// BUG - Sentry Actions - end
 
 #ifdef _USRDLL
 	NUM_INTERFACEMODE_TYPES
@@ -1371,6 +1376,13 @@ enum ActivityTypes			// Exposed to Python
 	ACTIVITY_MISSION,
 	ACTIVITY_PATROL,
 	ACTIVITY_PLUNDER,
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	ACTIVITY_SENTRY_WHILE_HEAL,
+	ACTIVITY_SENTRY_NAVAL_UNITS,
+	ACTIVITY_SENTRY_LAND_UNITS,
+#endif
+// BUG - Sentry Actions - end
 
 #ifdef _USRDLL
 	NUM_ACTIVITY_TYPES
@@ -1445,6 +1457,14 @@ enum MissionTypes				// Exposed to Python
 	MISSION_DAMAGE,
 	MISSION_MULTI_SELECT,
 	MISSION_MULTI_DESELECT,
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	MISSION_MOVE_TO_SENTRY,
+	MISSION_SENTRY_WHILE_HEAL,
+	MISSION_SENTRY_NAVAL_UNITS,
+	MISSION_SENTRY_LAND_UNITS,
+#endif
+// BUG - Sentry Actions - end
 
 #ifdef _USRDLL
 	NUM_MISSION_TYPES

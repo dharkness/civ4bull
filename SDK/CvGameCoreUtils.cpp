@@ -2194,7 +2194,16 @@ void getActivityTypeString(CvWString& szString, ActivityTypes eActivityType)
 	case ACTIVITY_SLEEP: szString = L"ACTIVITY_SLEEP"; break;
 	case ACTIVITY_HEAL: szString = L"ACTIVITY_HEAL"; break;
 	case ACTIVITY_SENTRY: szString = L"ACTIVITY_SENTRY"; break;
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	case ACTIVITY_SENTRY_WHILE_HEAL: szString = L"ACTIVITY_SENTRY_WHILE_HEAL"; break;
+	case ACTIVITY_SENTRY_NAVAL_UNITS: szString = L"ACTIVITY_SENTRY_NAVAL_UNITS"; break;
+	case ACTIVITY_SENTRY_LAND_UNITS: szString = L"ACTIVITY_SENTRY_LAND_UNITS"; break;
+	case ACTIVITY_INTERCEPT: szString = L"ACTIVITY_INTERCEPT"; break;
+#else
 	case ACTIVITY_INTERCEPT: szString = L"ACTIVITY_SENTRY"; break;
+#endif
+// BUG - Sentry Actions - end
 	case ACTIVITY_MISSION: szString = L"ACTIVITY_MISSION"; break;
 
 	default: szString = CvWString::format(L"UNKNOWN_ACTIVITY(%d)", eActivityType); break;
@@ -2208,6 +2217,11 @@ void getMissionTypeString(CvWString& szString, MissionTypes eMissionType)
 	case NO_MISSION: szString = L"NO_MISSION"; break;
 
 	case MISSION_MOVE_TO: szString = L"MISSION_MOVE_TO"; break;
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	case MISSION_MOVE_TO_SENTRY: szString = L"MISSION_MOVE_TO_SENTRY"; break;
+#endif
+// BUG - Sentry Actions - end
 	case MISSION_ROUTE_TO: szString = L"MISSION_ROUTE_TO"; break;
 	case MISSION_MOVE_TO_UNIT: szString = L"MISSION_MOVE_TO_UNIT"; break;
 	case MISSION_SKIP: szString = L"MISSION_SKIP"; break;
@@ -2218,6 +2232,13 @@ void getMissionTypeString(CvWString& szString, MissionTypes eMissionType)
 	case MISSION_SEAPATROL: szString = L"MISSION_SEAPATROL"; break;
 	case MISSION_HEAL: szString = L"MISSION_HEAL"; break;
 	case MISSION_SENTRY: szString = L"MISSION_SENTRY"; break;
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	case MISSION_SENTRY_WHILE_HEAL: szString = L"MISSION_SENTRY_WHILE_HEAL"; break;
+	case MISSION_SENTRY_NAVAL_UNITS: szString = L"MISSION_SENTRY_NAVAL_UNITS"; break;
+	case MISSION_SENTRY_LAND_UNITS: szString = L"MISSION_SENTRY_LAND_UNITS"; break;
+#endif
+// BUG - Sentry Actions - end
 	case MISSION_AIRLIFT: szString = L"MISSION_AIRLIFT"; break;
 	case MISSION_NUKE: szString = L"MISSION_NUKE"; break;
 	case MISSION_RECON: szString = L"MISSION_RECON"; break;
