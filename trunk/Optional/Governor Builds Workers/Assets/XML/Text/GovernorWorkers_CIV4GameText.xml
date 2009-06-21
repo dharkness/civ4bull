@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Game Text Infos -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<!-- Governor Builds Workers -->
+	<TEXT>
+		<Tag>TXT_KEY_PLAYER_OPTION_MODDER_1</Tag>
+		<English>City Governors Build Workboats</English>
+		<French>City Governors Build Workboats</French>
+		<German>City Governors Build Workboats</German>
+		<Italian>City Governors Build Workboats</Italian>
+		<Spanish>Los Gobernadores de las Ciudades Construir Pesqueros</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLAYER_OPTION_MODDER_1_HELP</Tag>
+		<English>City governors can build Workboats when needed</English>
+		<French>City governors can build Workboats when needed</French>
+		<German>City governors can build Workboats when needed</German>
+		<Italian>City governors can build Workboats when needed</Italian>
+		<Spanish>Los gobernadores de las ciudades pueden construir Pesqueros</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLAYER_OPTION_MODDER_2</Tag>
+		<English>City Governors Build Workers</English>
+		<French>City Governors Build Workers</French>
+		<German>City Governors Build Workers</German>
+		<Italian>City Governors Build Workers</Italian>
+		<Spanish>Los Gobernadores de las Ciudades Construir Trabajadores</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PLAYER_OPTION_MODDER_2_HELP</Tag>
+		<English>City governors can build Workers when needed</English>
+		<French>City governors can build Workers when needed</French>
+		<German>City governors can build Workers when needed</German>
+		<Italian>City governors can build Workers when needed</Italian>
+		<Spanish>Los gobernadores de las ciudades pueden construir Trabajadores</Spanish>
+	</TEXT>
+</Civ4GameText>

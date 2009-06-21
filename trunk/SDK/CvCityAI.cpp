@@ -8341,6 +8341,11 @@ void CvCityAI::AI_buildGovernorChooseProduction()
         }
 	}
 	
+// BUG - Governor Builds Workboats - start
+#ifdef _MOD_GOVWORKERS
+	if (GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_1))
+	{
+#endif
 	//workboat
 	if (pWaterArea != NULL)
 	{
@@ -8355,6 +8360,10 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 			}
 		}
 	}
+#ifdef _MOD_GOVWORKERS
+	}
+#endif
+// BUG - Governor Builds Workboats - end
 
 	if ((AI_countNumBonuses(NO_BONUS, false, true, 10, true, true) > 0)
 		&& (getPopulation() > AI_countNumBonuses(NO_BONUS, true, false, -1, true, true)))
@@ -8419,6 +8428,11 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 		return;
 	}
 	
+// BUG - Governor Builds Workers - start
+#ifdef _MOD_GOVWORKERS
+	if (GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_2))
+	{
+#endif
 	int iExistingWorkers = GET_PLAYER(getOwner()).AI_totalAreaUnitAIs(area(), UNITAI_WORKER);
     int iNeededWorkers = GET_PLAYER(getOwner()).AI_neededWorkers(area());
     
@@ -8429,6 +8443,10 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 			return;
 		}
 	}	    
+#ifdef _MOD_GOVWORKERS
+	}
+#endif
+// BUG - Governor Builds Workers - end
 
     if (GC.getDefineINT("DEFAULT_SPECIALIST") != NO_SPECIALIST)
     {
