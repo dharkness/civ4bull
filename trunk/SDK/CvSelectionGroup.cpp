@@ -83,6 +83,11 @@ void CvSelectionGroup::reset(int iID, PlayerTypes eOwner, bool bConstructorCall)
 	m_eAutomateType = NO_AUTOMATE;
 	m_bIsBusyCache = false;
 
+// BUG - Safe Move - start
+	m_bLastPlotVisible = false;
+	m_bLastPlotRevealed = false;
+// BUG - Safe Move - end
+
 	if (!bConstructorCall)
 	{
 		AI_reset();
@@ -144,6 +149,65 @@ bool CvSelectionGroup::sentryAlert() const
 	return false;
 }
 
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+/*
+ * Similar to sentryAlert() except only checks water/land plots based on the domain type of the head unit.
+ */
+bool CvSelectionGroup::sentryAlertSameDomainType() const
+{
+	int iMaxRange = 0;
+	CLLNode<IDInfo>* pUnitNode = headUnitNode();
+	int iIndex = -1;
+
+	while (pUnitNode != NULL)
+	{
+		CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = nextUnitNode(pUnitNode);
+
+		int iRange = pLoopUnit->visibilityRange() + 1;
+
+		if (iRange > iMaxRange)
+		{
+			iMaxRange = iRange;
+			iIndex = getUnitIndex(pLoopUnit);
+		}
+	}
+
+	CvUnit* pHeadUnit = ((iIndex == -1) ? NULL : getUnitAt(iIndex));
+	if (NULL != pHeadUnit)
+	{
+		for (int iX = -iMaxRange; iX <= iMaxRange; ++iX)
+		{
+			for (int iY = -iMaxRange; iY <= iMaxRange; ++iY)
+			{
+				CvPlot* pPlot = ::plotXY(pHeadUnit->getX_INLINE(), pHeadUnit->getY_INLINE(), iX, iY);
+				if (NULL != pPlot)
+				{
+					if (pHeadUnit->plot()->canSeePlot(pPlot, pHeadUnit->getTeam(), iMaxRange - 1, NO_DIRECTION))
+					{
+						if (pPlot->isVisibleEnemyUnit(pHeadUnit))
+						{
+							if ((getDomainType() == DOMAIN_SEA) && (pPlot->isWater()))
+							{
+								return true;
+							}
+							else if ((getDomainType() == DOMAIN_LAND) && (!(pPlot->isWater())))
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
+#endif
+// BUG - Sentry Actions - end
+
 void CvSelectionGroup::doTurn()
 {
 	PROFILE("CvSelectionGroup::doTurn()")
@@ -185,6 +249,17 @@ void CvSelectionGroup::doTurn()
 		{
 			setActivityType(ACTIVITY_AWAKE);
 		}
+
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		if (((eActivityType == ACTIVITY_SENTRY_NAVAL_UNITS) && (sentryAlertSameDomainType())) ||
+			((eActivityType == ACTIVITY_SENTRY_LAND_UNITS) && (sentryAlertSameDomainType())) ||
+			((eActivityType == ACTIVITY_SENTRY_WHILE_HEAL) && (sentryAlertSameDomainType() || AI_isControlled() || !bHurt)))
+		{
+			setActivityType(ACTIVITY_AWAKE);
+		}
+#endif
+// BUG - Sentry Actions - end
 
 // BUG - Sentry Healing Units - start
 		if (eActivityType == ACTIVITY_HEAL && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
@@ -575,6 +650,11 @@ CvPlot* CvSelectionGroup::lastMissionPlot()
 		switch (pMissionNode->m_data.eMissionType)
 		{
 		case MISSION_MOVE_TO:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_MOVE_TO_SENTRY:
+#endif
+// BUG - Sentry Actions - end
 		case MISSION_ROUTE_TO:
 			return GC.getMapINLINE().plotINLINE(pMissionNode->m_data.iData1, pMissionNode->m_data.iData2);
 			break;
@@ -595,6 +675,13 @@ CvPlot* CvSelectionGroup::lastMissionPlot()
 		case MISSION_SEAPATROL:
 		case MISSION_HEAL:
 		case MISSION_SENTRY:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_SENTRY_WHILE_HEAL:
+		case MISSION_SENTRY_NAVAL_UNITS:
+		case MISSION_SENTRY_LAND_UNITS:
+#endif
+// BUG - Sentry Actions - end
 		case MISSION_AIRLIFT:
 		case MISSION_NUKE:
 		case MISSION_RECON:
@@ -674,6 +761,11 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 		switch (iMission)
 		{
 		case MISSION_MOVE_TO:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_MOVE_TO_SENTRY:
+#endif
+// BUG - Sentry Actions - end
 			if (!(pPlot->at(iData1, iData2)))
 			{
 				return true;
@@ -744,6 +836,34 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 				return true;
 			}
 			break;
+			
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_SENTRY_WHILE_HEAL:
+			logMsg("Sentry while heal");
+			if ((pLoopUnit->canSentry(pPlot)) && (pLoopUnit->canHeal(pPlot)))
+			{
+				return true;
+			}
+			break;
+
+		case MISSION_SENTRY_NAVAL_UNITS:
+			logMsg("Sentry naval");
+			if ((getDomainType() == DOMAIN_SEA) && (pLoopUnit->canSentry(pPlot)))
+			{
+				return true;
+			}
+			break;
+
+		case MISSION_SENTRY_LAND_UNITS:
+			logMsg("Sentry land");
+			if ((getDomainType() == DOMAIN_LAND) && (pLoopUnit->canSentry(pPlot)))
+			{
+				return true;
+			}
+			break;
+#endif
+// BUG - Sentry Actions - end
 
 		case MISSION_AIRLIFT:
 			if (pLoopUnit->canAirliftAt(pPlot, iData1, iData2))
@@ -1015,6 +1135,21 @@ void CvSelectionGroup::startMission()
 		switch (headMissionQueueNode()->m_data.eMissionType)
 		{
 		case MISSION_MOVE_TO:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_MOVE_TO_SENTRY:
+#endif
+// BUG - Sentry Actions - end
+// BUG - Safe Move - start
+			// if player is human, save the visibility and reveal state of the last plot of the move path from the initial plot
+			if (isHuman())
+			{
+				setLastPathPlotVisible(GC.getMapINLINE().plotINLINE(headMissionQueueNode()->m_data.iData1, headMissionQueueNode()->m_data.iData2)->isActiveVisible(false));
+				setLastPathPlotRevealed(GC.getMapINLINE().plotINLINE(headMissionQueueNode()->m_data.iData1, headMissionQueueNode()->m_data.iData2)->isRevealed(GC.getGameINLINE().getActiveTeam(), true));
+			}
+			break;
+// BUG - Safe Move - start
+
 		case MISSION_ROUTE_TO:
 		case MISSION_MOVE_TO_UNIT:
 			break;
@@ -1063,6 +1198,28 @@ void CvSelectionGroup::startMission()
 			bNotify = true;
 			bDelete = true;
 			break;
+
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case MISSION_SENTRY_WHILE_HEAL:
+			setActivityType(ACTIVITY_SENTRY_WHILE_HEAL);
+			bNotify = true;
+			bDelete = true;
+			break;
+
+		case MISSION_SENTRY_NAVAL_UNITS:
+			setActivityType(ACTIVITY_SENTRY_NAVAL_UNITS);
+			bNotify = true;
+			bDelete = true;
+			break;
+
+		case MISSION_SENTRY_LAND_UNITS:
+			setActivityType(ACTIVITY_SENTRY_LAND_UNITS);
+			bNotify = true;
+			bDelete = true;
+			break;
+#endif
+// BUG - Sentry Actions - end
 
 		case MISSION_AIRLIFT:
 		case MISSION_NUKE:
@@ -1123,6 +1280,14 @@ void CvSelectionGroup::startMission()
 				case MISSION_SEAPATROL:
 				case MISSION_HEAL:
 				case MISSION_SENTRY:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+				case MISSION_MOVE_TO_SENTRY:
+				case MISSION_SENTRY_WHILE_HEAL:
+				case MISSION_SENTRY_NAVAL_UNITS:
+				case MISSION_SENTRY_LAND_UNITS:
+#endif
+// BUG - Sentry Actions - end
 					break;
 
 				case MISSION_AIRLIFT:
@@ -1438,6 +1603,11 @@ void CvSelectionGroup::continueMission(int iSteps)
 				switch (headMissionQueueNode()->m_data.eMissionType)
 				{
 				case MISSION_MOVE_TO:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+				case MISSION_MOVE_TO_SENTRY:
+#endif
+// BUG - Sentry Actions - end
 					if (getDomainType() == DOMAIN_AIR)
 					{
 						groupPathTo(headMissionQueueNode()->m_data.iData1, headMissionQueueNode()->m_data.iData2, headMissionQueueNode()->m_data.iFlags);
@@ -1532,6 +1702,13 @@ void CvSelectionGroup::continueMission(int iSteps)
 				case MISSION_SEAPATROL:
 				case MISSION_HEAL:
 				case MISSION_SENTRY:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+				case MISSION_SENTRY_WHILE_HEAL:
+				case MISSION_SENTRY_NAVAL_UNITS:
+				case MISSION_SENTRY_LAND_UNITS:
+#endif
+// BUG - Sentry Actions - end
 					FAssert(false);
 					break;
 
@@ -1584,6 +1761,11 @@ void CvSelectionGroup::continueMission(int iSteps)
 			switch (headMissionQueueNode()->m_data.eMissionType)
 			{
 			case MISSION_MOVE_TO:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+			case MISSION_MOVE_TO_SENTRY:
+#endif
+// BUG - Sentry Actions - end
 				if (at(headMissionQueueNode()->m_data.iData1, headMissionQueueNode()->m_data.iData2))
 				{
 					bDone = true;
@@ -1616,6 +1798,13 @@ void CvSelectionGroup::continueMission(int iSteps)
 			case MISSION_SEAPATROL:
 			case MISSION_HEAL:
 			case MISSION_SENTRY:
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+			case MISSION_SENTRY_WHILE_HEAL:
+			case MISSION_SENTRY_NAVAL_UNITS:
+			case MISSION_SENTRY_LAND_UNITS:
+#endif
+// BUG - Sentry Actions - end
 				FAssert(false);
 				break;
 
@@ -1698,6 +1887,11 @@ void CvSelectionGroup::continueMission(int iSteps)
 					if (IsSelected())
 					{
 						if ((headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO) ||
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+							(headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_SENTRY) ||
+#endif
+// BUG - Sentry Actions - end
 							(headMissionQueueNode()->m_data.eMissionType == MISSION_ROUTE_TO) ||
 							(headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_UNIT))
 						{
@@ -1884,6 +2078,16 @@ bool CvSelectionGroup::canDoInterfaceMode(InterfaceModeTypes eInterfaceMode)
 
 		switch (eInterfaceMode)
 		{
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		case INTERFACEMODE_GO_TO_SENTRY:
+			if (sentryAlertSameDomainType())
+			{
+				return false;
+			}
+			// fall through to next case
+#endif
+// BUG - Sentry Actions - end
 		case INTERFACEMODE_GO_TO:
 			if ((getDomainType() != DOMAIN_AIR) && (getDomainType() != DOMAIN_IMMOBILE))
 			{
@@ -2228,6 +2432,13 @@ bool CvSelectionGroup::isWaiting() const
 		      (getActivityType() == ACTIVITY_SLEEP) ||
 					(getActivityType() == ACTIVITY_HEAL) ||
 					(getActivityType() == ACTIVITY_SENTRY) ||
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+					(getActivityType() == ACTIVITY_SENTRY_WHILE_HEAL) ||
+					(getActivityType() == ACTIVITY_SENTRY_NAVAL_UNITS) ||
+					(getActivityType() == ACTIVITY_SENTRY_LAND_UNITS) ||
+#endif
+// BUG - Sentry Actions - end
 					(getActivityType() == ACTIVITY_PATROL) ||
 					(getActivityType() == ACTIVITY_PLUNDER) ||
 					(getActivityType() == ACTIVITY_INTERCEPT));
@@ -3004,6 +3215,18 @@ bool CvSelectionGroup::groupAttack(int iX, int iY, int iFlags, bool& bFailedAlre
 						return false;
 					}
 
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+					if (isHuman())
+					{
+						if (!(isLastPathPlotVisible()) && (getDomainType() != DOMAIN_AIR))
+						{
+							return false;
+						}
+					}
+#endif
+// BUG - Sentry Actions - end
+
 					bool bNoBlitz = (!pBestAttackUnit->isBlitz() || !pBestAttackUnit->isMadeAttack());
 
 					if (groupDeclareWar(pDestPlot))
@@ -3089,13 +3312,26 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 	CvUnit* pLoopUnit;
 
 	pUnitNode = headUnitNode();
+	
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+	bool bSentryAlert = isHuman() && (headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_SENTRY) && sentryAlertSameDomainType();
+#endif
+// BUG - Sentry Actions - end
 
 	while (pUnitNode != NULL)
 	{
 		pLoopUnit = ::getUnit(pUnitNode->m_data);
 		pUnitNode = nextUnitNode(pUnitNode);
 
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		// don't move if bSentryAlert set to true above
+		if ((!bSentryAlert && pLoopUnit->canMove() && ((bCombat && (!(pLoopUnit->isNoCapture()) || !(pPlot->isEnemyCity(*pLoopUnit)))) ? pLoopUnit->canMoveOrAttackInto(pPlot) : pLoopUnit->canMoveInto(pPlot))) || (pLoopUnit == pCombatUnit))
+#else
 		if ((pLoopUnit->canMove() && ((bCombat && (!(pLoopUnit->isNoCapture()) || !(pPlot->isEnemyCity(*pLoopUnit)))) ? pLoopUnit->canMoveOrAttackInto(pPlot) : pLoopUnit->canMoveInto(pPlot))) || (pLoopUnit == pCombatUnit))
+#endif
+// BUG - Sentry Actions - end
 		{
 			pLoopUnit->move(pPlot, true);
 		}
@@ -3392,6 +3628,18 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 
 	if (isAmphibPlot(pPlot))
 	{
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+		// don't perform amphibious landing on plot that was unrevealed when goto order was issued
+		if (isHuman())
+		{
+			if (!isLastPathPlotRevealed())
+			{
+				return false;
+			}
+		}
+#endif
+// BUG - Sentry Actions - end
 		if (stepDistance(getX(), getY(), pPlot->getX_INLINE(), pPlot->getY_INLINE()) == 1)
 		{
 			pUnitNode1 = headUnitNode();
@@ -3517,6 +3765,11 @@ void CvSelectionGroup::updateMissionTimer(int iSteps)
 		iTime = GC.getMissionInfo((MissionTypes)(headMissionQueueNode()->m_data.eMissionType)).getTime();
 
 		if ((headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO) ||
+// BUG - Sentry Actions - start
+#ifdef _MOD_SENTRY
+				(headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_SENTRY) ||
+#endif
+// BUG - Sentry Actions - end
 				(headMissionQueueNode()->m_data.eMissionType == MISSION_ROUTE_TO) ||
 				(headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_UNIT))
 		{
@@ -4520,3 +4773,51 @@ void CvSelectionGroup::deactivateHeadMission()
 		}
 	}
 }
+
+// BUG - All Units Actions - start
+bool CvSelectionGroup::allMatch(UnitTypes eUnit) const
+{
+	FAssertMsg(eUnit >= 0, "eUnit expected to be >= 0");
+	FAssertMsg(eUnit < GC.getNumUnitInfos(), "eUnit expected to be < GC.getNumUnitInfos()");
+
+	CLLNode<IDInfo>* pUnitNode = headUnitNode();
+	CvUnit* pLoopUnit;
+
+	FAssertMsg(pUnitNode != NULL, "headUnitNode() expected to be non-NULL");
+
+	while (pUnitNode != NULL)
+	{
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = nextUnitNode(pUnitNode);
+
+		if (pLoopUnit->getUnitType() != eUnit)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+// BUG - All Units Actions - end
+
+// BUG - Safe Moves - start
+bool CvSelectionGroup::isLastPathPlotVisible() const
+{
+	return m_bLastPlotVisible;
+}
+
+void CvSelectionGroup::setLastPathPlotVisible(bool bVisible)
+{
+	m_bLastPlotVisible = bVisible;
+}
+
+bool CvSelectionGroup::isLastPathPlotRevealed() const
+{
+	return m_bLastPlotRevealed;
+}
+
+void CvSelectionGroup::setLastPathPlotRevealed(bool bRevealed)
+{
+	m_bLastPlotRevealed = bRevealed;
+}
+// BUG - Safe Moves - end
