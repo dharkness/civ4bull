@@ -51,19 +51,19 @@ LIBS = boost_python-vc71-mt-1_32.lib winmm.lib user32.lib gdi32.lib Ole32.lib
 
 ### Target-Specific Options
 
-Debug_CFLAGS = $(DEBUG_CFLAGS)
+Debug_CFLAGS = $(DEBUG_CFLAGS) /D_MOD_GOVWORKERS
 Debug_LDFLAGS = $(DEBUG_LDFLAGS)
 Debug_INCS = $(INCS)
 Debug_LIBDIRS = $(LIBDIRS)
 Debug_LIBS = $(LIBS)
 
-Final_Release_CFLAGS = $(RELEASE_CFLAGS)
+Final_Release_CFLAGS = $(RELEASE_CFLAGS) /D_MOD_GOVWORKERS
 Final_Release_LDFLAGS = $(RELEASE_LDFLAGS)
 Final_Release_INCS = $(INCS)
 Final_Release_LIBDIRS = $(LIBDIRS)
 Final_Release_LIBS = $(LIBS)
 
-BUFFY_Release_CFLAGS = $(RELEASE_CFLAGS) /D_BUFFY /D_MOD_GWARM
+BUFFY_Release_CFLAGS = $(RELEASE_CFLAGS) /D_BUFFY /D_MOD_GOVWORKERS /D_MOD_GWARM
 BUFFY_Release_LDFLAGS = $(RELEASE_LDFLAGS)
 BUFFY_Release_INCS = $(INCS)
 BUFFY_Release_LIBDIRS = $(LIBDIRS)
