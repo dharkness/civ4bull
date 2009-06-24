@@ -3273,7 +3273,7 @@ void CvCity::hurry(HurryTypes eHurry)
 }
 
 // BUG - Hurry Assist - start
-bool CvCity::hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) const
+bool CvCity::hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold, bool bCountThisTurn) const
 {
 	if (!canHurry(eHurry))
 	{
@@ -3287,47 +3287,60 @@ bool CvCity::hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) cons
 		return true;
 	}
 
+	int iTotal, iCurrent, iModifier, iGoldPercent;
+
 	if (isProductionUnit())
 	{
 		UnitTypes eUnit = getProductionUnit();
 		FAssertMsg(eUnit != NO_UNIT, "eUnit is expected to be assigned a valid unit type");
-		int iProductionNeeded = getProductionNeeded(eUnit);
-		int iOverflow = getUnitProduction(eUnit) + hurryProduction(eHurry) - iProductionNeeded;
-		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
-		iOverflow = std::min(iMaxOverflow, iOverflow);
-		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eUnit)));
-		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT")) / 100);
-		return true;
+		iTotal = getProductionNeeded(eUnit);
+		iCurrent = getUnitProduction(eUnit);
+		iModifier = getProductionModifier(eUnit);
+		iGoldPercent = GC.getDefineINT("MAXED_UNIT_GOLD_PERCENT");
 	}
 	else if (isProductionBuilding())
 	{
 		BuildingTypes eBuilding = getProductionBuilding();
 		FAssertMsg(eBuilding != NO_BUILDING, "eBuilding is expected to be assigned a valid building type");
-		int iProductionNeeded = getProductionNeeded(eBuilding);
-		int iOverflow = getBuildingProduction(eBuilding) + hurryProduction(eHurry) - iProductionNeeded;
-		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
-		iOverflow = std::min(iMaxOverflow, iOverflow);
-		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eBuilding)));
-		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
-		return true;
+		iTotal = getProductionNeeded(eBuilding);
+		iCurrent = getBuildingProduction(eBuilding);
+		iModifier = getProductionModifier(eBuilding);
+		iGoldPercent = GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT");
 	}
 	else if (isProductionProject())
 	{
 		ProjectTypes eProject = getProductionProject();
 		FAssertMsg(eProject != NO_PROJECT, "eProject is expected to be assigned a valid project type");
-		int iProductionNeeded = getProductionNeeded(eProject);
-		int iOverflow = getProjectProduction(eProject) + hurryProduction(eHurry) - iProductionNeeded;
-		int iMaxOverflow = std::max(iProductionNeeded, getCurrentProductionDifference(false, false));
-		int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
-		iOverflow = std::min(iMaxOverflow, iOverflow);
-		*iProduction = (100 * iOverflow) / std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eProject)));
-		*iGold = ((iLostProduction * GC.getDefineINT("MAXED_BUILDING_GOLD_PERCENT")) / 100);
-		return true;
+		iTotal = getProductionNeeded(eProject);
+		iCurrent = getProjectProduction(eProject);
+		iModifier = getProductionModifier(eProject);
+		iGoldPercent = GC.getDefineINT("MAXED_PROJECT_GOLD_PERCENT");
+	}
+	else
+	{
+		return false;
 	}
 
-	return false;
+	int iHurry = hurryProduction(eHurry);
+	int iOverflow = iCurrent + iHurry - iTotal;
+	if (bCountThisTurn)
+	{
+		// include chops and previous overflow here
+		iOverflow += getCurrentProductionDifference(false, true);
+	}
+	int iMaxOverflow = std::max(iTotal, getCurrentProductionDifference(false, false));
+	int iLostProduction = std::max(0, iOverflow - iMaxOverflow);
+	int iBaseModifier = getBaseYieldRateModifier(YIELD_PRODUCTION);
+	int iTotalModifier = getBaseYieldRateModifier(YIELD_PRODUCTION, iModifier);
+
+	iOverflow = std::min(iOverflow, iMaxOverflow);
+	iLostProduction *= iBaseModifier;
+	iLostProduction /= std::max(1, iTotalModifier);
+
+	*iProduction = (iBaseModifier * iOverflow) / std::max(1, iTotalModifier);
+	*iGold = ((iLostProduction * iGoldPercent) / 100);
+
+	return true;
 }
 // BUG - Hurry Assist - end
 

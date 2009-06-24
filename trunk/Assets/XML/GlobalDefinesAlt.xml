@@ -50,6 +50,10 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
+		<DefineName>BUG_CITYBAR_HURRY_ASSIST_INCLUDE_CURRENT</DefineName>
+		<iDefineIntVal>0</iDefineIntVal>
+	</Define>
+	<Define>
 		<DefineName>BUG_CITYBAR_TRADE_DETAIL</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
@@ -122,6 +126,10 @@
 	<Define>
 		<DefineName>BUG_HURRY_OVERFLOW_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_HURRY_OVERFLOW_HOVER_INCLUDE_CURRENT</DefineName>
+		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
 	<Define>
 		<DefineName>BUG_CITY_SCREEN_REMOVE_SPECIALIST_HOVER</DefineName>

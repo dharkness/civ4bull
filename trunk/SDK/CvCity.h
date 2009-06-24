@@ -132,7 +132,7 @@ public:
 	bool canHurry(HurryTypes eHurry, bool bTestVisible = false) const;		// Exposed to Python
 	void hurry(HurryTypes eHurry);																						// Exposed to Python
 // BUG - Hurry Assist - start
-	bool hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold) const;
+	bool hurryOverflow(HurryTypes eHurry, int* iProduction, int* iGold, bool bCountThisTurn = false) const;
 // BUG - Hurry Assist - end
 
 	UnitTypes getConscriptUnit() const;																// Exposed to Python
