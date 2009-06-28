@@ -9891,7 +9891,7 @@ int CvCity::getBuildingProductionDecayTurns(BuildingTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumBuildingInfos(), "eIndex expected to be < GC.getNumBuildingInfos()");
-	return std::max(0, GC.getDefineINT("BUILDING_PRODUCTION_DECAY_TIME") - getBuildingProductionTime(eIndex));
+	return std::max(0, GC.getDefineINT("BUILDING_PRODUCTION_DECAY_TIME") - getBuildingProductionTime(eIndex)) + 1;
 }
 // BUG - Production Decay - end
 
@@ -10041,7 +10041,7 @@ int CvCity::getUnitProductionDecayTurns(UnitTypes eIndex) const
 {
 	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
 	FAssertMsg(eIndex < GC.getNumUnitInfos(), "eIndex expected to be < GC.getNumUnitInfos()");
-	return std::max(0, GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME") - getUnitProductionTime(eIndex));
+	return std::max(0, GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME") - getUnitProductionTime(eIndex)) + 1;
 }
 // BUG - Production Decay - end
 
