@@ -7946,7 +7946,7 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 // BUG - Production Decay - start
 				if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
 				{
-					setProductionDecayHelp(szBuffer, pCity->getUnitProductionDecayTurns(eUnit), pCity->getUnitProductionDecay(eUnit), pCity->getProductionUnit() == eUnit);
+					setProductionDecayHelp(szBuffer, pCity->getUnitProductionDecayTurns(eUnit), getBugOptionINT("CityScreen__ProductionDecayHoverUnitThreshold", 5, "BUG_PRODUCTION_DECAY_HOVER_UNIT_THRESHOLD"), pCity->getUnitProductionDecay(eUnit), pCity->getProductionUnit() == eUnit);
 				}
 // BUG - Production Decay - end
 			}
@@ -9173,7 +9173,7 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 // BUG - Production Decay - start
 				if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
 				{
-					setProductionDecayHelp(szBuffer, pCity->getBuildingProductionDecayTurns(eBuilding), pCity->getBuildingProductionDecay(eBuilding), pCity->getProductionBuilding() == eBuilding);
+					setProductionDecayHelp(szBuffer, pCity->getBuildingProductionDecayTurns(eBuilding), getBugOptionINT("CityScreen__ProductionDecayHoverBuildingThreshold", 5, "BUG_PRODUCTION_DECAY_HOVER_BUILDING_THRESHOLD"), pCity->getBuildingProductionDecay(eBuilding), pCity->getProductionBuilding() == eBuilding);
 				}
 // BUG - Production Decay - end
 			}
@@ -9593,9 +9593,9 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 }
 
 // BUG - Production Decay - start
-void CvGameTextMgr::setProductionDecayHelp(CvWStringBuffer &szBuffer, int iTurnsLeft, int iDecay, bool bProducing)
+void CvGameTextMgr::setProductionDecayHelp(CvWStringBuffer &szBuffer, int iTurnsLeft, int iThreshold, int iDecay, bool bProducing)
 {
-	if (iTurnsLeft <= 0)
+	if (iTurnsLeft <= 1)
 	{
 		if (bProducing)
 		{
@@ -9610,7 +9610,7 @@ void CvGameTextMgr::setProductionDecayHelp(CvWStringBuffer &szBuffer, int iTurns
 	}
 	else
 	{
-		if (iTurnsLeft <= getBugOptionINT("CityScreen__ProductionDecayHoverThreshold", true, "BUG_PRODUCTION_DECAY_HOVER_THRESHOLD"))
+		if (iTurnsLeft <= iThreshold)
 		{
 			if (bProducing)
 			{

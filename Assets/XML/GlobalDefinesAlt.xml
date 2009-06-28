@@ -2,7 +2,7 @@
 <!--
 	BULL User Settings
 	
-	This file is used only when BULL is running without BUG.
+	This file is used only when BULL is running without BUG, but it will cause no harm to include it with BUG.
 
 	Copyright (c) 2009 The BUG Mod.
   -->
@@ -90,8 +90,12 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
-		<DefineName>BUG_PRODUCTION_DECAY_HOVER_THRESHOLD</DefineName>
-		<iDefineIntVal>50</iDefineIntVal>
+		<DefineName>BUG_PRODUCTION_DECAY_HOVER_BUILDING_THRESHOLD</DefineName>
+		<iDefineIntVal>20</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_PRODUCTION_DECAY_HOVER_UNIT_THRESHOLD</DefineName>
+		<iDefineIntVal>5</iDefineIntVal>
 	</Define>
 	
 	<!-- Building -->
@@ -140,7 +144,7 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
-	<!-- Calculations -->
+	<!-- City Screen -->
 	<Define>
 		<DefineName>BUG_CITY_SCREEN_BASE_COMMERCE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
@@ -164,6 +168,14 @@
 	</Define>
 	<Define>
 		<DefineName>BUG_BUILDING_ADDITIONAL_COMMERCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_HEALTH_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_HAPPINESS_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
