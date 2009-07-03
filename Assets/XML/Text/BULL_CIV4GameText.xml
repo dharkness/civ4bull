@@ -149,7 +149,7 @@
 		<English>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] this turn[COLOR_REVERT]</English>
 		<French>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] this turn[COLOR_REVERT]</French>
 		<German>[COLOR_NEGATIVE_TEXT]%d1[ICON_PRODUCTION] gehen in dieser Runde verloren[COLOR_REVERT]</German>
-		<Italian>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] this turn[COLOR_REVERT]</Italian>
+		<Italian>[COLOR_NEGATIVE_TEXT]Perderà %d1[ICON_PRODUCTION] questo turno[COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -157,7 +157,7 @@
 		<English>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced this turn[COLOR_REVERT]</English>
 		<French>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced this turn[COLOR_REVERT]</French>
 		<German>[COLOR_WARNING_TEXT]%d1[ICON_PRODUCTION] gehen verloren, falls nicht in dieser Runde produziert wird[COLOR_REVERT]</German>
-		<Italian>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced this turn[COLOR_REVERT]</Italian>
+		<Italian>[COLOR_WARNING_TEXT]Perderà %d1[ICON_PRODUCTION] se non viene prodotto questo turno[COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -165,7 +165,7 @@
 		<English>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] in %d2 [NUM2:turn:turns][COLOR_REVERT]</English>
 		<French>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] in %d2 [NUM2:turn:turns][COLOR_REVERT]</French>
 		<German>[COLOR_NEGATIVE_TEXT]%d1[ICON_PRODUCTION] gehen in %d2 [NUM2:Runde:Runden] verloren[COLOR_REVERT]</German>
-		<Italian>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] in %d2 [NUM2:turn:turns][COLOR_REVERT]</Italian>
+		<Italian>[COLOR_NEGATIVE_TEXT]Perderà %d1[ICON_PRODUCTION] in %d2 [NUM2:turno:turni][COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_NEGATIVE_TEXT]Will lose %d1[ICON_PRODUCTION] in %d2 [NUM2:turn:turns][COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
@@ -173,7 +173,7 @@
 		<English>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced for %d2 [NUM2:turn:turns][COLOR_REVERT]</English>
 		<French>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced for %d2 [NUM2:turn:turns][COLOR_REVERT]</French>
 		<German>[COLOR_WARNING_TEXT]%d1[ICON_PRODUCTION] gehen verloren, falls für %d2 [NUM2:Runde:Runden] nicht produziert wird[COLOR_REVERT]</German>
-		<Italian>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced for %d2 [NUM2:turn:turns][COLOR_REVERT]</Italian>
+		<Italian>[COLOR_WARNING_TEXT]Perderà %d1[ICON_PRODUCTION] se non viene prodotto per %d2 [NUM2:turno:turni][COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_WARNING_TEXT]Will lose %d1[ICON_PRODUCTION] if not produced for %d2 [NUM2:turn:turns][COLOR_REVERT]</Spanish>
 	</TEXT>
 	
@@ -195,7 +195,7 @@
 		<English>Actual</English>
 		<French>Actual</French>
 		<German>Actual</German>
-		<Italian>Actual</Italian>
+		<Italian>Effettivo</Italian>
 		<Spanish>Actual</Spanish>
 	</TEXT>
 
@@ -219,7 +219,7 @@
 		<English>[ICON_BULLET]%D1%F2 from Worked Tiles</English>
 		<French>[ICON_BULLET]%D1%F2 en raison des Cases Travaillées</French>
 		<German>[ICON_BULLET]%D1%F2 durch bearbeitete Geländefelder</German>
-		<Italian>[ICON_BULLET]%D1%F2 dagli Caselle Lavorate</Italian>
+		<Italian>[ICON_BULLET]%D1%F2 dalle Caselle Lavorate</Italian>
 		<Spanish>[ICON_BULLET]%D1 %F2 por Azulejos Trabajados</Spanish>
 	</TEXT>
 	<TEXT>
