@@ -254,7 +254,7 @@
 		<Tag>TXT_KEY_MISC_HELP_BASE_FOOD_PRODUCED</Tag>
 		<English>-----------------------[NEWLINE]Base Food Produced: %d1[ICON_FOOD]</English>
 		<French>-----------------------[NEWLINE]Nourriture totale partiel produit : %d1[ICON_FOOD]</French>
-		<German>-----------------------[NEWLINE]Basisertrag produzierte Nahrung: %d1[ICON_FOOD]</German>
+		<German>-----------------------[NEWLINE]Grundertrag produzierte Nahrung: %d1[ICON_FOOD]</German>
 		<Italian>-----------------------[NEWLINE]Cibo totale parziale prodotto: %d1[ICON_FOOD]</Italian>
 		<Spanish>-----------------------[NEWLINE]Alimento subtotal produjo: %d1[ICON_FOOD]</Spanish>
 	</TEXT>
@@ -314,7 +314,7 @@
 		<Tag>TXT_KEY_MISC_HELP_COMMERCE_SUBTOTAL_YIELD_FLOAT</Tag>
 		<English>-----------------------[NEWLINE]Base %s1_commerce_type: %s2%F3</English>
 		<French>-----------------------[NEWLINE]Total partiel %s1_commerce_type : %s2%F3</French>
-		<German>-----------------------[NEWLINE]Basisertrag %s1_commerce_type: %s2%F3</German>
+		<German>-----------------------[NEWLINE]Grundertrag %s1_commerce_type: %s2%F3</German>
 		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale parziale: %s2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Subtotal %s1_commerce_type: %s2%F3</Spanish>
 	</TEXT>
@@ -452,7 +452,7 @@
 		<Tag>TXT_KEY_SAME_UNITS_TYPE</Tag>
 		<English>[SPACE](&lt;ALT&gt; for All Units of the active unit's type)</English>
 		<French>[SPACE](&lt;ALT&gt; for All Units of the active unit's type)</French>
-		<German>[SPACE](&lt;ALT&gt; for All Units of the active unit's type)</German>
+		<German>[SPACE](&lt;ALT&gt; für alle Einheiten des aktiven Einheitentyps)</German>
 		<Italian>[SPACE](&lt;ALT&gt; for All Units of the active unit's type)</Italian>
 		<Spanish>[SPACE](&lt;ALT&gt; para todas las unidades del mismo tipo que la unidad activa)</Spanish>
 	</TEXT>
