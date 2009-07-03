@@ -13,7 +13,7 @@
 		<English>[NEWLINE]Hold &lt;CTRL&gt; to see base values.</English>
 		<French>[NEWLINE]Hold &lt;CTRL&gt; to see base values.</French>
 		<German>[NEWLINE][BOLD]&lt;STRG&gt;[\BOLD] drücken, um die Basiswerte zu sehen</German>
-		<Italian>[NEWLINE]Hold &lt;CTRL&gt; to see base values.</Italian>
+		<Italian>[NEWLINE]Tieni premuto &lt;CTRL&gt; per visualizzare i valori base.</Italian>
 		<Spanish>[NEWLINE]Hold &lt;CTRL&gt; to see base values.</Spanish>
 	</TEXT>
 	
@@ -219,7 +219,7 @@
 		<English>[ICON_BULLET]%D1%F2 from Worked Tiles</English>
 		<French>[ICON_BULLET]%D1%F2 en raison des Cases Travaillées</French>
 		<German>[ICON_BULLET]%D1%F2 durch bearbeitete Geländefelder</German>
-		<Italian>[ICON_BULLET]%D1%F2 dalle Caselle Lavorate</Italian>
+		<Italian>[ICON_BULLET]%D1%F2 dalle caselle lavorate</Italian>
 		<Spanish>[ICON_BULLET]%D1 %F2 por Azulejos Trabajados</Spanish>
 	</TEXT>
 	<TEXT>
