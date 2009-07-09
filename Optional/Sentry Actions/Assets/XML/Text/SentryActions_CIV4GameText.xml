@@ -54,7 +54,7 @@
 		<Tag>TXT_KEY_MISSION_MOVE_TO_SENTRY</Tag>
 		<English>Move and Sentry</English>
 		<French>Move and Sentry</French>
-		<German>Move and Sentry</German>
+		<German>Fortbewegung mit Wache</German>
 		<Italian>Muoviti e fai la sentinella</Italian>
 		<Spanish>Moverse y Vigilar</Spanish>
 	</TEXT>
@@ -70,13 +70,13 @@
 		<Tag>TXT_KEY_INTERFACEMODE_GO_TO_SENTRY</Tag>
 		<English>Go To and Sentry Mode</English>
 		<French>Aller &#224;</French>
-		<German>Gehe-zu-Modus</German>
+		<German>Gehe-zu-Modus mit Wache</German>
 		<Italian>Modalit&#224; 'Vai a fare la sentinella'</Italian>
 		<Spanish>Modo Ir a y Vigilar</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_INTERFACEMODE_GO_TO_SENTRY_HELP</Tag>
-		<English>Order the selected unit to move to a tile. The unit stops before reaching its destination if an enemy unit of the same type enter its visibility range.</English>
+		<English>Order the selected unit to move to a tile. The unit stops before reaching its destination if an enemy unit of the same type enters its visibility range.</English>
 		<French>Ordonner &#224; l'unit&#233; s&#233;lectionn&#233;e de se d&#233;placer vers une case.</French>
 		<German>Lässt eine Einheit, die zu einem bestimmten Geländefeld geschickt wird, aktiv werden, wenn sie sich einer feindlichen Einheit desselben Einheitentyps nähert</German>
 		<Italian>Ordina all'unit&#224; selezionata di muoversi verso una casella. L'unità si ferma prima di raggiungere la sua destinazione se un'unità nemica dello stesso tipo entra nel suo raggio di visibilità.</Italian>
