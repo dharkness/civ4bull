@@ -42,12 +42,15 @@ RELEASE_CFLAGS = $(CFLAGS) /MD /O2 /DNDEBUG /DFINAL_RELEASE
 # /OPT:ICF	identical COMDAT folding (trimming identical read-only data)
 # /SUB:WIN	EXE doesn't need a console; shouldn't need this
 LDFLAGS = 
-DEBUG_LDFLAGS = $(LDFLAGS) /debug /pdb:Debug\CvGameCoreDLL_DEBUG.pdb /NODEFAULTLIB:MSVCRT
-RELEASE_LDFLAGS = $(LDFLAGS) /INCREMENTAL:NO /OPT:REF /OPT:ICF /NODEFAULTLIB:MSVCRTD
+DEBUG_LDFLAGS = $(LDFLAGS) /debug /pdb:Debug\CvGameCoreDLL_DEBUG.pdb /NODEFAULTLIB:msvcprtd.lib
+RELEASE_LDFLAGS = $(LDFLAGS) /INCREMENTAL:NO /OPT:REF /OPT:ICF
 
 INCS = /I"CxImage/general" /I"CxImage/jpeg" /I"$(BOOST)/include" /I"$(PYTHON)/include" /I"$(TOOLKIT)/include" /I"$(PSDK)/Include"
 LIBDIRS = /LIBPATH:"$(PYTHON)/libs" /LIBPATH:"$(BOOST)/libs/" /LIBPATH:"$(PSDK)/Lib" /LIBPATH:"$(TOOLKIT)/lib"
+
 LIBS = boost_python-vc71-mt-1_32.lib winmm.lib user32.lib gdi32.lib Ole32.lib
+DEBUG_LIBS = $(LIBS) msvcprt.lib
+RELEASE_LIBS = $(LIBS)
 
 ### Target-Specific Options
 
@@ -55,19 +58,19 @@ Debug_CFLAGS = $(DEBUG_CFLAGS)
 Debug_LDFLAGS = $(DEBUG_LDFLAGS)
 Debug_INCS = $(INCS)
 Debug_LIBDIRS = $(LIBDIRS)
-Debug_LIBS = $(LIBS)
+Debug_LIBS = $(DEBUG_LIBS)
 
 Final_Release_CFLAGS = $(RELEASE_CFLAGS) /D_MOD_SENTRY
 Final_Release_LDFLAGS = $(RELEASE_LDFLAGS)
 Final_Release_INCS = $(INCS)
 Final_Release_LIBDIRS = $(LIBDIRS)
-Final_Release_LIBS = $(LIBS)
+Final_Release_LIBS = $(RELEASE_LIBS)
 
 BUFFY_Release_CFLAGS = $(RELEASE_CFLAGS) /D_BUFFY /D_MOD_SENTRY /D_MOD_GWARM
 BUFFY_Release_LDFLAGS = $(RELEASE_LDFLAGS)
 BUFFY_Release_INCS = $(INCS)
 BUFFY_Release_LIBDIRS = $(LIBDIRS)
-BUFFY_Release_LIBS = $(LIBS)
+BUFFY_Release_LIBS = $(RELEASE_LIBS)
 
 
 ### TARGETS AND COMMANDS ###
