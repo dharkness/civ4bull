@@ -23,6 +23,9 @@ Defines common constants and functions for use throughout the BUG Mod.
 // Increment this by 1 each time you commit new/changed functions in the Python API.
 #define BUG_DLL_API_VERSION		1
 
+// Used to signal the BULL saved game format is used
+#define BUG_DLL_SAVE_FORMAT		64
+
 // These are display-only values, and the version should be changed for each release.
 #define BUG_DLL_NAME			L"BULL"
 #define BUG_DLL_VERSION			L"1.0"
