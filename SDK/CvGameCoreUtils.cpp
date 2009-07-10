@@ -149,7 +149,11 @@ bool isPotentialEnemy(TeamTypes eOurTeam, TeamTypes eTheirTeam)
 		return false;
 	}
 
-	return (atWar(eOurTeam, eTheirTeam) || GET_TEAM(eOurTeam).AI_isSneakAttackReady(eTheirTeam));
+// BUG - Unofficial Patch - start
+	// Fixes bug where AI would launch invasion while unable to declare war
+	// which caused units to be bumped once forced peace expired
+	return (atWar(eOurTeam, eTheirTeam) || (GET_TEAM(eOurTeam).AI_isSneakAttackReady(eTheirTeam) && GET_TEAM(eOurTeam).canDeclareWar(eTheirTeam)));
+// BUG - Unofficial Patch - end
 }
 
 CvCity* getCity(IDInfo city)

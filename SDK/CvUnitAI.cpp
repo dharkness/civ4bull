@@ -1119,7 +1119,10 @@ void CvUnitAI::AI_settleMove()
 	for (int iI = 0; iI < GET_PLAYER(getOwnerINLINE()).AI_getNumCitySites(); iI++)
 	{
 		CvPlot* pCitySitePlot = GET_PLAYER(getOwnerINLINE()).AI_getCitySite(iI);
-		if (pCitySitePlot->getArea() == getArea())
+// BUG - Unofficial Patch - start
+		// Only count city sites we can get to safely
+		if (pCitySitePlot->getArea() == getArea() && generatePath(pCitySitePlot, MOVE_SAFE_TERRITORY, true))
+// BUG - Unofficial Patch - end
 		{
 			if (plot() == pCitySitePlot)
 			{
@@ -4852,7 +4855,10 @@ void CvUnitAI::AI_assaultSeaMove()
 						getGroup()->AI_seperateAI(UNITAI_ATTACK_SEA);
 						getGroup()->AI_seperateAI(UNITAI_RESERVE_SEA);
 
-					if (pOldGroup == getGroup() && getUnitType() == UNITAI_ASSAULT_SEA)
+// BUG - Unofficial Patch - start
+					// Fixed bug in next line with checking unit type instead of unit AI
+					if (pOldGroup == getGroup() && AI_getUnitAIType() == UNITAI_ASSAULT_SEA)
+// BUG - Unofficial Patch - end
 					{
 						if (AI_retreatToCity(true))
 						{
@@ -9628,10 +9634,14 @@ bool CvUnitAI::AI_paradrop(int iRange)
 						PlayerTypes eTargetPlayer = pLoopPlot->getOwnerINLINE();
 						FAssert(NO_PLAYER != eTargetPlayer);
 
-						if (NO_BONUS != pLoopPlot->getBonusType())
+// BUG - Unofficial Patch - start
+						// Bonus values for bonuses the AI has are less than 10 for non-strategic resources... since this is
+						// in the AI territory they probably have it
+						if (NO_BONUS != pLoopPlot->getNonObsoleteBonusType(getTeam()))
 						{
-							iValue += GET_PLAYER(eTargetPlayer).AI_bonusVal(pLoopPlot->getBonusType()) - 10;
+							iValue += std::max(1, GET_PLAYER(eTargetPlayer).AI_bonusVal(pLoopPlot->getBonusType()) - 10);
 						}
+// BUG - Unofficial Patch - end
 
 						for (int i = -1; i <= 1; ++i)
 						{

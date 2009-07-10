@@ -850,10 +850,17 @@ void CvNetDoCommand::Execute()
 		{
 			if (m_bAlt && GC.getCommandInfo(m_eCommand).getAll())
 			{
+// BUG - Unofficial Patch - start
+				// EF: save original unit type since it will change if this is the upgrade command
+				UnitTypes eUnit = pUnit->getUnitType();
+// BUG - Unofficial Patch - end
 				int iLoop;
 				for (CvUnit* pLoopUnit = GET_PLAYER(m_ePlayer).firstUnit(&iLoop); pLoopUnit != NULL; pLoopUnit = GET_PLAYER(m_ePlayer).nextUnit(&iLoop))
 				{
-					if (pLoopUnit->getUnitType() == pUnit->getUnitType())
+// BUG - Unofficial Patch - start
+					// EF: use saved unit type
+					if (pLoopUnit->getUnitType() == eUnit)
+// BUG - Unofficial Patch - end
 					{
 						pLoopUnit->doCommand(m_eCommand, m_iData1, m_iData2);
 					}
