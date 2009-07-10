@@ -3558,7 +3558,10 @@ void CvTeamAI::AI_doWar()
 					}
 				}
 			}
-			else if ((bFinancesProMaxWar || !bFinancesOpposeWar) &&
+// BUG - Unofficial Patch - start
+			// EF: was using bFinancesProMaxWar
+			else if ((bFinancesProLimitedWar || !bFinancesOpposeWar) &&
+// BUG - Unofficial Patch - end
 				(GC.getGameINLINE().getSorenRandNum(iLimitedWarRand, "AI Limited War") == 0))
 			{
 				iNoWarRoll = GC.getGameINLINE().getSorenRandNum(100, "AI No War") - 10;

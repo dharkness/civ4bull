@@ -8068,7 +8068,10 @@ void CvGame::addPlayer(PlayerTypes eNewPlayer, LeaderHeadTypes eLeader, Civiliza
 
 	for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 	{
-		if (eColor == NO_PLAYERCOLOR || GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor)
+// BUG - Unofficial Patch - start
+		// Don't invalidate color choice if it's taken by this player
+		if (eColor == NO_PLAYERCOLOR || ((PlayerTypes)iI != eNewPlayer && GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor))
+// BUG - Unofficial Patch - end
 		{
 			for (int iK = 0; iK < GC.getNumPlayerColorInfos(); iK++)
 			{

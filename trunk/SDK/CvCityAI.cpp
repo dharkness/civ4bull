@@ -4405,8 +4405,11 @@ int CvCityAI::AI_neededDefenders()
 		}
 	}
 	
+// BUG - Unofficial Patch - start
+/*
 	if ((GC.getGame().getGameTurn() - getGameTurnAcquired()) < 10)
 	{
+		// EF: moved this block down below so it has an effect
 		if (bOffenseWar)
 		{
 			if (!hasActiveWorldWonder() && !isHolyCity())
@@ -4416,10 +4419,24 @@ int CvCityAI::AI_neededDefenders()
 			}
 		}		
 	}
+*/
+// BUG - Unofficial Patch - end
 	
 	if (GC.getGame().getGameTurn() - getGameTurnAcquired() < 10)
 	{
 		iDefenders = std::max(2, iDefenders);
+
+// BUG - Unofficial Patch - start
+		// EF: this block must be after previous line otherwise it has no effect
+		if (bOffenseWar)
+		{
+			if (!hasActiveWorldWonder() && !isHolyCity())
+			{
+				iDefenders /= 2;
+			}
+		}
+// BUG - Unofficial Patch - end
+
 		if (AI_isDanger())
 		{
 			iDefenders ++;
@@ -5118,7 +5135,10 @@ void CvCityAI::AI_updateBestBuild()
 	
 	
 	int iNetCommerce = 1 + kPlayer.getCommerceRate(COMMERCE_GOLD) + kPlayer.getCommerceRate(COMMERCE_RESEARCH) + std::max(0, kPlayer.getGoldPerTurn());
-	int iNetExpenses = kPlayer.calculateInflatedCosts() + std::min(0, kPlayer.getGoldPerTurn());
+// BUG - Unofficial Patch - start
+	// EF: add absolute value of negative GPT to expenses
+	int iNetExpenses = kPlayer.calculateInflatedCosts() + std::max(0, -kPlayer.getGoldPerTurn());
+// BUG - Unofficial Patch - end
 	int iRatio = (100 * iNetExpenses) / std::max(1, iNetCommerce);
 	
 	if (iRatio > 40)
@@ -9130,7 +9150,10 @@ int CvCityAI::AI_cityThreat(bool bDangerPercent)
 					}
 					if (bCrushStrategy)
 					{
-						iValue /= 2;
+// BUG - Unofficial Patch - start
+						// EF: was iValue
+						iTempValue /= 2;
+// BUG - Unofficial Patch - end
 					}
 				}
 				iTempValue /= 100;

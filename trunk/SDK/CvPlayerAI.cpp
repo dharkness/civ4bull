@@ -359,7 +359,10 @@ void CvPlayerAI::AI_doTurnPost()
 
 	AI_doDiplo();
 
-	AI_doSplit();
+// BUG - Unofficial Patch - start
+	// EF: moved to AI_doTurnUnitsPost() to fix colony spawn bug
+	//AI_doSplit();
+// BUG - Unofficial Patch - end
 
 
 	for (int i = 0; i < GC.getNumVictoryInfos(); ++i)
@@ -515,6 +518,11 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 	{
 		return;
 	}
+
+// BUG - Unofficial Patch - start
+	// EF: moved from AI_doTurnPost() to fix colony spawn bug
+	AI_doSplit();
+// BUG - Unofficial Patch - end
 }
 
 
@@ -1304,7 +1312,10 @@ void CvPlayerAI::AI_conquerCity(CvCity* pCity)
 
 	if (!bRaze)
 	{
-		CvEventReporter::getInstance().cityAcquiredAndKept(GC.getGameINLINE().getActivePlayer(), pCity);
+// BUG - Unofficial Patch - start
+		// EF: was passing getActivePlayer()
+		CvEventReporter::getInstance().cityAcquiredAndKept(getID(), pCity);
+// BUG - Unofficial Patch - end
 	}
 }
 
@@ -2947,7 +2958,10 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 	//if (getCommercePercent(COMMERCE_GOLD) > 50)
 	{
 		int iNetCommerce = 1 + getCommerceRate(COMMERCE_GOLD) + getCommerceRate(COMMERCE_RESEARCH) + std::max(0, getGoldPerTurn());
-		int iNetExpenses = calculateInflatedCosts() + std::min(0, getGoldPerTurn());
+// BUG - Unofficial Patch - start
+		// EF: add absolute value of negative GPT to expenses
+		int iNetExpenses = calculateInflatedCosts() + std::max(0, -getGoldPerTurn());
+// BUG - Unofficial Patch - end
 		
 		int iFundedPercent = (100 * (iNetCommerce - iNetExpenses)) / std::max(1, iNetCommerce);
 		
@@ -8061,7 +8075,13 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, CvArea* pArea
 				if (GC.getUnitInfo(eUnit).getCorporationSpreads(iI) > 0)
 				{
 					iValue += (5 * GC.getUnitInfo(eUnit).getCorporationSpreads(iI)) / 2;
-					iValue += 300 / std::max(1, pArea->countHasCorporation((CorporationTypes)iI, getID()));
+// BUG - Unofficial Patch - start
+					// Fix potential crash, probably would only happen in mods
+					if( pArea != NULL )
+					{
+						iValue += 300 / std::max(1, pArea->countHasCorporation((CorporationTypes)iI, getID()));
+					}
+// BUG - Unofficial Patch - end
 				}
 			}
 		}
@@ -9555,7 +9575,10 @@ EspionageMissionTypes CvPlayerAI::AI_bestPlotEspionage(CvPlot* pSpyPlot, PlayerT
 	{
 		if (pSpyPlot->getTeam() != getTeam())
 		{
-			if (!AI_isDoStrategy(AI_STRATEGY_BIG_ESPIONAGE) && (GET_TEAM(getTeam()).AI_getWarPlan(pSpyPlot->getTeam()) != NO_WARPLAN || AI_getAttitudeWeight(pSpyPlot->getOwner()) < (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 50 : 1)))
+// BUG - Unofficial Patch - start
+			// Attitude weight < 50 is equivalent to < 1, < 51 is clearly what was intended
+			if (!AI_isDoStrategy(AI_STRATEGY_BIG_ESPIONAGE) && (GET_TEAM(getTeam()).AI_getWarPlan(pSpyPlot->getTeam()) != NO_WARPLAN || AI_getAttitudeWeight(pSpyPlot->getOwner()) < (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 51 : 1)))
+// BUG - Unofficial Patch - end
 			{
 				//Destroy Improvement.
 				if (pSpyPlot->getImprovementType() != NO_IMPROVEMENT)
@@ -9585,7 +9608,10 @@ EspionageMissionTypes CvPlayerAI::AI_bestPlotEspionage(CvPlot* pSpyPlot, PlayerT
 			if (pCity != NULL)
 			{
 				//Something malicious
-				if (AI_getAttitudeWeight(pSpyPlot->getOwner()) < (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 50 : 1))
+// BUG - Unofficial Patch - start
+				// Attitude weight < 50 is equivalent to < 1, < 51 is clearly what was intended
+				if (AI_getAttitudeWeight(pSpyPlot->getOwner()) < (GC.getGameINLINE().isOption(GAMEOPTION_AGGRESSIVE_AI) ? 51 : 1))
+// BUG - Unofficial Patch - end
 				{
 					//Destroy Building.
 					if (!AI_isDoStrategy(AI_STRATEGY_BIG_ESPIONAGE))
@@ -11600,7 +11626,12 @@ void CvPlayerAI::AI_doDiplo()
 
 									if (GET_PLAYER((PlayerTypes)iI).isHuman() && (GET_TEAM(getTeam()).getLeaderID() == getID()))
 									{
-										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - start
+										// Bug fix: when team was sneak attack ready but hadn't declared, could demand tribute
+										// If other team accepted, it blocked war declaration for 10 turns but AI didn't react.
+										//if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isChosenWar(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - end
 										{
 											if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).getDefensivePower() < GET_TEAM(getTeam()).getPower(true))
 											{
@@ -11642,7 +11673,12 @@ void CvPlayerAI::AI_doDiplo()
 
 									if (GET_PLAYER((PlayerTypes)iI).isHuman() && (GET_TEAM(getTeam()).getLeaderID() == getID()))
 									{
-										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - start
+										// Bug fix: when team was sneak attack ready but hadn't declared, could demand tribute
+										// If other team accepted, it blocked war declaration for 10 turns but AI didn't react.
+										//if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isChosenWar(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - end
 										{
 											if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).getDefensivePower() < GET_TEAM(getTeam()).getPower(true))
 											{
@@ -11680,7 +11716,12 @@ void CvPlayerAI::AI_doDiplo()
 
 									if (GET_PLAYER((PlayerTypes)iI).isHuman() && (GET_TEAM(getTeam()).getLeaderID() == getID()))
 									{
-										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - start
+										// Bug fix: when team was sneak attack ready but hadn't declared, could demand tribute
+										// If other team accepted, it blocked war declaration for 10 turns but AI didn't react.
+										//if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isChosenWar(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - end
 										{
 											if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).getDefensivePower() < GET_TEAM(getTeam()).getPower(true))
 											{
@@ -11740,7 +11781,12 @@ void CvPlayerAI::AI_doDiplo()
 
 									if (GET_PLAYER((PlayerTypes)iI).isHuman() && (GET_TEAM(getTeam()).getLeaderID() == getID()))
 									{
-										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - start
+										// Bug fix: when team was sneak attack ready but hadn't declared, could demand tribute
+										// If other team accepted, it blocked war declaration for 10 turns but AI didn't react.
+										//if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isSneakAttackPreparing(GET_PLAYER((PlayerTypes)iI).getTeam()))
+										if (GET_TEAM(getTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)iI).getTeam()) && !GET_TEAM(getTeam()).AI_isChosenWar(GET_PLAYER((PlayerTypes)iI).getTeam()))
+// BUG - Unofficial Patch - end
 										{
 											if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).getDefensivePower() < GET_TEAM(getTeam()).getPower(true))
 											{
@@ -13804,7 +13850,11 @@ int CvPlayerAI::AI_getStrategyHash() const
 							}
 						}
 					}
-						if (kLoopUnit.getMoves() > 1)
+
+// BUG - Unofficial Patch - start
+						// Mobile anti-air and artillery flags only meant for land units
+						if ( kLoopUnit.getDomainType() == DOMAIN_LAND && kLoopUnit.getMoves() > 1 )
+// BUG - Unofficial Patch - end
 						{
 							if (kLoopUnit.getInterceptionProbability() > 25)
 							{
@@ -16120,7 +16170,10 @@ int CvPlayerAI::AI_getMinFoundValue() const
 {
 	int iValue = 600;
 	int iNetCommerce = 1 + getCommerceRate(COMMERCE_GOLD) + getCommerceRate(COMMERCE_RESEARCH) + std::max(0, getGoldPerTurn());
-	int iNetExpenses = calculateInflatedCosts() + std::min(0, getGoldPerTurn());		
+// BUG - Unofficial Patch - start
+	// EF: add absolute value of negative GPT to expenses
+	int iNetExpenses = calculateInflatedCosts() + std::max(0, -getGoldPerTurn());		
+// BUG - Unofficial Patch - end
 	
 	iValue *= iNetCommerce;
 	iValue /= std::max(std::max(1, iNetCommerce / 4), iNetCommerce - iNetExpenses);
@@ -16555,7 +16608,10 @@ int CvPlayerAI::AI_calculateUnitAIViability(UnitAITypes eUnitAI, DomainTypes eDo
 	for (int iI = 0; iI < GC.getNumUnitClassInfos(); iI++)
 	{
 		UnitTypes eLoopUnit = (UnitTypes)GC.getUnitClassInfo((UnitClassTypes)iI).getDefaultUnitIndex();
-		CvUnitInfo& kUnitInfo = GC.getUnitInfo((UnitTypes)iI);
+// BUG - Unofficial Patch - start
+		// EF: was converting unit class iI to unit type
+		CvUnitInfo& kUnitInfo = GC.getUnitInfo(eLoopUnit);
+// BUG - Unofficial Patch - end
 		if (kUnitInfo.getDomainType() == eDomain)
 		{
 
