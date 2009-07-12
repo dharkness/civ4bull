@@ -8363,7 +8363,7 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 	
 // BUG - Governor Builds Workboats - start
 #ifdef _MOD_GOVWORKERS
-	if (GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_1))
+	if (!isHuman() || GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_1))
 	{
 #endif
 	//workboat
@@ -8450,7 +8450,7 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 	
 // BUG - Governor Builds Workers - start
 #ifdef _MOD_GOVWORKERS
-	if (GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_2))
+	if (!isHuman() || GET_PLAYER(getOwnerINLINE()).isOption(PLAYEROPTION_MODDER_2))
 	{
 #endif
 	int iExistingWorkers = GET_PLAYER(getOwner()).AI_totalAreaUnitAIs(area(), UNITAI_WORKER);
