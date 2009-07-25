@@ -694,6 +694,7 @@ void CyEnumsPythonInterface()
 // BUG - start
 		.value("CITIZEN_CHAR", CITIZEN_CHAR)
 		.value("GREAT_GENERAL_CHAR", GREAT_GENERAL_CHAR)
+		.value("AIRPORT_CHAR", GREAT_GENERAL_CHAR)
 // BUG - end
 		.value("MAX_NUM_SYMBOLS", MAX_NUM_SYMBOLS)
 		;
