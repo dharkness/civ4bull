@@ -957,6 +957,8 @@ enum FontSymbols					// Exposed to Python
 // BUG - start
 	CITIZEN_CHAR,
 	GREAT_GENERAL_CHAR,
+	AIRPORT_CHAR,
+	CRAZY_CHAR,
 // BUG - end
 
 #ifdef _USRDLL

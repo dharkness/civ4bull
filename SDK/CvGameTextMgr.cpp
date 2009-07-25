@@ -14707,7 +14707,8 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 				int eAirport = GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationBuildings(eAirportClass);
 				if (eAirport != -1 && pCity->getNumBuilding((BuildingTypes)eAirport) > 0)
 				{
-					szBuffer.append(CvWString::format(L"%c", gDLL->getSymbolID(POWER_CHAR) + 1));
+					logMsg("Power = %d, Airport = %d", gDLL->getSymbolID(POWER_CHAR), gDLL->getSymbolID(AIRPORT_CHAR));
+					szBuffer.append(CvWString::format(L"%c", gDLL->getSymbolID(AIRPORT_CHAR)));
 				}
 			}
 		}
