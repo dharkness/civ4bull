@@ -192,15 +192,26 @@
 		<DefineName>BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+
+<!-- Actions -->
 	
-<!-- Sentry Healing -->
-	
+	<!-- Sentry Healing -->
 	<Define>
 		<DefineName>BUG_SENTRY_HEALING</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
 		<DefineName>BUG_SENTRY_HEALING_ONLY_NEUTRAL</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Pre-Chop -->
+	<Define>
+		<DefineName>BUG_PRECHOP_FORESTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_PRECHOP_IMPROVEMENTS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 

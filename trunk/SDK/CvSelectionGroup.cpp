@@ -3511,6 +3511,28 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 //			}
 		}
 	}
+	
+// BUG - Pre-Chop - start
+	bool bCheckChop = false;
+
+	if (isHuman() && pPlot->getFeatureType() == GC.getInfoTypeForString("FEATURE_FOREST") && GC.getBuildInfo(eBuild).isFeatureRemove(pPlot->getFeatureType()))
+	{
+		if (eBuild == GC.getInfoTypeForString("BUILD_REMOVE_FOREST"))
+		{
+			if (getBugOptionBOOL("Actions__PreChopForests", true, "BUG_PRECHOP_FORESTS"))
+			{
+				bCheckChop = true;
+			}
+		}
+		else
+		{
+			if (getBugOptionBOOL("Actions__PreChopImprovements", true, "BUG_PRECHOP_IMPROVEMENTS"))
+			{
+				bCheckChop = true;
+			}
+		}
+	}
+// BUG - Pre-Chop - end
 
 	pUnitNode = headUnitNode();
 
@@ -3530,6 +3552,15 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 				bContinue = false;
 				break;
 			}
+
+// BUG - Pre-Chop - start
+			if (bCheckChop && pPlot->getBuildTurnsLeft(eBuild, getOwnerINLINE()) == 1)
+			{
+				// TODO: stop other worker groups
+				bContinue = false;
+				break;
+			}
+// BUG - Pre-Chop - end
 		}
 	}
 
