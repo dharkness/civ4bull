@@ -392,10 +392,6 @@ public:
 
 	int getWorkerSpeedModifier() const;																																		// Exposed to Python
 	void changeWorkerSpeedModifier(int iChange);
-	
-// BUG - Partial Builds - start
-	int getWorkRate(BuildTypes eBuild) const;
-// BUG - Partial Builds - end
 
 	int getImprovementUpgradeRateModifier() const;																									// Exposed to Python
 	void changeImprovementUpgradeRateModifier(int iChange);

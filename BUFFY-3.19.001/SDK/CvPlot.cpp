@@ -2364,24 +2364,7 @@ int CvPlot::getBuildTime(BuildTypes eBuild) const
 }
 
 
-// BUG - Partial Builds - start
-int CvPlot::getBuildTurnsLeft(BuildTypes eBuild, PlayerTypes ePlayer) const
-{
-	int iWorkRate = GET_PLAYER(ePlayer).getWorkRate(eBuild);
-	if (iWorkRate > 0)
-	{
-		return getBuildTurnsLeft(eBuild, iWorkRate, iWorkRate, false);
-	}
-	else
-	{
-		return MAX_INT;
-	}
-}
-// BUG - Partial Builds - end
-
-// BUG - Partial Builds - start
-int CvPlot::getBuildTurnsLeft(BuildTypes eBuild, int iNowExtra, int iThenExtra, bool bIncludeUnits) const
-// BUG - Partial Builds - end
+int CvPlot::getBuildTurnsLeft(BuildTypes eBuild, int iNowExtra, int iThenExtra) const
 {
 	CLLNode<IDInfo>* pUnitNode;
 	CvUnit* pLoopUnit;
@@ -2393,29 +2376,22 @@ int CvPlot::getBuildTurnsLeft(BuildTypes eBuild, int iNowExtra, int iThenExtra, 
 	iNowBuildRate = iNowExtra;
 	iThenBuildRate = iThenExtra;
 
-// BUG - Partial Builds - start
-	if (bIncludeUnits)
+	pUnitNode = headUnitNode();
+
+	while (pUnitNode != NULL)
 	{
-// BUG - Partial Builds - end
-		pUnitNode = headUnitNode();
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = nextUnitNode(pUnitNode);
 
-		while (pUnitNode != NULL)
+		if (pLoopUnit->getBuildType() == eBuild)
 		{
-			pLoopUnit = ::getUnit(pUnitNode->m_data);
-			pUnitNode = nextUnitNode(pUnitNode);
-
-			if (pLoopUnit->getBuildType() == eBuild)
+			if (pLoopUnit->canMove())
 			{
-				if (pLoopUnit->canMove())
-				{
-					iNowBuildRate += pLoopUnit->workRate(false);
-				}
-				iThenBuildRate += pLoopUnit->workRate(true);
+				iNowBuildRate += pLoopUnit->workRate(false);
 			}
+			iThenBuildRate += pLoopUnit->workRate(true);
 		}
-// BUG - Partial Builds - start
 	}
-// BUG - Partial Builds - end
 
 	if (iThenBuildRate == 0)
 	{
@@ -7431,19 +7407,6 @@ bool CvPlot::changeBuildProgress(BuildTypes eBuild, int iChange, TeamTypes eTeam
 
 	return bFinished;
 }
-
-
-// BUG - Partial Builds - start
-/*
- * Returns true if the build progress array has been created; false otherwise.
- * A false return value implies that every build has zero progress.
- * A true return value DOES NOT imply that any build has a non-zero progress--just the possibility.
- */
-bool CvPlot::hasAnyBuildProgress() const
-{
-	return NULL != m_paiBuildProgress;
-}
-// BUG - Partial Builds - end
 
 
 void CvPlot::updateFeatureSymbolVisibility()

@@ -78,10 +78,6 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
-		<DefineName>BUG_CITYBAR_REVOLT_CHANCE</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
-	</Define>
-	<Define>
 		<DefineName>BUG_CITYBAR_HIDE_INSTRUCTIONS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
@@ -100,12 +96,6 @@
 	<Define>
 		<DefineName>BUG_PRODUCTION_DECAY_HOVER_UNIT_THRESHOLD</DefineName>
 		<iDefineIntVal>5</iDefineIntVal>
-	</Define>
-	
-	<!-- Plot -->
-	<Define>
-		<DefineName>BUG_PLOT_HOVER_PARTIAL_BUILDS</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
 	<!-- Building -->
@@ -192,26 +182,15 @@
 		<DefineName>BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
-
-<!-- Actions -->
 	
-	<!-- Sentry Healing -->
+<!-- Sentry Healing -->
+	
 	<Define>
 		<DefineName>BUG_SENTRY_HEALING</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
 		<DefineName>BUG_SENTRY_HEALING_ONLY_NEUTRAL</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
-	</Define>
-	
-	<!-- Pre-Chop -->
-	<Define>
-		<DefineName>BUG_PRECHOP_FORESTS</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>BUG_PRECHOP_IMPROVEMENTS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 
