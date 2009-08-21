@@ -102,6 +102,12 @@
 		<iDefineIntVal>5</iDefineIntVal>
 	</Define>
 	
+	<!-- Plot -->
+	<Define>
+		<DefineName>BUG_PLOT_HOVER_PARTIAL_BUILDS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
 	<!-- Building -->
 	<Define>
 		<DefineName>BUG_BUILDING_HOVER_ACTUAL_EFFECTS</DefineName>
