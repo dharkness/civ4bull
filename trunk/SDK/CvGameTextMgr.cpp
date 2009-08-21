@@ -4540,7 +4540,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 				}
 				int iOverflowProduction = 0;
 				int iOverflowGold = 0;
-				if (pCity->hurryOverflow((HurryTypes)iI, &iOverflowProduction, &iOverflowGold), getBugOptionBOOL("CityBar__HurryAssistIncludeCurrent", false, "BUG_CITYBAR_HURRY_ASSIST_INCLUDE_CURRENT"))
+				if (pCity->hurryOverflow((HurryTypes)iI, &iOverflowProduction, &iOverflowGold, getBugOptionBOOL("CityBar__HurryAssistIncludeCurrent", false, "BUG_CITYBAR_HURRY_ASSIST_INCLUDE_CURRENT")))
 				{
 					if (iOverflowProduction > 0)
 					{
