@@ -4233,6 +4233,29 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 			szString.append(GC.getRouteInfo(pPlot->getRevealedRouteType(GC.getGameINLINE().getActiveTeam(), true)).getDescription());
 		}
 
+// BUG - Partial Builds - start
+		if (pPlot->hasAnyBuildProgress() && getBugOptionBOOL("MiscHover__PartialBuilds", true, "BUG_PLOT_HOVER_PARTIAL_BUILDS"))
+		{
+			PlayerTypes ePlayer = GC.getGameINLINE().getActivePlayer();
+
+			for (int iI = 0; iI < GC.getNumBuildInfos(); iI++)
+			{
+				if (pPlot->getBuildProgress((BuildTypes)iI) > 0 && pPlot->canBuild((BuildTypes)iI, ePlayer))
+				{
+					int iTurns = pPlot->getBuildTurnsLeft((BuildTypes)iI, GC.getGame().getActivePlayer());
+					
+					if (iTurns > 0 && iTurns < MAX_INT)
+					{
+						szString.append(NEWLINE);
+						szString.append(GC.getBuildInfo((BuildTypes)iI).getDescription());
+						szString.append(L": ");
+						szString.append(gDLL->getText("TXT_KEY_ACTION_NUM_TURNS", iTurns));
+					}
+				}
+			}
+		}
+// BUG - Partial Builds - end
+
 		if (pPlot->getBlockadedCount(GC.getGameINLINE().getActiveTeam()) > 0)
 		{
 			szString.append(CvWString::format(SETCOLR, TEXT_COLOR("COLOR_NEGATIVE_TEXT")));
