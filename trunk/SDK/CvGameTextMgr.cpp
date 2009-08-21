@@ -4861,7 +4861,28 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 		szString.append(gDLL->getText("TXT_KEY_CITY_BAR_AIR_UNIT_CAPACITY", iNumUnits, pCity->getAirUnitCapacity(GC.getGameINLINE().getActiveTeam())));
 	}
 
-	szString.append(NEWLINE);
+// BUG - Revolt Chance - start
+	if (getBugOptionBOOL("CityBar__RevoltChance", true, "BUG_CITYBAR_REVOLT_CHANCE"))
+	{
+		PlayerTypes eCulturalOwner = pCity->plot()->calculateCulturalOwner();
+
+		if (eCulturalOwner != NO_PLAYER)
+		{
+			if (GET_PLAYER(eCulturalOwner).getTeam() != pCity->getTeam())
+			{
+				int iCityStrength = pCity->cultureStrength(eCulturalOwner);
+				int iGarrison = pCity->cultureGarrison(eCulturalOwner);
+
+				if (iCityStrength > iGarrison)
+				{
+					szTempBuffer.Format(L"%.2f", std::max(0.0f, (1.0f - (float)iGarrison / (float)iCityStrength)) * std::min(100.0f, (float)pCity->getRevoltTestProbability()));
+					szString.append(NEWLINE);
+					szString.append(gDLL->getText("TXT_KEY_MISC_CHANCE_OF_REVOLT", szTempBuffer.GetCString()));
+				}
+			}
+		}
+	}
+// BUG - Revolt Chance - end
 
 // BUG - Hide UI Instructions - start
 	if (!getBugOptionBOOL("CityBar__HideInstructions", true, "BUG_CITYBAR_HIDE_INSTRUCTIONS"))
