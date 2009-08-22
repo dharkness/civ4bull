@@ -14843,6 +14843,21 @@ void CvGameTextMgr::buildCityBillboardCityNameString( CvWStringBuffer& szBuffer,
 					}
 				}
 			}
+// BUG - Starvation Turns - start
+			else if (pCity->foodDifference() < 0 && getBugOptionBOOL("CityBar__StarvationTurns", true, "BUG_CITYBAR_STARVATION_TURNS"))
+			{
+				int iFoodDifference = pCity->foodDifference();
+				if (pCity->getFood() + iFoodDifference >= 0)
+				{
+					int iTurns = pCity->getFood() / -iFoodDifference + 1;
+					szBuffer.append(CvWString::format(L" (%d)", iTurns));
+				}
+				else
+				{
+					szBuffer.append(L" (!!!)");
+				}
+			}
+// BUG - Starvation Turns - end
 		}
 	}
 }

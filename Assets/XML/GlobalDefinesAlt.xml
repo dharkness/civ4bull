@@ -14,7 +14,11 @@
 		<DefineName>BUG_CITYBAR_AIRPORT_ICONS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
-	
+	<Define>
+		<DefineName>BUG_CITYBAR_STARVATION_TURNS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+
 <!-- City Bar Hover -->
 	
 	<Define>
