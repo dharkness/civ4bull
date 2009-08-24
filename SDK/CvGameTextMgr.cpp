@@ -6317,10 +6317,16 @@ void CvGameTextMgr::parseCivicInfo(CvWStringBuffer &szHelpText, CivicTypes eCivi
 
 	if (GC.getCivicInfo(eCivic).getNonStateReligionHappiness() != 0)
 	{
-		if (GC.getCivicInfo(eCivic).isStateReligion())
+// BUG - Unofficial Patch - start
+		// Fixes when to display of "Non-State"
+		if (!GC.getCivicInfo(eCivic).isStateReligion())
+// BUG - Unofficial Patch - end
 		{
 			szHelpText.append(NEWLINE);
-			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_NO_STATE"));
+// BUG - Unofficial Patch - start
+			// Fixes display of civics that allow state religions but have a happy/unhappy per non-state religion
+			szHelpText.append(gDLL->getText("TXT_KEY_CIVIC_NON_STATE_REL_HAPPINESS_NO_STATE", abs(GC.getCivicInfo(eCivic).getNonStateReligionHappiness()), ((GC.getCivicInfo(eCivic).getNonStateReligionHappiness() > 0) ? gDLL->getSymbolID(HAPPY_CHAR) : gDLL->getSymbolID(UNHAPPY_CHAR))));
+// BUG - Unofficial Patch - end
 		}
 		else
 		{
