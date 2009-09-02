@@ -611,6 +611,44 @@ void CvDllPythonEvents::reportCityBuildingBuilding( CvCity *pCity, BuildingTypes
 	}
 }
 
+// BUG - Project Started Event - start
+void CvDllPythonEvents::reportCityBuildingProject( CvCity* pCity, ProjectTypes eProjectType )
+{
+	if (preEvent())
+	{
+		CyArgsList eventData;
+		eventData.add("cityBuildingProject");						// add key to lookup python handler fxn
+
+		CyCity* pCyCity = new CyCity(pCity);
+		eventData.add(gDLL->getPythonIFace()->makePythonObject(pCyCity));
+
+		eventData.add((int) eProjectType);
+
+		postEvent(eventData);
+		delete pCyCity;
+	}
+}
+// BUG - Project Started Event - end
+
+// BUG - Process Started Event - start
+void CvDllPythonEvents::reportCityBuildingProcess( CvCity* pCity, ProcessTypes eProcessType )
+{
+	if (preEvent())
+	{
+		CyArgsList eventData;
+		eventData.add("cityBuildingProcess");						// add key to lookup python handler fxn
+
+		CyCity* pCyCity = new CyCity(pCity);
+		eventData.add(gDLL->getPythonIFace()->makePythonObject(pCyCity));
+
+		eventData.add((int) eProcessType);
+
+		postEvent(eventData);
+		delete pCyCity;
+	}
+}
+// BUG - Process Started Event - end
+
 void CvDllPythonEvents::reportCityRename( CvCity *pCity )
 {
 	if (preEvent())

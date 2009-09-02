@@ -75,6 +75,12 @@ public:
 	void cityDoTurn(CvCity *pCity, PlayerTypes ePlayer);
 	void cityBuildingUnit(CvCity* pCity, UnitTypes eUnitType);
 	void cityBuildingBuilding(CvCity* pCity, BuildingTypes eBuildingType);
+// BUG - Project Started Event - start
+	void cityBuildingProject(CvCity* pCity, ProjectTypes eProjectType);
+// BUG - Project Started Event - end
+// BUG - Process Started Event - start
+	void cityBuildingProcess(CvCity* pCity, ProcessTypes eProcessType);
+// BUG - Process Started Event - end
 	void cityRename(CvCity* pCity);
 	void cityHurry(CvCity* pCity, HurryTypes eHurry);
 

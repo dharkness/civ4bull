@@ -52,6 +52,12 @@ public:
 	void reportCityProduction(CvCity *pCity, PlayerTypes ePlayer);
 	void reportCityBuildingUnit(CvCity *pCity, UnitTypes eUnitType);
 	void reportCityBuildingBuilding(CvCity *pCity, BuildingTypes eBuildingType);
+// BUG - Project Started Event - start
+	void reportCityBuildingProject(CvCity* pCity, ProjectTypes eProjectType);
+// BUG - Project Started Event - end
+// BUG - Process Started Event - start
+	void reportCityBuildingProcess(CvCity* pCity, ProcessTypes eProcessType);
+// BUG - Process Started Event - end
 	void reportCityRename(CvCity *pCity);
 	void reportCityHurry(CvCity *pCity, HurryTypes eHurry);
 

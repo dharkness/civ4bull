@@ -233,6 +233,20 @@ void CvEventReporter::cityBuildingBuilding(CvCity* pCity, BuildingTypes eBuildin
 	m_kPythonEventMgr.reportCityBuildingBuilding(pCity, eBuildingType);
 }
 
+// BUG - Project Started Event - start
+void CvEventReporter::cityBuildingProject(CvCity* pCity, ProjectTypes eProjectType)
+{
+	m_kPythonEventMgr.reportCityBuildingProject(pCity, eProjectType);
+}
+// BUG - Project Started Event - end
+
+// BUG - Process Started Event - start
+void CvEventReporter::cityBuildingProcess(CvCity* pCity, ProcessTypes eProcessType)
+{
+	m_kPythonEventMgr.reportCityBuildingProcess(pCity, eProcessType);
+}
+// BUG - Process Started Event - end
+
 void CvEventReporter::cityRename(CvCity* pCity)
 {
 	m_kPythonEventMgr.reportCityRename(pCity);
