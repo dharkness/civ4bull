@@ -11347,6 +11347,9 @@ void CvCity::pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bo
 			GET_TEAM(getTeam()).changeProjectMaking(((ProjectTypes)iData1), 1);
 
 			bValid = true;
+// BUG - Project Started Event - start
+			CvEventReporter::getInstance().cityBuildingProject(this, (ProjectTypes)iData1);
+// BUG - Project Started Event - end
 		}
 		break;
 
@@ -11354,6 +11357,9 @@ void CvCity::pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bo
 		if (canMaintain((ProcessTypes)iData1) || bForce)
 		{
 			bValid = true;
+// BUG - Process Started Event - start
+			CvEventReporter::getInstance().cityBuildingProcess(this, (ProcessTypes)iData1);
+// BUG - Process Started Event - end
 		}
 		break;
 
