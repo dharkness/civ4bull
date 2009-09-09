@@ -188,10 +188,10 @@
 		<Spanish>[NEWLINE][ICON_BULLET]Acelera[SPACE]</Spanish>
 	</TEXT>
 
-<!-- Building Hover -->
+<!-- Actual Effects -->
 
 	<TEXT>
-		<Tag>TXT_KEY_BUILDING_ACTUAL_EFFECTS</Tag>
+		<Tag>TXT_KEY_ACTUAL_EFFECTS</Tag>
 		<English>Actual</English>
 		<French>Actual</French>
 		<German>Effektiv</German>
