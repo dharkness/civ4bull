@@ -23,7 +23,7 @@ void logMsg(const char* format, ...)
 {
 	static char buf[2048];
 	_vsnprintf( buf, 2048-4, format, (char*)(&format+1) );
-	gDLL->logMsg("bug.log", buf);
+	gDLL->logMsg("bull.log", buf);
 }
 
 
@@ -33,19 +33,19 @@ void bugInit()
 	{
 		long lResult = 0;
 
-		logMsg("BUG - isBug()");
+		logMsg("BULL - checking for BUG");
 		if (gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBug", NULL, &lResult))
 		{
-			logMsg("BUG - got value %ld", lResult);
+			//logMsg("BULL - got value %ld", lResult);
 			g_bIsBug = lResult;
 			if (g_bIsBug)
 			{
-				logMsg("BUG - BUG is present");
+				logMsg("BULL - BUG is present");
 			}
 		}
 		else
 		{
-			logMsg("BUG - call to isBug() failed; BUG not present");
+			logMsg("BULL - call to isBug() failed; BUG not present");
 			g_bIsBug = false;
 		}
 
@@ -97,9 +97,9 @@ bool getBugOptionBOOL(const char* id, bool bDefault, const char* xmlKey)
 		argsList.add(id);
 		argsList.add(bDefault);
 
-		//logMsg("BUG - getOptionBOOL(%s)", id);
+		//logMsg("BULL - getOptionBOOL(%s)", id);
 		gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "getOptionBOOL", argsList.makeFunctionArgs(), &lResult);
-		//logMsg("BUG - got value %ld", lResult);
+		//logMsg("BULL - got value %ld", lResult);
 
 		return lResult != 0;
 	}
@@ -108,7 +108,7 @@ bool getBugOptionBOOL(const char* id, bool bDefault, const char* xmlKey)
 		CvString tmp;
 		if (!xmlKey)
 		{
-			tmp.append("BUG__");
+			tmp.append(OPTION_XML_PREFIX);
 			tmp.append(id);
 			xmlKey = tmp.c_str();
 		}
@@ -126,9 +126,9 @@ int getBugOptionINT(const char* id, int iDefault, const char* xmlKey)
 		argsList.add(id);
 		argsList.add(iDefault);
 
-		//logMsg("BUG - getOptionBOOL(%s)", id);
+		//logMsg("BULL - getOptionBOOL(%s)", id);
 		gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "getOptionINT", argsList.makeFunctionArgs(), &lResult);
-		//logMsg("BUG - got value %ld", lResult);
+		//logMsg("BULL - got value %ld", lResult);
 
 		return lResult;
 	}
@@ -137,7 +137,7 @@ int getBugOptionINT(const char* id, int iDefault, const char* xmlKey)
 		CvString tmp;
 		if (!xmlKey)
 		{
-			tmp.append("BUG__");
+			tmp.append(OPTION_XML_PREFIX);
 			tmp.append(id);
 			xmlKey = tmp.c_str();
 		}
