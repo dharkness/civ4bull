@@ -3671,13 +3671,36 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	szTempBuffer.Format(SETCOLR L"Beyond the Sword %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), fVersion);
 	szBuffer.append(szTempBuffer);
 	// BUG Mod version
-	CvWString szBugNameAndVersion;
-	gDLL->getPythonIFace()->callFunction(PYBugModule, "getModNameAndVersion", NULL, &szBugNameAndVersion);
-	szTempBuffer.Format(NEWLINE SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), szBugNameAndVersion.c_str());
-	szBuffer.append(szTempBuffer);
+	if (isBug())
+	{
+		CvWString szBugNameAndVersion;
+		gDLL->getPythonIFace()->callFunction(PYBugModule, "getModNameAndVersion", NULL, &szBugNameAndVersion);
+		szTempBuffer.Format(NEWLINE SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), szBugNameAndVersion.c_str());
+		szBuffer.append(szTempBuffer);
+	}
 	// BUG DLL version
 	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), BUG_DLL_NAME, BUG_DLL_VERSION);
 	szBuffer.append(szTempBuffer);
+#ifdef _MOD_AIAUTOPLAY
+	szTempBuffer.Format(NEWLINE SETCOLR L"%cAI AutoPlay" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), gDLL->getSymbolID(BULLET_CHAR));
+	szBuffer.append(szTempBuffer);
+#endif
+#ifdef _MOD_SENTRY
+	szTempBuffer.Format(NEWLINE SETCOLR L"%cNew Sentry Actions" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), gDLL->getSymbolID(BULLET_CHAR));
+	szBuffer.append(szTempBuffer);
+#endif
+#ifdef _MOD_GOVWORKERS
+	szTempBuffer.Format(NEWLINE SETCOLR L"%cGovernors Build Workers" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), gDLL->getSymbolID(BULLET_CHAR));
+	szBuffer.append(szTempBuffer);
+#endif
+#ifdef _MOD_GWARM
+	szTempBuffer.Format(NEWLINE SETCOLR L"%cGlobal Warming" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), gDLL->getSymbolID(BULLET_CHAR));
+	szBuffer.append(szTempBuffer);
+#endif
+#ifdef _MOD_FRACTRADE
+	szTempBuffer.Format(NEWLINE SETCOLR L"%cFractional Trade" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), gDLL->getSymbolID(BULLET_CHAR));
+	szBuffer.append(szTempBuffer);
+#endif
 	// separator line
 	szBuffer.append(NEWLINE L"==============================" NEWLINE);
 // BUG - Version Info - end
