@@ -3331,7 +3331,7 @@ void CvSelectionGroup::groupMove(CvPlot* pPlot, bool bCombat, CvUnit* pCombatUni
 	
 // BUG - Sentry Actions - start
 #ifdef _MOD_SENTRY
-	bool bSentryAlert = isHuman() && (headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_SENTRY) && sentryAlertSameDomainType();
+	bool bSentryAlert = isHuman() && NULL != headMissionQueueNode() && headMissionQueueNode()->m_data.eMissionType == MISSION_MOVE_TO_SENTRY && sentryAlertSameDomainType();
 #endif
 // BUG - Sentry Actions - end
 
