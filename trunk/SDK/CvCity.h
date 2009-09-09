@@ -297,6 +297,11 @@ public:
 	int getAdditionalGreatPeopleRateModifierByBuilding(BuildingTypes eBuilding) const;						// Exposed to Python
 // BUG - Building Additional Great People - end
 
+// BUG - Specialist Additional Great People - start
+	int getAdditionalGreatPeopleRateBySpecialist(SpecialistTypes eSpecialist, int iChange) const;			// Exposed to Python
+	int getAdditionalBaseGreatPeopleRateBySpecialist(SpecialistTypes eSpecialist, int iChange) const;		// Exposed to Python
+// BUG - Specialist Additional Great People - end
+
 	int getGreatPeopleProgress() const;													// Exposed to Python
 	void changeGreatPeopleProgress(int iChange);										// Exposed to Python
 
@@ -610,6 +615,11 @@ public:
 	int getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const;			// Exposed to Python
 // BUG - Building Additional Yield - end
 
+// BUG - Specialist Additional Yield - start
+	int getAdditionalYieldBySpecialist(YieldTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;				// Exposed to Python
+	int getAdditionalBaseYieldRateBySpecialist(YieldTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;		// Exposed to Python
+// BUG - Specialist Additional Yield - end
+
 	int getBaseYieldRate(YieldTypes eIndex) const;															// Exposed to Python
 	int getBaseYieldRateModifier(YieldTypes eIndex, int iExtra = 0) const;			// Exposed to Python
 	int getYieldRate(YieldTypes eIndex) const;												// Exposed to Python
@@ -665,6 +675,13 @@ public:
 
 	int getSpecialistCommerce(CommerceTypes eIndex) const;											// Exposed to Python
 	void changeSpecialistCommerce(CommerceTypes eIndex, int iChange);			// Exposed to Python
+// BUG - Specialist Additional Commerce - start
+	int getAdditionalCommerceBySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;				// Exposed to Python
+	int getAdditionalCommerceTimes100BySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;		// Exposed to Python
+	int getAdditionalBaseCommerceRateBySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;		// Exposed to Python
+	int getAdditionalBaseCommerceRateBySpecialistImpl(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const;
+// BUG - Specialist Additional Commerce - end
+
 
 	int getReligionCommerce(CommerceTypes eIndex) const;																				// Exposed to Python
 	int getReligionCommerceByReligion(CommerceTypes eIndex, ReligionTypes eReligion) const;			// Exposed to Python

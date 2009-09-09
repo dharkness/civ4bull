@@ -4011,7 +4011,7 @@ bool CvCity::isDisorder() const
 }
 
 
-bool CvCity::isHolyCity(ReligionTypes eIndex) const
+bool CvCity::isHolyCity (ReligionTypes eIndex) const
 {
 	return (GC.getGameINLINE().getHolyCity(eIndex) == this);
 }
@@ -5365,6 +5365,18 @@ int CvCity::getAdditionalBaseGreatPeopleRateByBuilding(BuildingTypes eBuilding) 
 
 	iExtraRate += kBuilding.getGreatPeopleRateChange();
 
+	// Specialists
+	if (!bObsolete)
+	{
+		for (int iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
+		{
+			if (kBuilding.getFreeSpecialistCount((SpecialistTypes)iI) != 0)
+			{
+				iExtraRate += getAdditionalBaseGreatPeopleRateBySpecialist((SpecialistTypes)iI, kBuilding.getFreeSpecialistCount((SpecialistTypes)iI));
+			}
+		}
+	}
+
 	return iExtraRate;
 }
 
@@ -5391,6 +5403,34 @@ int CvCity::getAdditionalGreatPeopleRateModifierByBuilding(BuildingTypes eBuildi
 	return iExtraModifier;
 }
 // BUG - Building Additional Great People - end
+
+
+// BUG - Specialist Additional Great People - start
+/*
+ * Returns the total additional great people rate that changing the number of the given specialist will provide/remove.
+ */
+int CvCity::getAdditionalGreatPeopleRateBySpecialist(SpecialistTypes eSpecialist, int iChange) const
+{
+	int iRate = getBaseGreatPeopleRate();
+	int iModifier = getTotalGreatPeopleRateModifier();
+	int iExtraRate = getAdditionalBaseGreatPeopleRateBySpecialist(eSpecialist, iChange);
+
+	int iExtra = ((iRate + iExtraRate) * iModifier / 100) - (iRate * iModifier / 100);
+
+	return iExtra;
+}
+
+/*
+ * Returns the additional great people rate that changing the number of the given specialist will provide/remove.
+ */
+int CvCity::getAdditionalBaseGreatPeopleRateBySpecialist(SpecialistTypes eSpecialist, int iChange) const
+{
+	FAssertMsg(eSpecialist >= 0, "eSpecialist expected to be >= 0");
+	FAssertMsg(eSpecialist < GC.getNumSpecialistInfos(), "eSpecialist expected to be < GC.getNumSpecialistInfos()");
+
+	return iChange * GC.getSpecialistInfo(eSpecialist).getGreatPeopleRateChange();
+}
+// BUG - Specialist Additional Great People - end
 
 
 int CvCity::getNumWorldWonders() const
@@ -7933,11 +7973,6 @@ void CvCity::changeRiverPlotYield(YieldTypes eIndex, int iChange)
  */
 int CvCity::getAdditionalYieldByBuilding(YieldTypes eIndex, BuildingTypes eBuilding) const
 {
-	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
-	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex expected to be < NUM_YIELD_TYPES");
-	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
-	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
-
 	int iRate = getBaseYieldRate(eIndex);
 	int iModifier = getBaseYieldRateModifier(eIndex);
 	int iExtra = ((iRate + getAdditionalBaseYieldRateByBuilding(eIndex, eBuilding)) * (iModifier + getAdditionalYieldRateModifierByBuilding(eIndex, eBuilding)) / 100) - (iRate * iModifier / 100);
@@ -8012,6 +8047,15 @@ int CvCity::getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingType
 				}
 			}
 		}
+
+		// Specialists
+		for (int iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
+		{
+			if (kBuilding.getFreeSpecialistCount((SpecialistTypes)iI) != 0)
+			{
+				iExtraRate += getAdditionalBaseYieldRateBySpecialist(eIndex, (SpecialistTypes)iI, kBuilding.getFreeSpecialistCount((SpecialistTypes)iI));
+			}
+		}
 	}
 
 	return iExtraRate;
@@ -8071,6 +8115,35 @@ int CvCity::getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, Building
 	return iExtraModifier;
 }
 // BUG - Building Additional Yield - end
+
+
+// BUG - Specialist Additional Yield - start
+/*
+ * Returns the total additional yield that changing the number of given specialists will provide/remove.
+ */
+int CvCity::getAdditionalYieldBySpecialist(YieldTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	int iRate = getBaseYieldRate(eIndex);
+	int iModifier = getBaseYieldRateModifier(eIndex);
+	int iExtra = ((iRate + getAdditionalBaseYieldRateBySpecialist(eIndex, eSpecialist, iChange)) * iModifier / 100) - (iRate * iModifier / 100);
+
+	return iExtra;
+}
+
+/*
+ * Returns the additional yield rate that changing the number of given specialists will provide/remove.
+ */
+int CvCity::getAdditionalBaseYieldRateBySpecialist(YieldTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex expected to be < NUM_YIELD_TYPES");
+	FAssertMsg(eSpecialist >= 0, "eSpecialist expected to be >= 0");
+	FAssertMsg(eSpecialist < GC.getNumSpecialistInfos(), "eSpecialist expected to be < GC.getNumSpecialistInfos()");
+	
+	CvSpecialistInfo& kSpecialist = GC.getSpecialistInfo(eSpecialist);
+	return iChange * (kSpecialist.getYieldChange(eIndex) + GET_PLAYER(getOwnerINLINE()).getSpecialistExtraYield(eSpecialist, eIndex));
+}
+// BUG - Specialist Additional Yield - end
 
 
 int CvCity::getBaseYieldRate(YieldTypes eIndex)	const													
@@ -8657,14 +8730,8 @@ int CvCity::getAdditionalCommerceByBuilding(CommerceTypes eIndex, BuildingTypes 
  */
 int CvCity::getAdditionalCommerceTimes100ByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
 {
-	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
-	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
-	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
-	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
-
 	int iExtraRate = getAdditionalBaseCommerceRateByBuilding(eIndex, eBuilding);
 	int iExtraModifier = getAdditionalCommerceRateModifierByBuilding(eIndex, eBuilding);
-	//getAdditionalCommerceByBuilding(eIndex, eBuilding, iExtraRate, iExtraModifier);
 	if (iExtraRate == 0 && iExtraModifier == 0)
 	{
 		return 0;
@@ -8685,11 +8752,6 @@ int CvCity::getAdditionalCommerceTimes100ByBuilding(CommerceTypes eIndex, Buildi
  */
 int CvCity::getAdditionalBaseCommerceRateByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding) const
 {
-	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
-	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
-	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
-	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
-
 	bool bNoEspionage = GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE);
 	if (bNoEspionage && eIndex == COMMERCE_ESPIONAGE)
 	{
@@ -8741,6 +8803,15 @@ int CvCity::getAdditionalBaseCommerceRateByBuildingImpl(CommerceTypes eIndex, Bu
 			iExtraRate += GC.getCorporationInfo((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())).getHeadquarterCommerce(eIndex) * GC.getGameINLINE().countCorporationLevels((CorporationTypes)(kBuilding.getGlobalCorporationCommerce()));
 		}
 		// ignore double-time check since this assumes you are building it this turn
+
+		// Specialists
+		for (int iI = 0; iI < GC.getNumSpecialistInfos(); ++iI)
+		{
+			if (kBuilding.getFreeSpecialistCount((SpecialistTypes)iI) != 0)
+			{
+				iExtraRate += getAdditionalBaseCommerceRateBySpecialistImpl(eIndex, (SpecialistTypes)iI, kBuilding.getFreeSpecialistCount((SpecialistTypes)iI));
+			}
+		}
 	}
 	
 	return iExtraRate;
@@ -8846,6 +8917,74 @@ void CvCity::changeSpecialistCommerce(CommerceTypes eIndex, int iChange)
 		updateCommerce(eIndex);
 	}
 }
+
+
+// BUG - Specialist Additional Commerce - start
+/*
+ * Returns the total additional commerce that changing the number of given specialists will provide/remove.
+ *
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalCommerceBySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	return getAdditionalCommerceTimes100BySpecialist(eIndex, eSpecialist, iChange) / 100;
+}
+
+/*
+ * Returns the total additional commerce times 100 that changing the number of given specialists will provide/remove.
+ *
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalCommerceTimes100BySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	int iExtraRate = getAdditionalBaseCommerceRateBySpecialist(eIndex, eSpecialist, iChange);
+	if (iExtraRate == 0)
+	{
+		return 0;
+	}
+
+	int iRateTimes100 = getBaseCommerceRateTimes100(eIndex);
+	int iModifier = getTotalCommerceRateModifier(eIndex);
+	int iExtraTimes100 = (iModifier * (100 * iExtraRate + iRateTimes100) / 100) - (iModifier * iRateTimes100 / 100);
+
+	return iExtraTimes100;
+}
+
+/*
+ * Returns the additional base commerce rate that changing the number of given specialists will provide/remove.
+ *
+ * Takes the NO_ESPIONAGE game option into account for CULTURE and ESPIONAGE.
+ */
+int CvCity::getAdditionalBaseCommerceRateBySpecialist(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	bool bNoEspionage = GC.getGameINLINE().isOption(GAMEOPTION_NO_ESPIONAGE);
+	if (bNoEspionage && eIndex == COMMERCE_ESPIONAGE)
+	{
+		return 0;
+	}
+
+	int iExtraRate = getAdditionalBaseCommerceRateBySpecialistImpl(eIndex, eSpecialist, iChange);
+	if (bNoEspionage && eIndex == COMMERCE_CULTURE)
+	{
+		iExtraRate += getAdditionalBaseCommerceRateBySpecialistImpl(COMMERCE_ESPIONAGE, eSpecialist, iChange);
+	}
+	return iExtraRate;
+}
+
+/*
+ * Returns the additional base commerce rate that changing the number of given specialists will provide/remove.
+ */
+int CvCity::getAdditionalBaseCommerceRateBySpecialistImpl(CommerceTypes eIndex, SpecialistTypes eSpecialist, int iChange) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex expected to be >= 0");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex expected to be < NUM_COMMERCE_TYPES");
+	FAssertMsg(eSpecialist >= 0, "eSpecialist expected to be >= 0");
+	FAssertMsg(eSpecialist < GC.getNumSpecialistInfos(), "eSpecialist expected to be < GC.getNumSpecialistInfos()");
+
+	CvSpecialistInfo& kSpecialist = GC.getSpecialistInfo(eSpecialist);
+	return iChange * (kSpecialist.getCommerceChange(eIndex) + GET_PLAYER(getOwnerINLINE()).getSpecialistExtraCommerce(eIndex));
+}
+// BUG - Specialist Additional Commerce - end
 
 
 int CvCity::getReligionCommerce(CommerceTypes eIndex) const												 

@@ -5518,7 +5518,14 @@ void CvGameTextMgr::parseCivInfos(CvWStringBuffer &szInfoText, CivilizationTypes
 }
 
 
+// BUG - Specialist Actual Effects - start
 void CvGameTextMgr::parseSpecialistHelp(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist, CvCity* pCity, bool bCivilopediaText)
+{
+	parseSpecialistHelpActual(szHelpString, eSpecialist, pCity, bCivilopediaText, 0);
+}
+
+void CvGameTextMgr::parseSpecialistHelpActual(CvWStringBuffer &szHelpString, SpecialistTypes eSpecialist, CvCity* pCity, bool bCivilopediaText, int iChange)
+// BUG - Specialist Actual Effects - end
 {
 	PROFILE_FUNC();
 
@@ -5573,6 +5580,39 @@ void CvGameTextMgr::parseSpecialistHelp(CvWStringBuffer &szHelpString, Specialis
 			szHelpString.append(NEWLINE);
 			szHelpString.append(gDLL->getText("TXT_KEY_SPECIALIST_BIRTH_RATE", GC.getSpecialistInfo(eSpecialist).getGreatPeopleRateChange()));
 		}
+
+// BUG - Specialist Actual Effects - start
+		if (iChange != 0 && NULL != pCity && pCity->getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__SpecialistActualEffects", true, "BUG_MISC_SPECIALIST_HOVER_ACTUAL_EFFECTS"))
+		{
+			logMsg("actual effects - %d x %d", iChange, eSpecialist);
+			bool bStarted = false;
+			CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
+
+			// Yield
+			int aiYields[NUM_YIELD_TYPES];
+			for (int iI = 0; iI < NUM_YIELD_TYPES; ++iI)
+			{
+				aiYields[iI] = pCity->getAdditionalYieldBySpecialist((YieldTypes)iI, eSpecialist, iChange);
+				logMsg("actual effects - yield %d = %d", iI, aiYields[iI]);
+			}
+			bStarted = setResumableYieldChangeHelp(szHelpString, szStart, L": ", L"", aiYields, false, true, bStarted);
+			
+			// Commerce
+			int aiCommerces[NUM_COMMERCE_TYPES];
+			for (int iI = 0; iI < NUM_COMMERCE_TYPES; ++iI)
+			{
+				aiCommerces[iI] = pCity->getAdditionalCommerceTimes100BySpecialist((CommerceTypes)iI, eSpecialist, iChange);
+				logMsg("actual effects - commerce %d = %d", iI, aiCommerces[iI]);
+			}
+			bStarted = setResumableCommerceTimes100ChangeHelp(szHelpString, szStart, L": ", L"", aiCommerces, true, bStarted);
+
+			// Great People
+			int iGreatPeopleRate = pCity->getAdditionalGreatPeopleRateBySpecialist(eSpecialist, iChange);
+			logMsg("actual effects - great people = %d", iGreatPeopleRate);
+			bStarted = setResumableValueChangeHelp(szHelpString, szStart, L": ", L"", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, true, bStarted);
+			logMsg("actual effects - done");
+		}
+// BUG - Specialist Actual Effects - end
 
 		if (!CvWString(GC.getSpecialistInfo(eSpecialist).getHelp()).empty() && !bCivilopediaText)
 		{
@@ -8254,7 +8294,7 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 		if (bActual && NULL != pCity && pCity->getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingActualEffects", true, "BUG_BUILDING_HOVER_ACTUAL_EFFECTS"))
 		{
 			bool bStarted = false;
-			CvWString szStart = gDLL->getText("TXT_KEY_BUILDING_ACTUAL_EFFECTS");
+			CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
 
 			// Happiness
 			int iGood = 0;

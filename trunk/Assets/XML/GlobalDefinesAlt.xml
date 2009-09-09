@@ -123,6 +123,12 @@
 		<DefineName>BUG_UPDATE_UNIT_NAME_ON_UPGRADE</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+
+	<!-- Specialist -->
+	<Define>
+		<DefineName>BUG_SPECIALIST_HOVER_ACTUAL_EFFECTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	
 	<!-- Tech -->
 	<Define>
