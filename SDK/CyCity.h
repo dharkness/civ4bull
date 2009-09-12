@@ -355,6 +355,11 @@ public:
 	int getTradeYield(int /*YieldTypes*/ eIndex);
 	int totalTradeModifier();
 
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+	int calculateTradeProfitTimes100(CyCity* pCity);
+#endif
+// BUG - Fractional Trade Routes - end
 	int calculateTradeProfit(CyCity* pCity);
 	int calculateTradeYield(int /*YieldTypes*/ eIndex, int iTradeProfit);
 

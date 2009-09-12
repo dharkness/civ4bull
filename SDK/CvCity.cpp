@@ -8027,6 +8027,16 @@ int CvCity::getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingType
 		int iPlayerTradeYieldModifier = GET_PLAYER(getOwnerINLINE()).getTradeYieldModifier(eIndex);
 		if (iPlayerTradeYieldModifier > 0 && (kBuilding.getTradeRouteModifier() != 0 || kBuilding.getForeignTradeRouteModifier() != 0))
 		{
+			int iTotalTradeYield = 0;
+			int iNewTotalTradeYield = 0;
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			int iTradeProfitDivisor = 100;
+#else
+			int iTradeProfitDivisor = 10000;
+#endif
+// BUG - Fractional Trade Routes - end
+
 			for (int iI = 0; iI < getTradeRoutes(); ++iI)
 			{
 				CvCity* pCity = getTradeCity(iI);
@@ -8034,18 +8044,26 @@ int CvCity::getAdditionalBaseYieldRateByBuilding(YieldTypes eIndex, BuildingType
 				{
 					int iTradeProfit = getBaseTradeProfit(pCity);
 					int iTradeModifier = totalTradeModifier(pCity);
-					int iTradeYield = iTradeProfit * iTradeModifier / 10000 * iPlayerTradeYieldModifier / 100;
+					int iTradeYield = iTradeProfit * iTradeModifier / iTradeProfitDivisor * iPlayerTradeYieldModifier / 100;
+					iTotalTradeYield += iTradeYield;
 
 					iTradeModifier += kBuilding.getTradeRouteModifier();
 					if (pCity->getOwnerINLINE() != getOwnerINLINE())
 					{
 						iTradeModifier += kBuilding.getForeignTradeRouteModifier();
 					}
-					int iNewTradeYield = iTradeProfit * iTradeModifier / 10000 * iPlayerTradeYieldModifier / 100;
-
-					iExtraRate += iNewTradeYield - iTradeYield;
+					int iNewTradeYield = iTradeProfit * iTradeModifier / iTradeProfitDivisor * iPlayerTradeYieldModifier / 100;
+					iNewTotalTradeYield += iNewTradeYield;
 				}
 			}
+
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			iTotalTradeYield /= 100;
+			iNewTotalTradeYield /= 100;
+#endif
+// BUG - Fractional Trade Routes - end
+			iExtraRate += iNewTotalTradeYield - iTotalTradeYield;
 		}
 
 		// Specialists
@@ -8410,6 +8428,38 @@ int CvCity::getBaseTradeProfit(CvCity* pCity) const
 	return iProfit;
 }
 
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+
+// Note: getBaseTradeProfit() already returns a times-100 value.
+
+/*
+ * Returns the fractional (times 100) trade profit for the route to the given city.
+ */
+int CvCity::calculateTradeProfitTimes100(CvCity* pCity) const
+{
+	int iProfit = getBaseTradeProfit(pCity);
+
+	iProfit *= totalTradeModifier(pCity);
+	iProfit /= 100;
+
+	return iProfit;
+}
+
+/*
+ * Returns the truncated trade profit for the route to the given city.
+ *
+ * This function is kept only for old Python code.
+ */
+int CvCity::calculateTradeProfit(CvCity* pCity) const
+{
+	return calculateTradeProfitTimes100(pCity) / 100;
+}
+
+#else
+
+// unchanged
+
 int CvCity::calculateTradeProfit(CvCity* pCity) const
 {
 	int iProfit = getBaseTradeProfit(pCity);
@@ -8420,6 +8470,8 @@ int CvCity::calculateTradeProfit(CvCity* pCity) const
 	return iProfit;
 }
 
+#endif
+// BUG - Fractional Trade Routes - end
 
 int CvCity::calculateTradeYield(YieldTypes eIndex, int iTradeProfit) const
 {
@@ -11371,7 +11423,13 @@ void CvCity::updateTradeRoutes()
 						{
 							if (pLoopCity->plotGroup(getOwnerINLINE()) == plotGroup(getOwnerINLINE()) || GC.getDefineINT("IGNORE_PLOT_GROUP_FOR_TRADE_ROUTES"))
 							{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+								iValue = calculateTradeProfitTimes100(pLoopCity);
+#else
 								iValue = calculateTradeProfit(pLoopCity);
+#endif
+// BUG - Fractional Trade Routes - end
 
 								for (iJ = 0; iJ < iTradeRoutes; iJ++)
 								{
@@ -11407,13 +11465,25 @@ void CvCity::updateTradeRoutes()
 		{
 			pLoopCity->setTradeRoute(getOwnerINLINE(), true);
 
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			iTradeProfit += calculateTradeProfitTimes100(pLoopCity);
+#else
 			iTradeProfit += calculateTradeProfit(pLoopCity);
+#endif
+// BUG - Fractional Trade Routes - end
 		}
 	}
 
 	for (iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+		setTradeYield(((YieldTypes)iI), calculateTradeYield(((YieldTypes)iI), iTradeProfit) / 100); // XXX could take this out if handled when CvPlotGroup changes...
+#else
 		setTradeYield(((YieldTypes)iI), calculateTradeYield(((YieldTypes)iI), iTradeProfit)); // XXX could take this out if handled when CvPlotGroup changes...
+#endif
+// BUG - Fractional Trade Routes - end
 	}
 
 	SAFE_DELETE_ARRAY(paiBestValue);

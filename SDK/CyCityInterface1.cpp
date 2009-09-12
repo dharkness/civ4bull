@@ -341,6 +341,11 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getTradeYield", &CyCity::getTradeYield, "int (int /*YieldTypes*/) - trade adjustment to YieldType")
 		.def("totalTradeModifier", &CyCity::totalTradeModifier, "int () - total trade adjustment")
 
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+		.def("calculateTradeProfitTimes100", &CyCity::calculateTradeProfitTimes100, "int (CyCity) - returns the unrounded trade profit created by CyCity")
+#endif
+// BUG - Fractional Trade Routes - end
 		.def("calculateTradeProfit", &CyCity::calculateTradeProfit, "int (CyCity) - returns the trade profit created by CyCity")
 		.def("calculateTradeYield", &CyCity::calculateTradeYield, "int (YieldType, int iTradeProfit) - calculates Trade Yield")
 

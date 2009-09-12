@@ -4605,7 +4605,13 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 				}
 				else
 				{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+					iTrade = pCity->calculateTradeYield(YIELD_COMMERCE, pCity->calculateTradeProfitTimes100(pTradeCity));
+#else
 					iTrade = pCity->calculateTradeYield(YIELD_COMMERCE, pCity->calculateTradeProfit(pTradeCity));
+#endif
+// BUG - Fractional Trade Routes - end
 				}
 				iTotalTrade += iTrade;
 				if (bIsForeign)
@@ -4628,7 +4634,13 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 			}
 			else
 			{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+				szTempBuffer.Format(L"%c: %d.%02d %c", gDLL->getSymbolID(TRADE_CHAR), iTotalTrade / 100, iTotalTrade % 100, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#else
 				szTempBuffer.Format(L"%c: %d %c", gDLL->getSymbolID(TRADE_CHAR), iTotalTrade, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#endif
+// BUG - Fractional Trade Routes - end
 			}
 			setListHelp(szString, NEWLINE, szTempBuffer, L", ", bFirst);
 			bFirst = false;
@@ -4641,7 +4653,13 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 			}
 			else
 			{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+				szTempBuffer.Format(L"%c: %d.%02d %c", gDLL->getSymbolID(SILVER_STAR_CHAR), iForeignTrade / 100, iForeignTrade % 100, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#else
 				szTempBuffer.Format(L"%c: %d %c", gDLL->getSymbolID(SILVER_STAR_CHAR), iForeignTrade, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#endif
+// BUG - Fractional Trade Routes - end
 			}
 			setListHelp(szString, NEWLINE, szTempBuffer, L", ", bFirst);
 			bFirst = false;
@@ -4654,7 +4672,13 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 			}
 			else
 			{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+				szTempBuffer.Format(L"%c: %d.%02d %c", gDLL->getSymbolID(STAR_CHAR), iOverseasTrade / 100, iOverseasTrade % 100, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#else
 				szTempBuffer.Format(L"%c: %d %c", gDLL->getSymbolID(STAR_CHAR), iOverseasTrade, GC.getYieldInfo(YIELD_COMMERCE).getChar());
+#endif
+// BUG - Fractional Trade Routes - end
 			}
 			setListHelp(szString, NEWLINE, szTempBuffer, L", ", bFirst);
 			bFirst = false;
@@ -15950,14 +15974,28 @@ void CvGameTextMgr::setTradeRouteHelp(CvWStringBuffer &szBuffer, int iRoute, CvC
 			FAssert(pCity->totalTradeModifier(pOtherCity) == iModifier);
 
 			iProfit *= iModifier;
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			iProfit /= 100;
+			FAssert(iProfit == pCity->calculateTradeProfitTimes100(pOtherCity));
+#else
 			iProfit /= 10000;
-
 			FAssert(iProfit == pCity->calculateTradeProfit(pOtherCity));
+#endif
+// BUG - Fractional Trade Routes - end
 
 			szBuffer.append(SEPARATOR);
 
 			szBuffer.append(NEWLINE);
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			CvWString szProfit;
+			szProfit.Format(L"%d.%02d", iProfit / 100, iProfit % 100);
+			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_ROUTE_TOTAL_FRACTIONAL", szProfit.GetCString()));
+#else
 			szBuffer.append(gDLL->getText("TXT_KEY_TRADE_ROUTE_TOTAL", iProfit));
+#endif
+// BUG - Fractional Trade Routes - end
 		}
 	}
 }
