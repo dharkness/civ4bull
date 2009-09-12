@@ -1582,6 +1582,15 @@ int CyCity::totalTradeModifier()
 	return m_pCity ? m_pCity->totalTradeModifier() : -1;
 }
 
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+int CyCity::calculateTradeProfitTimes100(CyCity* pCity)
+{
+	return m_pCity ? m_pCity->calculateTradeProfitTimes100(pCity->getCity()) : -1;
+}
+#endif
+// BUG - Fractional Trade Routes - end
+
 int CyCity::calculateTradeProfit(CyCity* pCity)
 {
 	return m_pCity ? m_pCity->calculateTradeProfit(pCity->getCity()) : -1;

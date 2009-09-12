@@ -6112,6 +6112,11 @@ int CvPlayer::calculateTotalExports(YieldTypes eYield) const
 
 	for (pLoopCity = firstCity(&iLoop); pLoopCity != NULL; pLoopCity = nextCity(&iLoop))
 	{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+		int iCityExports = 0;
+#endif
+
 		for (iTradeLoop = 0; iTradeLoop < pLoopCity->getTradeRoutes(); iTradeLoop++)
 		{
 			pTradeCity = pLoopCity->getTradeCity(iTradeLoop);
@@ -6119,10 +6124,19 @@ int CvPlayer::calculateTotalExports(YieldTypes eYield) const
 			{
 				if (pTradeCity->getOwnerINLINE() != getID())
 				{
+#ifdef _MOD_FRACTRADE
+					iCityExports += pLoopCity->calculateTradeYield(eYield, pLoopCity->calculateTradeProfitTimes100(pTradeCity));
+#else
 					iTotalExports += pLoopCity->calculateTradeYield(eYield, pLoopCity->calculateTradeProfit(pTradeCity));
+#endif
 				}
 			}
 		}
+
+#ifdef _MOD_FRACTRADE
+		iTotalExports += iCityExports / 100;
+#endif
+// BUG - Fractional Trade Routes - end
 	}
 
 	return iTotalExports;
@@ -6141,6 +6155,11 @@ int CvPlayer::calculateTotalImports(YieldTypes eYield) const
 	{
 		if (iPlayerLoop != getID())
 		{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+			int iCityImports = 0;
+#endif
+
 			for (pLoopCity = GET_PLAYER((PlayerTypes) iPlayerLoop).firstCity(&iLoop); pLoopCity != NULL; pLoopCity = GET_PLAYER((PlayerTypes) iPlayerLoop).nextCity(&iLoop))
 			{
 				for (iTradeLoop = 0; iTradeLoop < pLoopCity->getTradeRoutes(); iTradeLoop++)
@@ -6150,11 +6169,20 @@ int CvPlayer::calculateTotalImports(YieldTypes eYield) const
 					{
 						if (pTradeCity->getOwnerINLINE() == getID())
 						{
+#ifdef _MOD_FRACTRADE
+							iCityImports += pLoopCity->calculateTradeYield(eYield, pLoopCity->calculateTradeProfitTimes100(pTradeCity));
+#else
 							iTotalImports += pLoopCity->calculateTradeYield(eYield, pLoopCity->calculateTradeProfit(pTradeCity));
+#endif
 						}
 					}
 				}
 			}
+
+#ifdef _MOD_FRACTRADE
+			iTotalImports += iCityImports / 100;
+#endif
+// BUG - Fractional Trade Routes - end
 		}
 	}
 	return iTotalImports;

@@ -640,6 +640,11 @@ public:
 	int getPopulationTradeModifier() const;
 	int getPeaceTradeModifier(TeamTypes eTeam) const;
 	int getBaseTradeProfit(CvCity* pCity) const;
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+	int calculateTradeProfitTimes100(CvCity* pCity) const;															// Exposed to Python
+#endif
+// BUG - Fractional Trade Routes - end
 	int calculateTradeProfit(CvCity* pCity) const;															// Exposed to Python
 	int calculateTradeYield(YieldTypes eIndex, int iTradeProfit) const;					// Exposed to Python
 	void setTradeYield(YieldTypes eIndex, int iNewValue);

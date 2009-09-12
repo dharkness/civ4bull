@@ -457,4 +457,16 @@
 		<Spanish>[SPACE](&lt;ALT&gt; para todas las unidades del mismo tipo que la unidad activa)</Spanish>
 	</TEXT>
 
+
+<!-- Fractional Trade -->
+
+	<TEXT>
+		<Tag>TXT_KEY_TRADE_ROUTE_TOTAL_FRACTIONAL</Tag>
+		<English>%s1 [ICON_COMMERCE]: Total</English>
+		<French>%s1 [ICON_COMMERCE] : total</French>
+		<German>%s1 [ICON_COMMERCE]: Gesamt</German>
+		<Italian>%s1 [ICON_COMMERCE]: totale</Italian>
+		<Spanish>%s1 [ICON_COMMERCE]: Total</Spanish>
+	</TEXT>
+
 </Civ4GameText>
