@@ -647,6 +647,10 @@ public:
 // BUG - Fractional Trade Routes - end
 	int calculateTradeProfit(CvCity* pCity) const;															// Exposed to Python
 	int calculateTradeYield(YieldTypes eIndex, int iTradeProfit) const;					// Exposed to Python
+// BUG - Trade Totals - start
+	void calculateTradeTotals(YieldTypes eIndex, int& iDomesticYield, int& iDomesticRoutes, int& iForeignYield, int& iForeignRoutes, PlayerTypes eWithPlayer = NO_PLAYER, bool bRound = false, bool bBase = false) const;
+	int calculateTotalTradeYield(YieldTypes eIndex, PlayerTypes eWithPlayer = NO_PLAYER, bool bRound = false, bool bBase = false) const;
+// BUG - Trade Totals - end
 	void setTradeYield(YieldTypes eIndex, int iNewValue);
 
 	int getExtraSpecialistYield(YieldTypes eIndex) const;																				// Exposed to Python

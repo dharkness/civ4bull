@@ -20584,6 +20584,42 @@ UnitTypes CvPlayer::getTechFreeUnit(TechTypes eTech) const
 }
 
 
+// BUG - Trade Totals - start
+/*
+ * Adds the yield and count for each trade route with eWithPlayer.
+ *
+ * The yield and counts are not reset to zero.
+ * If Fractional Trade Routes is enabled and bRound is false, the yield values are left times 100.
+ */
+void CvPlayer::calculateTradeTotals(YieldTypes eIndex, int& iDomesticYield, int& iDomesticRoutes, int& iForeignYield, int& iForeignRoutes, PlayerTypes eWithPlayer, bool bRound, bool bBase) const
+{
+	int iIter;
+
+	for (CvCity* pCity = firstCity(&iIter); NULL != pCity; pCity = nextCity(&iIter))
+	{
+		pCity->calculateTradeTotals(eIndex, iDomesticYield, iDomesticRoutes, iForeignYield, iForeignRoutes, eWithPlayer, bRound, bBase);
+	}
+}
+
+/*
+ * Returns the total trade yield with eWithPlayer.
+ *
+ * If Fractional Trade Routes is enabled, the yield value is left times 100.
+ * UNUSED
+ */
+int CvPlayer::calculateTotalTradeYield(YieldTypes eIndex, PlayerTypes eWithPlayer, bool bRound, bool bBase) const
+{
+	int iDomesticYield = 0;
+	int iDomesticRoutes = 0;
+	int iForeignYield = 0;
+	int iForeignRoutes = 0;
+	
+	calculateTradeTotals(eIndex, iDomesticYield, iDomesticRoutes, iForeignYield, iForeignRoutes, eWithPlayer, bRound, bBase);
+	return iDomesticYield + iForeignRoutes;
+}
+// BUG - Trade Totals - end
+
+
 void CvPlayer::buildTradeTable(PlayerTypes eOtherPlayer, CLinkList<TradeData>& ourList) const
 {
 	TradeData item;
