@@ -381,28 +381,28 @@
 		<Spanish>Ningún Comercio con %%s1_PlyrName of %s2_CivName</Spanish>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_BUG_OVERLAND_TRADE</Tag>
-		<English>[NEWLINE]%d1[ICON_COMMERCE]: Continental trade from %d2 [NUM2:route:routes]</English>
+		<Tag>TXT_KEY_BUG_TOTAL_TRADE_YIELD</Tag>
+		<English>[NEWLINE]Total Yield: %s1[ICON_COMMERCE]</English>
 		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
 		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
 		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
 		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_BUG_OVERSEAS_TRADE</Tag>
-		<English>[NEWLINE]%d1[ICON_COMMERCE]: Intercontinental trade from %d2 [NUM2:route:routes]</English>
-		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce intercontinental de %d2 [NUM2:route:routes]</French>
-		<German>[NEWLINE]%d1[ICON_COMMERCE]: Interkontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
-		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio intercontinentale da %d2 [NUM2:rotta:rotte]</Italian>
-		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio intercontinental de %d2 [NUM2:ruta:rutas]</Spanish>
+		<Tag>TXT_KEY_BUG_TOTAL_TRADE_ROUTES</Tag>
+		<English>[NEWLINE]Number of Routes: %d1</English>
+		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
+		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
+		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
+		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_BUG_TOTAL_TRADE</Tag>
-		<English>[NEWLINE]------------------------[NEWLINE]TOTAL TRADE: %d1[ICON_COMMERCE]</English>
-		<French>[NEWLINE]------------------------[NEWLINE]COMMERCE TOTAL : %d1[ICON_COMMERCE]</French>
-		<German>[NEWLINE]------------------------[NEWLINE]HANDEL GESAMT: %d1[ICON_COMMERCE]</German>
-		<Italian>[NEWLINE]------------------------[NEWLINE]COMMERCIO TOTALE: %d1[ICON_COMMERCE]</Italian>
-		<Spanish>[NEWLINE]------------------------[NEWLINE]COMERCIO TOTAL: %d1 [ICON_COMMERCE]</Spanish>
+		<Tag>TXT_KEY_BUG_AVERAGE_TRADE_YIELD</Tag>
+		<English>[NEWLINE]Average Yield: %s1[ICON_COMMERCE]</English>
+		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
+		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
+		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
+		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
 	</TEXT>
 	
 	<TEXT>

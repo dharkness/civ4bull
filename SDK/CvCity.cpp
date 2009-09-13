@@ -8485,6 +8485,99 @@ int CvCity::calculateTradeYield(YieldTypes eIndex, int iTradeProfit) const
 	}
 }
 
+// BUG - Trade Totals - start
+/*
+ * Adds the yield and count for each trade route with eWithPlayer.
+ *
+ * The yield and counts are not reset to zero.
+ * If Fractional Trade Routes is enabled and bRound is false, or if bBase if true, the yield values are left times 100.
+ */
+void CvCity::calculateTradeTotals(YieldTypes eIndex, int& iDomesticYield, int& iDomesticRoutes, int& iForeignYield, int& iForeignRoutes, PlayerTypes eWithPlayer, bool bRound, bool bBase) const
+{
+	if (!isDisorder())
+	{
+		int iCityDomesticYield = 0;
+		int iCityDomesticRoutes = 0;
+		int iCityForeignYield = 0;
+		int iCityForeignRoutes = 0;
+		int iNumTradeRoutes = getTradeRoutes();
+		PlayerTypes ePlayer = getOwnerINLINE();
+
+		for (int iI = 0; iI < iNumTradeRoutes; ++iI)
+		{
+			CvCity* pTradeCity = getTradeCity(iI);
+			if (pTradeCity && pTradeCity->getOwnerINLINE() >= 0 && (NO_PLAYER == eWithPlayer || pTradeCity->getOwnerINLINE() == eWithPlayer))
+			{
+				int iTradeYield;
+
+				if (bBase)
+				{
+					iTradeYield = getBaseTradeProfit(pTradeCity);
+				}
+				else
+				{
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+					int iTradeProfit = calculateTradeProfitTimes100(pTradeCity);
+#else
+					int iTradeProfit = calculateTradeProfit(pTradeCity);
+#endif
+// BUG - Fractional Trade Routes - end
+					iTradeYield = calculateTradeYield(YIELD_COMMERCE, iTradeProfit);
+				}
+
+				if (pTradeCity->getOwnerINLINE() == ePlayer)
+				{
+					iCityDomesticYield += iTradeYield;
+					iCityDomesticRoutes++;
+				}
+				else
+				{
+					iCityForeignYield += iTradeYield;
+					iCityForeignRoutes++;
+				}
+			}
+		}
+
+// BUG - Fractional Trade Routes - start
+#ifdef _MOD_FRACTRADE
+		if (bRound)
+		{
+			iDomesticYield += iCityDomesticYield / 100;
+			iDomesticRoutes += iCityDomesticRoutes / 100;
+			iForeignYield += iCityForeignYield / 100;
+			iForeignRoutes += iCityForeignRoutes / 100;
+		}
+		else
+#endif
+// BUG - Fractional Trade Routes - end
+		{
+			iDomesticYield += iCityDomesticYield;
+			iDomesticRoutes += iCityDomesticRoutes;
+			iForeignYield += iCityForeignYield;
+			iForeignRoutes += iCityForeignRoutes;
+		}
+	}
+}
+
+/*
+ * Returns the total trade yield.
+ *
+ * If Fractional Trade Routes is enabled or bBase is true, the yield value is left times 100.
+ * UNUSED
+ */
+int CvCity::calculateTotalTradeYield(YieldTypes eIndex, PlayerTypes eWithPlayer, bool bRound, bool bBase) const
+{
+	int iDomesticYield = 0;
+	int iDomesticRoutes = 0;
+	int iForeignYield = 0;
+	int iForeignRoutes = 0;
+	
+	calculateTradeTotals(eIndex, iDomesticYield, iDomesticRoutes, iForeignYield, iForeignRoutes, eWithPlayer, bRound, bBase);
+	return iDomesticYield + iForeignRoutes;
+}
+// BUG - Trade Totals - end
+
 
 void CvCity::setTradeYield(YieldTypes eIndex, int iNewValue)
 {
