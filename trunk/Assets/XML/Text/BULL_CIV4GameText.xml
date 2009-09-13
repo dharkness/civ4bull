@@ -383,26 +383,26 @@
 	<TEXT>
 		<Tag>TXT_KEY_BUG_TOTAL_TRADE_YIELD</Tag>
 		<English>[NEWLINE]Total Yield: %s1[ICON_COMMERCE]</English>
-		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
-		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
-		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
-		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
+		<French>[NEWLINE]Total Yield: %s1[ICON_COMMERCE]</French>
+		<German>[NEWLINE]Gesamteinkommen: %s1[ICON_COMMERCE]</German>
+		<Italian>[NEWLINE]Total Yield: %s1[ICON_COMMERCE]</Italian>
+		<Spanish>[NEWLINE]Total Yield: %s1[ICON_COMMERCE]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUG_TOTAL_TRADE_ROUTES</Tag>
 		<English>[NEWLINE]Number of Routes: %d1</English>
-		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
-		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
-		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
-		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
+		<French>[NEWLINE]Number of Routes: %d1</French>
+		<German>[NEWLINE]Anzahl der Handelsverbindungen: %d1</German>
+		<Italian>[NEWLINE]Number of Routes: %d1</Italian>
+		<Spanish>[NEWLINE]Number of Routes: %d1</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUG_AVERAGE_TRADE_YIELD</Tag>
 		<English>[NEWLINE]Average Yield: %s1[ICON_COMMERCE]</English>
-		<French>[NEWLINE]%d1[ICON_COMMERCE]: Commerce continental de %d2 [NUM2:route:routes]</French>
-		<German>[NEWLINE]%d1[ICON_COMMERCE]: Kontinentalhandel (%d2 [NUM2:Handelsverbindung:Handelsverbindungen])</German>
-		<Italian>[NEWLINE]%d1[ICON_COMMERCE]: Commercio continentale da %d2 [NUM2:rotta:rotte]</Italian>
-		<Spanish>[NEWLINE]%d1[ICON_COMMERCE]: Comercio continental de %d2 [NUM2:ruta:rutas]</Spanish>
+		<French>[NEWLINE]Average Yield: %s1[ICON_COMMERCE]</French>
+		<German>[NEWLINE]Durchschnittliches Einkommen: %s1[ICON_COMMERCE]</German>
+		<Italian>[NEWLINE]Average Yield: %s1[ICON_COMMERCE]</Italian>
+		<Spanish>[NEWLINE]Average Yield: %s1[ICON_COMMERCE]</Spanish>
 	</TEXT>
 	
 	<TEXT>
@@ -464,7 +464,7 @@
 		<Tag>TXT_KEY_TRADE_ROUTE_TOTAL_FRACTIONAL</Tag>
 		<English>%s1 [ICON_COMMERCE]: Total</English>
 		<French>%s1 [ICON_COMMERCE] : total</French>
-		<German>%s1 [ICON_COMMERCE]: Gesamt</German>
+		<German>%s1 [ICON_COMMERCE]: Gesamteinkommen</German>
 		<Italian>%s1 [ICON_COMMERCE]: totale</Italian>
 		<Spanish>%s1 [ICON_COMMERCE]: Total</Spanish>
 	</TEXT>
