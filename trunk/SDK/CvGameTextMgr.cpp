@@ -16527,7 +16527,7 @@ void CvGameTextMgr::buildTradeString(CvWStringBuffer& szBuffer, PlayerTypes ePla
 	CvWString szYield;
 // BUG - Fractional Trade Routes - start
 #ifdef _MOD_FRACTRADE
-	szYield.Format(L"%d.%2d", iTotalYield / 100, iTotalYield % 100);
+	szYield.Format(L"%d.%02d", iTotalYield / 100, iTotalYield % 100);
 #else
 	szYield.Format(L"%d", iTotalYield);
 #endif
@@ -16535,16 +16535,19 @@ void CvGameTextMgr::buildTradeString(CvWStringBuffer& szBuffer, PlayerTypes ePla
 	szBuffer.append(gDLL->getText("TXT_KEY_BUG_TOTAL_TRADE_YIELD", szYield.GetCString()));
 	szBuffer.append(gDLL->getText("TXT_KEY_BUG_TOTAL_TRADE_ROUTES", iTotalRoutes));
 
+	if (iTotalRoutes > 0)
+	{
 // BUG - Fractional Trade Routes - start
 #ifdef _MOD_FRACTRADE
-	int iAverage = iTotalYield / iTotalRoutes;
+		int iAverage = iTotalYield / iTotalRoutes;
 #else
-	int iAverage = 100 * iTotalYield / iTotalRoutes;
+		int iAverage = 100 * iTotalYield / iTotalRoutes;
 #endif
 // BUG - Fractional Trade Routes - end
-	CvWString szAverage;
-	szAverage.Format(L"%d.%2d", iAverage / 100, iAverage % 100);
-	szBuffer.append(gDLL->getText("TXT_KEY_BUG_AVERAGE_TRADE_YIELD", szAverage.GetCString()));
+		CvWString szAverage;
+		szAverage.Format(L"%d.%02d", iAverage / 100, iAverage % 100);
+		szBuffer.append(gDLL->getText("TXT_KEY_BUG_AVERAGE_TRADE_YIELD", szAverage.GetCString()));
+	}
 }
 // BUG - Trade Hover - end
 
