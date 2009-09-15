@@ -49,6 +49,10 @@
 		<DefineName>BUG_CITYBAR_BASE_PRODUCTION</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+  <Define>
+    <DefineName>BUG_CITYBAR_BUILDING_ACTUAL_EFFECTS</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
 	<Define>
 		<DefineName>BUG_CITYBAR_HURRY_ASSIST</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
