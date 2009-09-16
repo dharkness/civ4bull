@@ -89,7 +89,7 @@ public:
 	DllExport void setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText = false, bool bStrategyText = false, bool bTechChooserText = false, CvCity* pCity = NULL);
 	DllExport void setBuildingHelp(CvWStringBuffer &szBuffer, BuildingTypes eBuilding, bool bCivilopediaText = false, bool bStrategyText = false, bool bTechChooserText = false, CvCity* pCity = NULL);
 // BUG - Building Actual Effects - start
-	void setBuildingActualEffects(CvWStringBuffer &szBuffer, BuildingTypes eBuilding, CvCity* pCity);
+	void setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWString &szStart, BuildingTypes eBuilding, CvCity* pCity, bool bNewLine = true);
 	void setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTypes eBuilding, bool bCivilopediaText = false, bool bStrategyText = false, bool bTechChooserText = false, CvCity* pCity = NULL, bool bActual = true);
 // BUG - Building Actual Effects - end
 // BUG - Production Decay - start

@@ -4509,7 +4509,11 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 		{
 			if (pCity->isProductionBuilding())
 			{
-				setBuildingActualEffects(szString, pCity->getProductionBuilding(), pCity);
+				BuildingTypes eBuilding = pCity->getProductionBuilding();
+				CvWString szStart;
+
+				szStart.Format(NEWLINE L"<img=%S size=24></img>", GC.getBuildingInfo(eBuilding).getButton());
+				setBuildingActualEffects(szString, szStart, eBuilding, pCity, false);
 			}
 		}
 // BUG - Building Actual Effects - end
@@ -8143,24 +8147,23 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 /*
  * Adds the actual effects of adding a building to the city.
  */
-void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, BuildingTypes eBuilding, CvCity* pCity)
+void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWString& szStart, BuildingTypes eBuilding, CvCity* pCity, bool bNewLine)
 {
 	if (NULL != pCity)
 	{
 		bool bStarted = false;
-		CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
-
+		
 		// Happiness
 		int iGood = 0;
 		int iBad = 0;
 		int iHappiness = pCity->getAdditionalHappinessByBuilding(eBuilding, iGood, iBad);
-		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, true, bStarted);
+		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, bNewLine, bStarted);
 
 		// Health
 		iGood = 0;
 		iBad = 0;
 		int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad);
-		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true, bStarted);
+		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, bNewLine, bStarted);
 
 		// Yield
 		int aiYields[NUM_YIELD_TYPES];
@@ -8168,7 +8171,7 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, Building
 		{
 			aiYields[iI] = pCity->getAdditionalYieldByBuilding((YieldTypes)iI, eBuilding);
 		}
-		bStarted = setResumableYieldChangeHelp(szBuffer, szStart, L": ", L"", aiYields, false, true, bStarted);
+		bStarted = setResumableYieldChangeHelp(szBuffer, szStart, L": ", L"", aiYields, false, bNewLine, bStarted);
 		
 		// Commerce
 		int aiCommerces[NUM_COMMERCE_TYPES];
@@ -8178,11 +8181,11 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, Building
 		}
 		// Maintenance - add to gold
 		aiCommerces[COMMERCE_GOLD] += pCity->getSavedMaintenanceTimes100ByBuilding(eBuilding);
-		bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, szStart, L": ", L"", aiCommerces, true, bStarted);
+		bStarted = setResumableCommerceTimes100ChangeHelp(szBuffer, szStart, L": ", L"", aiCommerces, bNewLine, bStarted);
 
 		// Great People
 		int iGreatPeopleRate = pCity->getAdditionalGreatPeopleRateByBuilding(eBuilding);
-		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, true, bStarted);
+		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, bNewLine, bStarted);
 	}
 }
 
@@ -8340,7 +8343,8 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 // BUG - Building Actual Effects - start
 		if (bActual && NULL != pCity && pCity->getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingActualEffects", true, "BUG_BUILDING_HOVER_ACTUAL_EFFECTS"))
 		{
-			setBuildingActualEffects(szBuffer, eBuilding, pCity);
+			CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
+			setBuildingActualEffects(szBuffer, szStart, eBuilding, pCity);
 		}
 // BUG - Building Actual Effects - end
 	}
