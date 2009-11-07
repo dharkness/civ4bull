@@ -5001,26 +5001,27 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 		}
 	}
 
-	if(GC.getUSE_CAN_FOUND_CITIES_ON_WATER_CALLBACK())
+// BUG - Unofficial Patch - start
+	// EF: canFoundCitiesOnWater callback handling was incorrect and ignored isWater() if it returned true
+	if (pPlot->isWater())
 	{
-		CyArgsList argsList2;
-		argsList2.add(iX);
-		argsList2.add(iY);
-		lResult=0;
-		gDLL->getPythonIFace()->callFunction(PYGameModule, "canFoundCitiesOnWater", argsList2.makeFunctionArgs(), &lResult);
-	}
+		bValid = false;
 
-	if (lResult == 1)
-	{
-		bValid = true;
-	}
-	else
-	{
-		if (pPlot->isWater())
+		if(GC.getUSE_CAN_FOUND_CITIES_ON_WATER_CALLBACK())
 		{
-			return false;
+			CyArgsList argsList2;
+			argsList2.add(iX);
+			argsList2.add(iY);
+			lResult=0;
+			gDLL->getPythonIFace()->callFunction(PYGameModule, "canFoundCitiesOnWater", argsList2.makeFunctionArgs(), &lResult);
+
+			if (lResult == 1)
+			{
+				bValid = true;
+			}
 		}
 	}
+// BUG - Unofficial Patch - start
 
 	if (!bValid)
 	{
@@ -6911,6 +6912,15 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 		return;
 	}
 
+// BUG - Revolution Event - start
+	CivicTypes* paeOldCivics = new CivicTypes[GC.getNumCivicOptionInfos()];
+
+	for (iI = 0; iI < GC.getNumCivicOptionInfos(); iI++)
+	{
+		paeOldCivics[iI] = getCivics(((CivicOptionTypes)iI));
+	}
+// BUG - Revolution Event - end
+
 	iAnarchyLength = getCivicAnarchyLength(paeNewCivics);
 
 	if (iAnarchyLength > 0)
@@ -6936,6 +6946,11 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 	{
 		gDLL->getInterfaceIFace()->setDirty(Popup_DIRTY_BIT, true); // to force an update of the civic chooser popup
 	}
+
+// BUG - Revolution Event - start
+	CvEventReporter::getInstance().playerRevolution(getID(), iAnarchyLength, paeOldCivics, paeNewCivics);
+	delete [] paeOldCivics;
+// BUG - Revolution Event - end
 }
 
 

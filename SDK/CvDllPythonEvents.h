@@ -112,6 +112,10 @@ public:
 	void reportSetPlayerAlive(PlayerTypes ePlayerID, bool bNewValue);
 	void reportPlayerChangeStateReligion(PlayerTypes ePlayerID, ReligionTypes eNewReligion, ReligionTypes eOldReligion);
 	void reportPlayerGoldTrade(PlayerTypes eFromPlayer, PlayerTypes eToPlayer, int iAmount);
+	
+// BUG - Revolution Event - start
+	void reportPlayerRevolution(PlayerTypes ePlayerID, int iAnarchyLength, CivicTypes* paeOldCivics, CivicTypes* paeNewCivics);
+// BUG - Revolution Event - end
 
 	void preSave();
 
