@@ -5583,7 +5583,6 @@ void CvGameTextMgr::parseSpecialistHelpActual(CvWStringBuffer &szHelpString, Spe
 // BUG - Specialist Actual Effects - start
 		if (iChange != 0 && NULL != pCity && pCity->getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__SpecialistActualEffects", true, "BUG_MISC_SPECIALIST_HOVER_ACTUAL_EFFECTS"))
 		{
-			logMsg("actual effects - %d x %d", iChange, eSpecialist);
 			bool bStarted = false;
 			CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
 
@@ -5592,7 +5591,6 @@ void CvGameTextMgr::parseSpecialistHelpActual(CvWStringBuffer &szHelpString, Spe
 			for (int iI = 0; iI < NUM_YIELD_TYPES; ++iI)
 			{
 				aiYields[iI] = pCity->getAdditionalYieldBySpecialist((YieldTypes)iI, eSpecialist, iChange);
-				logMsg("actual effects - yield %d = %d", iI, aiYields[iI]);
 			}
 			bStarted = setResumableYieldChangeHelp(szHelpString, szStart, L": ", L"", aiYields, false, true, bStarted);
 			
@@ -5601,15 +5599,12 @@ void CvGameTextMgr::parseSpecialistHelpActual(CvWStringBuffer &szHelpString, Spe
 			for (int iI = 0; iI < NUM_COMMERCE_TYPES; ++iI)
 			{
 				aiCommerces[iI] = pCity->getAdditionalCommerceTimes100BySpecialist((CommerceTypes)iI, eSpecialist, iChange);
-				logMsg("actual effects - commerce %d = %d", iI, aiCommerces[iI]);
 			}
 			bStarted = setResumableCommerceTimes100ChangeHelp(szHelpString, szStart, L": ", L"", aiCommerces, true, bStarted);
 
 			// Great People
 			int iGreatPeopleRate = pCity->getAdditionalGreatPeopleRateBySpecialist(eSpecialist, iChange);
-			logMsg("actual effects - great people = %d", iGreatPeopleRate);
 			bStarted = setResumableValueChangeHelp(szHelpString, szStart, L": ", L"", iGreatPeopleRate, gDLL->getSymbolID(GREAT_PEOPLE_CHAR), false, true, bStarted);
-			logMsg("actual effects - done");
 		}
 // BUG - Specialist Actual Effects - end
 
@@ -14834,7 +14829,6 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 				int eAirport = GC.getCivilizationInfo(pCity->getCivilizationType()).getCivilizationBuildings(eAirportClass);
 				if (eAirport != -1 && pCity->getNumBuilding((BuildingTypes)eAirport) > 0)
 				{
-					logMsg("Power = %d, Airport = %d", gDLL->getSymbolID(POWER_CHAR), gDLL->getSymbolID(AIRPORT_CHAR));
 					szBuffer.append(CvWString::format(L"%c", gDLL->getSymbolID(AIRPORT_CHAR)));
 				}
 			}
