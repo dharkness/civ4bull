@@ -847,7 +847,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 // BUG - Sentry Actions - start
 #ifdef _MOD_SENTRY
 		case MISSION_SENTRY_WHILE_HEAL:
-			logMsg("Sentry while heal");
 			if ((pLoopUnit->canSentry(pPlot)) && (pLoopUnit->canHeal(pPlot)))
 			{
 				return true;
@@ -855,7 +854,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 			break;
 
 		case MISSION_SENTRY_NAVAL_UNITS:
-			logMsg("Sentry naval");
 			if ((getDomainType() == DOMAIN_SEA) && (pLoopUnit->canSentry(pPlot)))
 			{
 				return true;
@@ -863,7 +861,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 			break;
 
 		case MISSION_SENTRY_LAND_UNITS:
-			logMsg("Sentry land");
 			if ((getDomainType() == DOMAIN_LAND) && (pLoopUnit->canSentry(pPlot)))
 			{
 				return true;
