@@ -132,6 +132,10 @@ public:
 	void playerChangeStateReligion(PlayerTypes ePlayerID, ReligionTypes eNewReligion, ReligionTypes eOldReligion);
 	void playerGoldTrade(PlayerTypes eFromPlayer, PlayerTypes eToPlayer, int iAmount);
 
+// BUG - Revolution Event - start
+	void playerRevolution(PlayerTypes ePlayerID, int iAnarchyLength, CivicTypes* paeOldCivics, CivicTypes* paeNewCivics);
+// BUG - Revolution Event - end
+
 	DllExport void chat(CvWString szString);		
 
 	void victory(TeamTypes eWinner, VictoryTypes eVictory);

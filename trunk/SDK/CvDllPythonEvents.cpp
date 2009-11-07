@@ -1294,6 +1294,24 @@ void CvDllPythonEvents::reportPlayerGoldTrade(PlayerTypes eFromPlayer, PlayerTyp
 	}
 }
 
+// BUG - Revolution Event - start
+void CvDllPythonEvents::reportPlayerRevolution(PlayerTypes ePlayerID, int iAnarchyLength, CivicTypes* paeOldCivics, CivicTypes* paeNewCivics)
+{
+	if (preEvent())
+	{
+		CyArgsList eventData;
+		eventData.add("playerRevolution");			// add key to lookup python handler fxn
+
+		eventData.add((int)ePlayerID);
+		eventData.add(iAnarchyLength);
+		eventData.add((const int*)paeOldCivics, GC.getNumCivicOptionInfos());
+		eventData.add((const int*)paeNewCivics, GC.getNumCivicOptionInfos());
+
+		postEvent(eventData);
+	}
+}
+// BUG - Revolution Event - end
+
 void CvDllPythonEvents::reportGenericEvent(const char* szEventName, void *pyArgs)
 {
 	if (preEvent())
