@@ -3507,7 +3507,9 @@ void CvGlobals::setInfoTypeFromString(const char* szType, int idx)
 #ifdef _DEBUG
 	InfosMap::const_iterator it = m_infosMap.find(szType);
 	int iExisting = (it!=m_infosMap.end()) ? it->second : -1;
-	FAssertMsg(iExisting==-1 || iExisting==idx || strcmp(szType, "ERROR")==0, CvString::format("xml info type entry %s already exists", szType).c_str());
+	CvString szError;
+	szError.Format("info type %s already exists, Current XML file is: %s", szType, GC.getCurrentXMLFile().GetCString());
+	FAssertMsg(iExisting==-1 || iExisting==idx || strcmp(szType, "ERROR")==0, szError.c_str());
 #endif
 	m_infosMap[szType] = idx;
 }
