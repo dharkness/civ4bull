@@ -14045,7 +14045,10 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 					szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", kTeam.getName().GetCString()));
 				}
 
-				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam())
+// BUG - Unofficial Patch - start
+				// EF: don't show enemies that active player hasn't met
+				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam() && kTeam.isHasMet(GC.getGameINLINE().getActiveTeam()))
+// BUG - Unofficial Patch - end
 				{
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", kTeam.getName().GetCString()));
