@@ -3757,23 +3757,54 @@ bool CvPlot::at(int iX, int iY) const
 }
 
 
-int CvPlot::getLatitude() const
+// BUG - Lat/Long Coordinates - start
+int CvPlot::getRealLongitudeMinutes() const
 {
-	int iLatitude;
+	int iRange = 360; // -180 to 180
+	int iMinimum = -180;
+	int iPlotIndex;
+	int iPlotRange;
 
 	if (GC.getMapINLINE().isWrapXINLINE() || !(GC.getMapINLINE().isWrapYINLINE()))
 	{
-		iLatitude = ((getY_INLINE() * 100) / GC.getMapINLINE().getGridHeightINLINE());
+		iPlotIndex = getX_INLINE();
+		iPlotRange = GC.getMapINLINE().getGridWidthINLINE();
 	}
 	else
 	{
-		iLatitude = ((getX_INLINE() * 100) / GC.getMapINLINE().getGridWidthINLINE());
+		iPlotIndex = getY_INLINE();
+		iPlotRange = GC.getMapINLINE().getGridHeightINLINE();
 	}
 
-	iLatitude = ((iLatitude * (GC.getMapINLINE().getTopLatitude() - GC.getMapINLINE().getBottomLatitude())) / 100);
-
-	return abs(iLatitude + GC.getMapINLINE().getBottomLatitude());
+	return iPlotIndex * iRange * 60 / iPlotRange + iMinimum * 60;
 }
+
+int CvPlot::getRealLatitudeMinutes() const
+{
+	int iRange = GC.getMapINLINE().getTopLatitude() - GC.getMapINLINE().getBottomLatitude();
+	int iMinimum = GC.getMapINLINE().getBottomLatitude();
+	int iPlotIndex;
+	int iPlotRange;
+
+	if (GC.getMapINLINE().isWrapXINLINE() || !(GC.getMapINLINE().isWrapYINLINE()))
+	{
+		iPlotIndex = getY_INLINE();
+		iPlotRange = GC.getMapINLINE().getGridHeightINLINE();
+	}
+	else
+	{
+		iPlotIndex = getX_INLINE();
+		iPlotRange = GC.getMapINLINE().getGridWidthINLINE();
+	}
+
+	return iPlotIndex * iRange * 60 / iPlotRange + iMinimum * 60;
+}
+
+int CvPlot::getLatitude() const
+{
+	return abs(getRealLatitudeMinutes() / 60);
+}
+// BUG - Lat/Long Coordinates - end
 
 
 int CvPlot::getFOWIndex() const

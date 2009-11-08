@@ -4233,6 +4233,53 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 			szString.append(GC.getRouteInfo(pPlot->getRevealedRouteType(GC.getGameINLINE().getActiveTeam(), true)).getDescription());
 		}
 
+// BUG - Lat/Long Coordinates - start
+		if (GET_TEAM(GC.getGameINLINE().getActiveTeam()).isMapCentering() && getBugOptionBOOL("MiscHover__LatLongCoords", true, "BUG_PLOT_HOVER_LAT_LONG"))
+		{
+			int iLong = pPlot->getRealLongitudeMinutes();
+			bool bWest = false;
+
+			if (iLong < 0)
+			{
+				iLong = abs(iLong);
+				bWest = true;
+			}
+			int iLongDeg = iLong / 60;
+			int iLongMin = iLong % 60;
+			szString.append(NEWLINE);
+			szString.append(gDLL->getText("TXT_KEY_LATLONG", iLongDeg, iLongMin));
+			if (bWest)
+			{
+				szString.append(gDLL->getText("TXT_KEY_LATLONG_WEST"));
+			}
+			else
+			{
+				szString.append(gDLL->getText("TXT_KEY_LATLONG_EAST"));
+			}
+			
+			int iLat = pPlot->getRealLatitudeMinutes();
+			bool bSouth = false;
+
+			if (iLat < 0)
+			{
+				iLat = abs(iLat);
+				bSouth = true;
+			}
+			int iLatDeg = iLat / 60;
+			int iLatMin = iLat % 60;
+			szString.append(L", ");
+			szString.append(gDLL->getText("TXT_KEY_LATLONG", iLatDeg, iLatMin));
+			if (bSouth)
+			{
+				szString.append(gDLL->getText("TXT_KEY_LATLONG_SOUTH"));
+			}
+			else
+			{
+				szString.append(gDLL->getText("TXT_KEY_LATLONG_NORTH"));
+			}
+		}
+// BUG - Lat/Long Coordinates - end
+
 // BUG - Partial Builds - start
 		if (pPlot->hasAnyBuildProgress() && getBugOptionBOOL("MiscHover__PartialBuilds", true, "BUG_PLOT_HOVER_PARTIAL_BUILDS"))
 		{
