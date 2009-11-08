@@ -218,6 +218,49 @@
 		<Spanish>Aumentar ritmo de %s1_CmrcType a %d2_Value%%</Spanish>
 	</TEXT>
 
+<!-- Lat/Long Coordinates -->
+	
+	<TEXT>
+		<Tag>TXT_KEY_LATLONG</Tag>
+		<English>%d1&#176;%d2'[SPACE]</English>
+		<French>%d1&#176;%d2'[SPACE]</French>
+		<German>%d1&#176;%d2'[SPACE]</German>
+		<Italian>%d1&#176;%d2'[SPACE]</Italian>
+		<Spanish>%d1&#176;%d2'[SPACE]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LATLONG_NORTH</Tag>
+		<English>N</English>
+		<French>N</French>
+		<German>N</German>
+		<Italian>N</Italian>
+		<Spanish>N</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LATLONG_EAST</Tag>
+		<English>E</English>
+		<French>E</French>
+		<German>E</German>
+		<Italian>E</Italian>
+		<Spanish>E</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LATLONG_SOUTH</Tag>
+		<English>S</English>
+		<French>S</French>
+		<German>S</German>
+		<Italian>S</Italian>
+		<Spanish>S</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LATLONG_WEST</Tag>
+		<English>W</English>
+		<French>W</French>
+		<German>W</German>
+		<Italian>W</Italian>
+		<Spanish>W</Spanish>
+	</TEXT>
+
 <!-- City Screen -->
 	
 	<!-- Yield Hovers -->
