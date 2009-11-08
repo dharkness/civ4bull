@@ -127,6 +127,11 @@ public:
 	DllExport bool hasAutoUnit() const;
 	DllExport bool hasBusyUnit() const;
 
+// BUG - Free Tech Popup Fix - start
+	bool isChoosingFreeTech() const;
+	void setChoosingFreeTech(bool bValue);
+// BUG - Free Tech Popup Fix - end
+
 	DllExport void chooseTech(int iDiscover = 0, CvWString szText = "", bool bFront = false);				// Exposed to Python
 
 	int calculateScore(bool bFinal = false, bool bVictory = false);
@@ -1169,6 +1174,10 @@ protected:
 	bool m_bDisableHuman;				// Set to true to disable isHuman() check
 #endif
 // BUG - AIAutoPlay - end
+
+// BUG - Free Tech Popup Fix - start
+	bool m_bChoosingFreeTech;
+// BUG - Free Tech Popup Fix - end
 
 	PlayerTypes m_eID;
 	LeaderHeadTypes m_ePersonalityType;

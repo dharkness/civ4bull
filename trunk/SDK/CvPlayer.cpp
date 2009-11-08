@@ -483,6 +483,10 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	m_bDisableHuman = false;
 #endif
 // BUG - AIAutoPlay - end
+	
+// BUG - Free Tech Popup Fix - start
+	m_bChoosingFreeTech = 0;
+// BUG - Free Tech Popup Fix - end
 
 	m_eID = eID;
 	updateTeamType();
@@ -3032,9 +3036,27 @@ bool CvPlayer::hasBusyUnit() const
 	return false;
 }
 
+// BUG - Free Tech Popup Fix - start
+bool CvPlayer::isChoosingFreeTech() const
+{
+	return m_bChoosingFreeTech;
+}
+
+void CvPlayer::setChoosingFreeTech(bool bValue)
+{
+	m_bChoosingFreeTech = bValue;
+}
+// BUG - Free Tech Popup Fix - end
 
 void CvPlayer::chooseTech(int iDiscover, CvWString szText, bool bFront)
 {
+// BUG - Free Tech Popup Fix - start
+	if (iDiscover > 0)
+	{
+		setChoosingFreeTech(true);
+	}
+// BUG - Free Tech Popup Fix - end
+
 	CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_CHOOSETECH);
 	if (NULL != pInfo)
 	{
