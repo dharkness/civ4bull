@@ -240,7 +240,7 @@
 		<Tag>TXT_KEY_LATLONG_EAST</Tag>
 		<English>E</English>
 		<French>E</French>
-		<German>E</German>
+		<German>O</German>
 		<Italian>E</Italian>
 		<Spanish>E</Spanish>
 	</TEXT>
@@ -524,11 +524,11 @@
 
 	<TEXT>
 		<Tag>TXT_KEY_CHEATERS_NEVER_PROSPER</Tag>
-		<English>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten[COLOR_REVERT]</English>
-		<French>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten[COLOR_REVERT]</French>
-		<German>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten[COLOR_REVERT]</German>
-		<Italian>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten[COLOR_REVERT]</Italian>
-		<Spanish>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten[COLOR_REVERT]</Spanish>
+		<English>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</English>
+		<French>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</French>
+		<German>[COLOR_NEGATIVE_TEXT]Jedes Mal, wenn du schummelst, tötet Gott ein Kätzchen.[COLOR_REVERT]</German>
+		<Italian>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</Spanish>
 	</TEXT>
 
 </Civ4GameText>
