@@ -33,19 +33,19 @@ void bugInit()
 	{
 		long lResult = 0;
 
-		logMsg("BULL - checking for BUG");
+		logMsg("debug - checking for BUG");
 		if (gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBug", NULL, &lResult))
 		{
 			//logMsg("BULL - got value %ld", lResult);
 			g_bIsBug = lResult;
 			if (g_bIsBug)
 			{
-				logMsg("BULL - BUG is present");
+				logMsg("info  - BUG is present");
 			}
 		}
 		else
 		{
-			logMsg("BULL - call to isBug() failed; BUG not present");
+			logMsg("info  - call to isBug() failed; BUG not present");
 			g_bIsBug = false;
 		}
 
@@ -97,9 +97,9 @@ bool getBugOptionBOOL(const char* id, bool bDefault, const char* xmlKey)
 		argsList.add(id);
 		argsList.add(bDefault);
 
-		//logMsg("BULL - getOptionBOOL(%s)", id);
+		//logMsg("debug - getOptionBOOL(%s)", id);
 		gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "getOptionBOOL", argsList.makeFunctionArgs(), &lResult);
-		//logMsg("BULL - got value %ld", lResult);
+		//logMsg("debug - got value %ld", lResult);
 
 		return lResult != 0;
 	}
@@ -126,9 +126,9 @@ int getBugOptionINT(const char* id, int iDefault, const char* xmlKey)
 		argsList.add(id);
 		argsList.add(iDefault);
 
-		//logMsg("BULL - getOptionBOOL(%s)", id);
+		//logMsg("debug - getOptionBOOL(%s)", id);
 		gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "getOptionINT", argsList.makeFunctionArgs(), &lResult);
-		//logMsg("BULL - got value %ld", lResult);
+		//logMsg("debug - got value %ld", lResult);
 
 		return lResult;
 	}
