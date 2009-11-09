@@ -262,7 +262,7 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
-		<DefineName>ACO_ATTACKER_OWNS_MODIFIERS</DefineName>
+		<DefineName>ACO_SHOW_MODIFIER_LABELS</DefineName>
 		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
 	

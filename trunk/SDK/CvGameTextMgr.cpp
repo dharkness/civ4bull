@@ -2915,7 +2915,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                 if (((!(pDefender->immuneToFirstStrikes())) && (pAttacker->maxFirstStrikes() > 0)) || (pAttacker->maxCombatStr(NULL,NULL)!=pAttacker->baseCombatStr()*100))
                 {
                     //if attacker uninjured strength is not the same as base strength (i.e. modifiers are in effect) or first strikes exist, then
-                    if (getBugOptionBOOL("ACO__AttackerOwnsModifiers", false, "ACO_ATTACKER_OWNS_MODIFIERS"))
+                    if (getBugOptionBOOL("ACO__ShowModifierLabels", false, "ACO_SHOW_MODIFIER_LABELS"))
                     {
                         szString.append(gDLL->getText("TXT_ACO_AttackModifiers"));
                     }
@@ -2968,7 +2968,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                 if (((!(pAttacker->immuneToFirstStrikes())) && (pDefender->maxFirstStrikes() > 0)) || (pDefender->maxCombatStr(pPlot,pAttacker)!=pDefender->baseCombatStr()*100))
                 {
                     //if attacker uninjured strength is not the same as base strength (i.e. modifiers are in effect) or first strikes exist, then
-                    if (getBugOptionBOOL("ACO__AttackerOwnsModifiers", false, "ACO_ATTACKER_OWNS_MODIFIERS"))
+                    if (getBugOptionBOOL("ACO__ShowModifierLabels", false, "ACO_SHOW_MODIFIER_LABELS"))
                     {
                         szString.append(gDLL->getText("TXT_ACO_DefenseModifiers"));
                     }
