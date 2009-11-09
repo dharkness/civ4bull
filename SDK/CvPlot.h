@@ -213,8 +213,9 @@ public:
 #endif
 	bool at(int iX, int iY) const;																																		// Exposed to Python
 // BUG - Lat/Long Coordinates - start
-	int getRealLongitudeMinutes() const;																																		// Exposed to Python
-	int getRealLatitudeMinutes() const;																																		// Exposed to Python
+	int calculateMinutes(int iPlotIndex, int iPlotCount, bool bWrap, int iDegreeMin, int iDegreeMax) const;
+	int getLongitudeMinutes() const;																																		// Exposed to Python
+	int getLatitudeMinutes() const;																																		// Exposed to Python
 // BUG - Lat/Long Coordinates - end
 	int getLatitude() const;																																					// Exposed to Python  
 	int getFOWIndex() const;
