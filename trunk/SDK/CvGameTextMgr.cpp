@@ -4584,7 +4584,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 // BUG - Lat/Long Coordinates - start
 		if (GET_TEAM(GC.getGameINLINE().getActiveTeam()).isMapCentering() && getBugOptionBOOL("MiscHover__LatLongCoords", true, "BUG_PLOT_HOVER_LAT_LONG"))
 		{
-			int iLong = pPlot->getRealLongitudeMinutes();
+			int iLong = pPlot->getLongitudeMinutes();
 			bool bWest = false;
 
 			if (iLong < 0)
@@ -4605,7 +4605,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 				szString.append(gDLL->getText("TXT_KEY_LATLONG_EAST"));
 			}
 			
-			int iLat = pPlot->getRealLatitudeMinutes();
+			int iLat = pPlot->getLatitudeMinutes();
 			bool bSouth = false;
 
 			if (iLat < 0)

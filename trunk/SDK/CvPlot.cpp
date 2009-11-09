@@ -3758,51 +3758,60 @@ bool CvPlot::at(int iX, int iY) const
 
 
 // BUG - Lat/Long Coordinates - start
-int CvPlot::getRealLongitudeMinutes() const
+#define MINUTES_PER_DEGREE	60
+#define MIN_LONGITUDE		-180
+#define MAX_LONGITUDE		180
+
+int CvPlot::calculateMinutes(int iPlotIndex, int iPlotCount, bool bWrap, int iDegreeMin, int iDegreeMax) const
 {
-	int iRange = 360; // -180 to 180
-	int iMinimum = -180;
-	int iPlotIndex;
-	int iPlotRange;
-
-	if (GC.getMapINLINE().isWrapXINLINE() || !(GC.getMapINLINE().isWrapYINLINE()))
+	if (!bWrap)
 	{
-		iPlotIndex = getX_INLINE();
-		iPlotRange = GC.getMapINLINE().getGridWidthINLINE();
+		iPlotCount--;
 	}
-	else
-	{
-		iPlotIndex = getY_INLINE();
-		iPlotRange = GC.getMapINLINE().getGridHeightINLINE();
-	}
-
-	return iPlotIndex * iRange * 60 / iPlotRange + iMinimum * 60;
+	return iPlotIndex * (iDegreeMax - iDegreeMin) * MINUTES_PER_DEGREE / iPlotCount + iDegreeMin * MINUTES_PER_DEGREE;
 }
 
-int CvPlot::getRealLatitudeMinutes() const
+int CvPlot::getLongitudeMinutes() const
 {
-	int iRange = GC.getMapINLINE().getTopLatitude() - GC.getMapINLINE().getBottomLatitude();
-	int iMinimum = GC.getMapINLINE().getBottomLatitude();
-	int iPlotIndex;
-	int iPlotRange;
-
-	if (GC.getMapINLINE().isWrapXINLINE() || !(GC.getMapINLINE().isWrapYINLINE()))
+	if (GC.getMapINLINE().isWrapXINLINE())
 	{
-		iPlotIndex = getY_INLINE();
-		iPlotRange = GC.getMapINLINE().getGridHeightINLINE();
+		// normal and toroidal
+		return calculateMinutes(getX_INLINE(), GC.getMapINLINE().getGridWidthINLINE(), true, MIN_LONGITUDE, MAX_LONGITUDE);
+	}
+	else if (!GC.getMapINLINE().isWrapYINLINE())
+	{
+		// flat
+		return calculateMinutes(getX_INLINE(), GC.getMapINLINE().getGridWidthINLINE(), false, MIN_LONGITUDE, MAX_LONGITUDE);
 	}
 	else
 	{
-		iPlotIndex = getX_INLINE();
-		iPlotRange = GC.getMapINLINE().getGridWidthINLINE();
+		// tilted axis
+		return calculateMinutes(getY_INLINE(), GC.getMapINLINE().getGridHeightINLINE(), true, MIN_LONGITUDE, MAX_LONGITUDE);
 	}
+}
 
-	return iPlotIndex * iRange * 60 / iPlotRange + iMinimum * 60;
+int CvPlot::getLatitudeMinutes() const
+{
+	if (GC.getMapINLINE().isWrapXINLINE())
+	{
+		// normal and toroidal
+		return calculateMinutes(getY_INLINE(), GC.getMapINLINE().getGridHeightINLINE(), GC.getMapINLINE().isWrapYINLINE(), GC.getMapINLINE().getBottomLatitude(), GC.getMapINLINE().getTopLatitude());
+	}
+	else if (!GC.getMapINLINE().isWrapYINLINE())
+	{
+		// flat
+		return calculateMinutes(getY_INLINE(), GC.getMapINLINE().getGridHeightINLINE(), false, GC.getMapINLINE().getBottomLatitude(), GC.getMapINLINE().getTopLatitude());
+	}
+	else
+	{
+		// tilted axis
+		return calculateMinutes(getX_INLINE(), GC.getMapINLINE().getGridWidthINLINE(), false, GC.getMapINLINE().getBottomLatitude(), GC.getMapINLINE().getTopLatitude());
+	}
 }
 
 int CvPlot::getLatitude() const
 {
-	return abs(getRealLatitudeMinutes() / 60);
+	return abs(getLatitudeMinutes() / MINUTES_PER_DEGREE);
 }
 // BUG - Lat/Long Coordinates - end
 
