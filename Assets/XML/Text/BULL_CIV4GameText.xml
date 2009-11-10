@@ -524,11 +524,54 @@
 
 	<TEXT>
 		<Tag>TXT_KEY_CHEATERS_NEVER_PROSPER</Tag>
-		<English>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</English>
-		<French>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</French>
-		<German>[COLOR_NEGATIVE_TEXT]Jedes Mal, wenn du schummelst, tötet Gott ein Kätzchen.[COLOR_REVERT]</German>
-		<Italian>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</Italian>
-		<Spanish>[COLOR_NEGATIVE_TEXT]Every time you cheat, God kills a kitten.[COLOR_REVERT]</Spanish>
+		<English>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</English>
+		<French>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</French>
+		<German>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</German>
+		<Italian>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</Spanish>
+	</TEXT>
+
+<!-- Optional Compile-Time Components -->
+
+	<TEXT>
+		<Tag>TXT_KEY_MOD_FRACTRADE</Tag>
+		<English>Fractional Trade Routes</English>
+		<French>Fractional Trade Routes</French>
+		<German>Fractional Trade Routes</German>
+		<Italian>Fractional Trade Routes</Italian>
+		<Spanish>Fractional Trade Routes</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MOD_SENTRY</Tag>
+		<English>New Sentry Actions</English>
+		<French>New Sentry Actions</French>
+		<German>New Sentry Actions</German>
+		<Italian>New Sentry Actions</Italian>
+		<Spanish>New Sentry Actions</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MOD_GOVWORKERS</Tag>
+		<English>City Governors Build Workers</English>
+		<French>City Governors Build Workers</French>
+		<German>City Governors Build Workers</German>
+		<Italian>City Governors Build Workers</Italian>
+		<Spanish>City Governors Build Workers</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MOD_AIAUTOPLAY</Tag>
+		<English>AI AutoPlay</English>
+		<French>AI AutoPlay</French>
+		<German>AI AutoPlay</German>
+		<Italian>AI AutoPlay</Italian>
+		<Spanish>AI AutoPlay</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MOD_GWARM</Tag>
+		<English>Global Warming</English>
+		<French>Global Warming</French>
+		<German>Global Warming</German>
+		<Italian>Global Warming</Italian>
+		<Spanish>Global Warming</Spanish>
 	</TEXT>
 
 </Civ4GameText>
