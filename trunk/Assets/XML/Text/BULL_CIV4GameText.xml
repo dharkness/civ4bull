@@ -526,7 +526,7 @@
 		<Tag>TXT_KEY_CHEATERS_NEVER_PROSPER</Tag>
 		<English>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</English>
 		<French>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</French>
-		<German>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</German>
+		<German>[COLOR_NEGATIVE_TEXT]Freie Technologie(n) schon gewählt[COLOR_REVERT]</German>
 		<Italian>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_NEGATIVE_TEXT]You have already chosen your free tech(s)[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -537,7 +537,7 @@
 		<Tag>TXT_KEY_MOD_FRACTRADE</Tag>
 		<English>Fractional Trade Routes</English>
 		<French>Fractional Trade Routes</French>
-		<German>Fractional Trade Routes</German>
+		<German>Gestückelte Handelsverbindungen</German>
 		<Italian>Fractional Trade Routes</Italian>
 		<Spanish>Fractional Trade Routes</Spanish>
 	</TEXT>
@@ -545,7 +545,7 @@
 		<Tag>TXT_KEY_MOD_SENTRY</Tag>
 		<English>New Sentry Actions</English>
 		<French>New Sentry Actions</French>
-		<German>New Sentry Actions</German>
+		<German>Neue Wach-Befehle</German>
 		<Italian>New Sentry Actions</Italian>
 		<Spanish>New Sentry Actions</Spanish>
 	</TEXT>
@@ -553,7 +553,7 @@
 		<Tag>TXT_KEY_MOD_GOVWORKERS</Tag>
 		<English>City Governors Build Workers</English>
 		<French>City Governors Build Workers</French>
-		<German>City Governors Build Workers</German>
+		<German>Stadtverwalter: Bautrupp aufstellen</German>
 		<Italian>City Governors Build Workers</Italian>
 		<Spanish>City Governors Build Workers</Spanish>
 	</TEXT>
@@ -561,7 +561,7 @@
 		<Tag>TXT_KEY_MOD_AIAUTOPLAY</Tag>
 		<English>AI AutoPlay</English>
 		<French>AI AutoPlay</French>
-		<German>AI AutoPlay</German>
+		<German>Selbstablaufende Partie</German>
 		<Italian>AI AutoPlay</Italian>
 		<Spanish>AI AutoPlay</Spanish>
 	</TEXT>
@@ -569,7 +569,7 @@
 		<Tag>TXT_KEY_MOD_GWARM</Tag>
 		<English>Global Warming</English>
 		<French>Global Warming</French>
-		<German>Global Warming</German>
+		<German>Globale Erwärmung</German>
 		<Italian>Global Warming</Italian>
 		<Spanish>Global Warming</Spanish>
 	</TEXT>

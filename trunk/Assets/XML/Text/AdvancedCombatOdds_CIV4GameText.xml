@@ -33,7 +33,7 @@
 		<Tag>TXT_ACO_SurvivalOdds</Tag>
 		<English>Survival odds:[SPACE]</English>
 		<French>Chances de survie:[SPACE]</French>
-		<German>Überlebenswahrscheinlichkeit:[SPACE]</German>
+		<German>Überlebenschance:[SPACE]</German>
 		<Italian>Probabilità di sopravvivenza:[SPACE]</Italian>
 		<Spanish>Probabilidad de sobrevivencia:[SPACE]</Spanish>
 	</TEXT>
@@ -89,7 +89,7 @@
 		<Tag>TXT_ACO_Unharmed</Tag>
 		<English>[NEWLINE]Unharmed:[SPACE]</English>
 		<French>[NEWLINE]Indemne:[SPACE]</French>
-		<German>[NEWLINE]Unverletzt:[SPACE]</German>
+		<German>[NEWLINE]Unversehrt:[SPACE]</German>
 		<Italian>[NEWLINE]Disarmato:[SPACE]</Italian>
 		<Spanish>[NEWLINE]Ileso:[SPACE]</Spanish>
 	</TEXT>
@@ -105,7 +105,7 @@
 		<Tag>TXT_ACO_TotalDefenseModifier</Tag>
 		<English>[NEWLINE]Total defense modifier:[SPACE]</English>
 		<French>[NEWLINE]Modificateur Total de defense:[SPACE]</French>
-		<German>[NEWLINE]Verteidigungsmodifikator gesamt:[SPACE]</German>
+		<German>[NEWLINE]Verteidigungsmodifikator absolut:[SPACE]</German>
 		<Italian>[NEWLINE]Modificatore difensivo totale:[SPACE]</Italian>
 		<Spanish>[NEWLINE]Modificador defensivo total:[SPACE]</Spanish>
 	</TEXT>
@@ -129,7 +129,7 @@
 		<Tag>TXT_ACO_GuaranteedNoDefenderHit</Tag>
 		<English>[NEWLINE][COLOR_HIGHLIGHT_TEXT]Guaranteed! Defender cannot score a hit.[COLOR_REVERT]</English>
 		<French>[NEWLINE][COLOR_HIGHLIGHT_TEXT]C'est garantie! L'unité défensive ne peut marquer de coup.[COLOR_REVERT]</French>
-		<German>[NEWLINE][COLOR_HIGHLIGHT_TEXT]Sicher! Verteidiger wird keinen Treffer landen.[COLOR_REVERT]</German>
+		<German>[NEWLINE][COLOR_HIGHLIGHT_TEXT]Sicher! Der Verteidiger kann keinen Treffer landen.[COLOR_REVERT]</German>
 		<Italian>[NEWLINE][COLOR_HIGHLIGHT_TEXT]Certa! I difensori non possono colpire neppure una volta.[COLOR_REVERT]</Italian>
 		<Spanish>[NEWLINE][COLOR_HIGHLIGHT_TEXT]¡Garantizado! El defensor no puede dar en el blanco.[COLOR_REVERT]</Spanish>
 	</TEXT>
