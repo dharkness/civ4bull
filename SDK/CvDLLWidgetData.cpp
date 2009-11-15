@@ -3696,7 +3696,8 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 		szBuffer.append(szTempBuffer);
 	}
 	// BUG DLL version
-	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"), BUG_DLL_NAME, BUG_DLL_VERSION);
+	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s [Build %s]" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"), 
+			BUG_DLL_NAME, BUG_DLL_VERSION, BUG_DLL_BUILD);
 	szBuffer.append(szTempBuffer);
 	// compile-time mods
 	szTempBuffer.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
