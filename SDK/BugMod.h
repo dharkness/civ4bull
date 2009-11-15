@@ -29,6 +29,6 @@ Defines common constants and functions for use throughout the BUG Mod.
 // These are display-only values, and the version should be changed for each release.
 #define BUG_DLL_NAME			L"BULL"
 #define BUG_DLL_VERSION			L"1.0"
-#define BUG_DLL_BUILD			L"93"
+#define BUG_DLL_BUILD			L"100"
 
 #endif
