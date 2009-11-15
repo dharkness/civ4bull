@@ -3,6 +3,7 @@
 <Civ4InterfaceModeInfos xmlns="x-schema:CIV4InterfaceSchema.xml">
 	<InterfaceModeInfos>
 		<!-- Sentry Actions -->
+		<!-- Insert these after the last <InterfaceModeInfo> in the modified file -->
 		<InterfaceModeInfo>
 			<Type>INTERFACEMODE_GO_TO_SENTRY</Type>
 			<Description>TXT_KEY_INTERFACEMODE_GO_TO_SENTRY</Description>
