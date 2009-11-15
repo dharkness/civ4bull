@@ -1,0 +1,172 @@
+CHANGELOG for BULL
+==================
+
+1. Introduction
+2. BULL 1.0
+3. BULL 0.9
+
+
+____________________________________________________________________________________________________
+INTRODUCTION
+
+This file lists the new features and fixes contained in each BULL release. The changes for each release are grouped into two major sections--Changes and Modding--and within each section further into New Features, Improvements, and Bug Fixes.
+
+The Changes sections are for end-users and list the visible changes in BULL. New Features cover major new additions that add completely new functionality. Improvements are smaller changes made to existing features. And Bug Fixes cover fixes to broken features in both BTS and BULL.
+
+The Modding sections are mostly of interest to C++ modders merging BULL into their own mods or Python modders using BUG and/or BULL. Changes that affect the Python API are listed along with new events and gameutils callbacks.
+
+Note: Changes marked [BUG] only take effect when the optional BUG Mod is installed.
+
+
+____________________________________________________________________________________________________
+BULL 1.0 released November 15th, 2009
+
+CHANGES
+
+New Features:
+
+- City Bar
+	Turns until city shrinks from starvation
+- City Bar hover
+	Building Actual Effects if city is constructing a building
+- Pre-Chop and Pre-Build
+	Workers stop clearing forests (and building improvements that clear forests) with one turn remaining
+- Specialist Actual Effects
+	Add/Remove Specialist and Settle Great Person button hovers
+- Zoom to City button
+	Hover shows details using City Bar hover
+- Longitude/Latitude
+	Shown on the map hover once the map is centered (e.g. Calendar or Stonehenge)
+- Fractional Trade Routes [optional]
+	Trade route yields are rounded down *after* adding them for each city, making Harbors much more useful
+
+Improvements:
+
+- Upgraded Advanced Combat Odds to 2.0.1
+- Building Actual Effects
+	Includes free specialists
+- Sped Up Techs
+	Shows "Sped up by ..." for optional prerequisites to techs you can research
+- Promoting a unit updates Plot List buttons [BUG]
+- Goody hut messages remain in the event log forever
+
+Bug Fixes:
+
+- Stack Attack game option no longer causes crash
+- Oracle/Liberalism allow only one free tech to be acquired
+- City Bar hover
+	Hide features for foreign cities
+		Hurry/Draft Anger Counter
+		Hurry Cost/Overflow
+		Building Actual Effects
+- Trade Route totals
+	Values no longer separated into continental/overseas totals
+		City Bar hover
+		Scoreboard Trade hover
+		Finance Advisor hovers
+		Foreign Advisor INFO tab trade hover
+- Hover text for rival no longer exposes unmet rivals with "Worst Enemy of <rival>"
+
+
+MODDING
+
+New Features:
+
+- Events
+	City building a Project
+	City building a Process
+	Player changes Civics (revolution)
+
+
+____________________________________________________________________________________________________
+BULL 0.9 released July 25, 2009 with BUFFY 3.19.001
+
+New Features:
+
+- City Bar
+	Airport Icon
+- City Bar hover
+	Net Health
+	Net Happiness
+	Hurry Anger Turns (# angry and timer)
+	Draft Anger Turns (# angry and timer)
+	Food Assist
+	Base Production
+	Trade (total, foreign, foreign overseas)
+	Commerce
+	Building icons
+	Culture Turns
+	Great Person Turns
+	Specialists and Settled Great People
+	Chance of Revolt
+	Control key to see base values without modifiers
+	Hide UI Instructions (city selection)
+- Tech hover
+	Shows "Speeds up ..." for leads-to techs you can already research
+- Unit hover
+	Remove "(name)" suffix when custom name already contains it
+	Replace unit type in name when upgrading
+	Production Decay
+- Building hover
+	Actual Effects (Happiness, Health, Trade, Yield, Commerce, Maintenance, GP)
+	Production Decay
+- Plot hover
+	Number of worker turns left for partially-completed actions
+- Scoreboard
+	Trade hover for Trade Network icon (continental vs. overseas) [BUG]
+- City Screen
+	Commerce Rate hovers
+		Base Commerce: subtotal before modifiers when at least two line items and one modifier
+		Actual effects of each building you can build
+	Maintenance hover
+		Actual effects of each building you can build
+	Food hover [BUG]
+		Gain: Worked Tiles, Trade, Corporations, Specialists, Buildings
+		Loss: Population, Bad Health, Production
+		Actual effects of each building you can build
+	Production Rate hover
+		Actual effects of each building you can build
+	Great People Bar hover
+		Breakdown of rate: Specialists and Buildings
+		Actual effects of each building you can build
+	Remove Specialist button hover shows effects of specialist (like add button)
+	Whip button hover shows Overflow Production and Gold
+- Unit Healing
+	May act as sentries; can limit to neutral territory
+- Safe Moves
+	Transports will not unload onto a square that wasn't revealed when order was issued
+	Units will not attack a plot containing an enemy that wasn't revealed when order was issued
+- MapFinder [BUG]
+	from HoF Mod
+- Auto Save [BUG]
+	Start of game
+	End of game
+	Exit via menu
+- Advanced Combat Odds 1.0
+	by PieceOfMind: http://forums.civfanatics.com/showthread.php?t=310415
+
+Improvements:
+
+- Min/Max Commerce Rate button hovers [BUG]
+	Message is clearer: "Set ___ Rate to ___%"
+- Finance Screen hovers
+	Domestic Trade (continental vs. overseas) [BUG]
+	Foreign Trade (continental vs. overseas) [BUG]
+	Specialist Gold (breakdown by type) [BUG]
+- Foreign Advisor hovers
+	Trade (continental vs. overseas) [BUG]
+	Trade Denial in Bonus/Tech hovers when won't trade
+
+Bug Fixes:
+
+- Unofficial Patch 1.0
+
+
+MODDING
+
+New Features:
+
+- Events
+	Unit Upgrade
+	Unit Withdrawal and Retreat
+	Unit Collateral and Flanking Damage
