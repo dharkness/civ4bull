@@ -6,7 +6,7 @@ OPTIONAL ASSETS for NULL
 
 
 ____________________________________________________________________________________________________
-INTRODUCTION
+1. INTRODUCTION
 
 This folder contains the assets for mods and features that are optional in BULL.
 Each one has a readme detailing the compiler flag you need to define in your makefile
@@ -14,7 +14,7 @@ to enable the feature and how to merge in the files to your Assets folder.
 
 
 ____________________________________________________________________________________________________
-MERGING FILES
+2. MERGING FILES
 
 Each file in the readmes has a letter code next to it telling you how to merge it
 into your Assets folder.

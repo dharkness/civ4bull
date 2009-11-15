@@ -8,7 +8,7 @@ MODDING with BULL
 
 
 ____________________________________________________________________________________________________
-INTRODUCTION
+1. INTRODUCTION
 
 This file contains information of use to modders and users wishing to build their own custom DLL from BULL's source code.
 
@@ -22,7 +22,7 @@ Or you can use a tool like WinMerge to find all the differences by comparing the
 
 
 ____________________________________________________________________________________________________
-OPTIONAL COMPONENTS
+2. OPTIONAL COMPONENTS
 
 The following are all of the compile-time options for BULL. Each one has a unique preprocessor flag that you must define to enable the component. You do this with the /D option in your makefile.
 
@@ -75,7 +75,7 @@ The following are all of the compile-time options for BULL. Each one has a uniqu
 
 
 ____________________________________________________________________________________________________
-EVENTS
+3. EVENTS
 
 These new events have already been added to BUG, but if you want to use them in a non-BUG-based mod you must add them yourself to the top of CvEventManager.
 
@@ -99,7 +99,7 @@ City
 
 
 ____________________________________________________________________________________________________
-PYTHON API
+4. PYTHON API
 
 Any entry that requires on of the optional components above will be marked with its number between brackets, e.g. [1].
 

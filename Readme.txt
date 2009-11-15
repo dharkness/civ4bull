@@ -9,7 +9,7 @@ README for BULL
 
 
 ____________________________________________________________________________________________________
-INTRODUCTION
+1. INTRODUCTION
 
 BULL is an unaltered-gameplay mod for Civ4:BTS. It can be used by itself or with any other mod that doesn't have its own CvGameCoreDLL.dll (DLL) file. For those that do have a DLL, you can ask the mod's creator if they would be kind enough to merge BULL into their mod or do it yourself (see MODDING below).
 
@@ -17,7 +17,7 @@ If BULL is installed along with BUG, they will complement each other. BULL's opt
 
 
 ____________________________________________________________________________________________________
-INSTALLATION
+2. INSTALLATION
 
 WARNING: You should never modify or replace the original BTS Assets files. The one exception is the CvGameCoreDLL.dll file, and you should always backup the original file first so you can revert.
 
@@ -62,7 +62,7 @@ BULL has been designed to have no files in common with BUG. If you installed BUG
 
 
 ____________________________________________________________________________________________________
-CONFIGURATION
+3. CONFIGURATION
 
 If you are using BULL with BUG, the BULL settings will become active on the BUG Options screen (ALT + CTRL + O). Changes you make will take effect immediately.
 
@@ -70,7 +70,7 @@ If you are using BULL alone, you can change BULL settings in the file Assets/XML
 
 
 ____________________________________________________________________________________________________
-TROUBLESHOOTING
+4. TROUBLESHOOTING
 
 If you are having any trouble getting BULL to work, start with our Troubleshooting wiki page:
 
@@ -86,6 +86,6 @@ If you find a feature or option that doesn't work properly, please post to our B
 
 
 ____________________________________________________________________________________________________
-MODDING
+5. MODDING
 
 See the separate document Modding.txt for information helpful to modders.

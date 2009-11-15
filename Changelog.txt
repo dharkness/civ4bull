@@ -2,12 +2,13 @@ CHANGELOG for BULL
 ==================
 
 1. Introduction
-2. BULL 1.0
-3. BULL 0.9
+
+* BULL 1.0
+* BULL 0.9
 
 
 ____________________________________________________________________________________________________
-INTRODUCTION
+1. INTRODUCTION
 
 This file lists the new features and fixes contained in each BULL release. The changes for each release are grouped into two major sections--Changes and Modding--and within each section further into New Features, Improvements, and Bug Fixes.
 
