@@ -3,6 +3,7 @@ CHANGELOG for BULL
 
 1. Introduction
 
+* BULL x.x
 * BULL 1.0
 * BULL 0.9
 
@@ -17,6 +18,30 @@ The Changes sections are for end-users and list the visible changes in BULL. New
 The Modding sections are mostly of interest to C++ modders merging BULL into their own mods or Python modders using BUG and/or BULL. Changes that affect the Python API are listed along with new events and gameutils callbacks.
 
 Note: Changes marked [BUG] only take effect when the optional BUG Mod is installed.
+
+
+____________________________________________________________________________________________________
+BULL x.x unreleased
+
+CHANGES
+
+New Features:
+
+- Examine City button
+	Hover shows details using City Bar hover
+
+Improvements:
+
+Bug Fixes:
+
+
+MODDING
+
+New Features:
+
+Improvements:
+
+Bug Fixes:
 
 
 ____________________________________________________________________________________________________
