@@ -251,26 +251,40 @@ void CvSelectionGroup::doTurn()
 			setActivityType(ACTIVITY_AWAKE);
 		}
 
+// BUG - Sentry Healing and Explorering Units - start
+		if (isHuman())
+		{
 // BUG - Sentry Actions - start
 #ifdef _MOD_SENTRY
-		if (((eActivityType == ACTIVITY_SENTRY_NAVAL_UNITS) && (sentryAlertSameDomainType())) ||
-			((eActivityType == ACTIVITY_SENTRY_LAND_UNITS) && (sentryAlertSameDomainType())) ||
-			((eActivityType == ACTIVITY_SENTRY_WHILE_HEAL) && (sentryAlertSameDomainType() || AI_isControlled() || !bHurt)))
-		{
-			setActivityType(ACTIVITY_AWAKE);
-		}
-#endif
-// BUG - Sentry Actions - end
-
-// BUG - Sentry Healing Units - start
-		if (eActivityType == ACTIVITY_HEAL && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
-		{
-			if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true, "BUG_SENTRY_HEALING_ONLY_NEUTRAL") && plot()->isOwned()))
+			if (((eActivityType == ACTIVITY_SENTRY_NAVAL_UNITS) && (sentryAlertSameDomainType())) ||
+				((eActivityType == ACTIVITY_SENTRY_LAND_UNITS) && (sentryAlertSameDomainType())) ||
+				((eActivityType == ACTIVITY_SENTRY_WHILE_HEAL) && (sentryAlertSameDomainType() || AI_isControlled() || !bHurt)))
 			{
 				setActivityType(ACTIVITY_AWAKE);
 			}
+#endif
+// BUG - Sentry Actions - end
+
+// BUG - Sentry Exploring Units - start
+			if (isAutomated() && getAutomateType() == AUTOMATE_EXPLORE && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
+			{
+				if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true, "BUG_SENTRY_HEALING_ONLY_NEUTRAL") && plot()->isOwned()))
+				{
+					setActivityType(ACTIVITY_AWAKE);
+				}
+			}
+// BUG - Sentry Exploring Units - end
+
+// BUG - Sentry Healing Units - start
+			if (eActivityType == ACTIVITY_HEAL && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
+			{
+				if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true, "BUG_SENTRY_HEALING_ONLY_NEUTRAL") && plot()->isOwned()))
+				{
+					setActivityType(ACTIVITY_AWAKE);
+				}
+			}
 		}
-// BUG - Sentry Healing Units - end
+// BUG - Sentry Healing and Explorering Units - end
 
 		if (AI_isControlled())
 		{
@@ -3512,10 +3526,13 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 // BUG - Pre-Chop - start
 	bool bCheckChop = false;
 
-	if (isHuman() && pPlot->getFeatureType() == GC.getInfoTypeForString("FEATURE_FOREST") && GC.getBuildInfo(eBuild).isFeatureRemove(pPlot->getFeatureType()))
+	FeatureTypes eFeature = pPlot->getFeatureType();
+	CvBuildInfo& kBuildInfo = GC.getBuildInfo(eBuild);
+	if (eFeature != NO_FEATURE && isHuman() && kBuildInfo.isFeatureRemove(eFeature) && kBuildInfo.getFeatureProduction(eFeature) != 0)
 	{
-		if (eBuild == GC.getInfoTypeForString("BUILD_REMOVE_FOREST"))
+		if (kBuildInfo.getImprovement() == NO_IMPROVEMENT)
 		{
+			// clearing a forest or jungle
 			if (getBugOptionBOOL("Actions__PreChopForests", true, "BUG_PRECHOP_FORESTS"))
 			{
 				bCheckChop = true;
@@ -3554,6 +3571,14 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 			if (bCheckChop && pPlot->getBuildTurnsLeft(eBuild, getOwnerINLINE()) == 1)
 			{
 				// TODO: stop other worker groups
+				CvCity* pCity;
+				int iProduction = plot()->getFeatureProduction(eBuild, getTeam(), &pCity);
+
+				if (iProduction > 0)
+				{
+					CvWString szBuffer = gDLL->getText("TXT_KEY_BUG_PRECLEARING_FEATURE_BONUS", GC.getFeatureInfo(eFeature).getTextKeyWide(), iProduction, pCity->getNameKey());
+					gDLL->getInterfaceIFace()->addMessage(getOwnerINLINE(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer,  ARTFILEMGR.getInterfaceArtInfo("WORLDBUILDER_CITY_EDIT")->getPath(), MESSAGE_TYPE_INFO, GC.getFeatureInfo(eFeature).getButton(), (ColorTypes)GC.getInfoTypeForString("COLOR_WHITE"), getX(), getY(), true, true);
+				}
 				bContinue = false;
 				break;
 			}

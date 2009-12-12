@@ -32,6 +32,12 @@ New Features:
 
 Improvements:
 
+- Pre-Chop
+	Displays a message similar to the one shown when you do the full chop
+	Works with Jungles or new features if you mod them to produce hammers when cleared
+- Sentry Healing
+	Units on Auto-Explore that are healing can act as sentries
+
 Bug Fixes:
 
 
