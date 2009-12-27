@@ -29,6 +29,8 @@ New Features:
 
 - Examine City button
 	Hover shows details using City Bar hover
+- Choose Production popup
+	Can set to train units forever by default, similar to using ALT with buttons
 
 Improvements:
 
