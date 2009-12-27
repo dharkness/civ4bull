@@ -11,6 +11,10 @@
 #include "CvGameTextMgr.h"
 #include "CvMessageControl.h"
 
+// BUG - start
+#include "CvBugOptions.h"
+// BUG - end
+
 void CvGame::updateColoredPlots()
 {
 	PROFILE_FUNC();
@@ -867,6 +871,10 @@ void CvGame::selectionListMove(CvPlot* pPlot, bool bAlt, bool bShift, bool bCtrl
 		gDLL->getInterfaceIFace()->selectGroup(pHeadSelectedUnit, false, true, false);
 	}
 
+// BUG - Declare War - start
+	bool bAskToDeclareWar = getBugOptionBOOL("Actions__AskDeclareWarUnits", true, "BUG_ASK_DECLARE_WAR_UNITS");
+// BUG - Declare War - end
+
 	pSelectedUnitNode = gDLL->getInterfaceIFace()->headSelectionListNode();
 
 	while (pSelectedUnitNode != NULL)
@@ -875,7 +883,10 @@ void CvGame::selectionListMove(CvPlot* pPlot, bool bAlt, bool bShift, bool bCtrl
 
 		eRivalTeam = pSelectedUnit->getDeclareWarMove(pPlot);
 
-		if (eRivalTeam != NO_TEAM)
+// BUG - Declare War - start
+		// only ask if option is off or moving into rival territory without open borders
+		if (eRivalTeam != NO_TEAM && (pPlot->getTeam() == eRivalTeam || bAskToDeclareWar))
+// BUG - Declare War - end
 		{
 			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_DECLAREWARMOVE);
 			if (NULL != pInfo)

@@ -217,6 +217,12 @@
 	</Define>
 
 <!-- Actions -->
+
+  <!-- Ask Declare War -->
+  <Define>
+    <DefineName>BUG_ASK_DECLARE_WAR_UNITS</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
 	
 	<!-- Sentry Healing -->
 	<Define>
