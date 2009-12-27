@@ -1186,7 +1186,8 @@ void CvDLLWidgetData::doTrain(CvWidgetDataStruct &widgetDataStruct)
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_TRAIN, eUnit, false, false, false);
+		bool bAlt = getBugOptionBOOL("CityScreen__ProductionPopupTrainUnitsForever", true, "BUG_PRODUCTION_POPUP_TRAIN_UNITS_FOREVER");
+		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_TRAIN, eUnit, bAlt, false, false);
 	}
 	else
 	{
