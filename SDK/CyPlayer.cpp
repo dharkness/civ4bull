@@ -1188,6 +1188,14 @@ int CyPlayer::getExtraHealth()
 	return m_pPlayer ? m_pPlayer->getExtraHealth() : -1;
 }
 
+// BUG - start
+void CyPlayer::changeExtraHealth(int iChange)
+{
+	if (m_pPlayer)
+		m_pPlayer->changeExtraHealth(iChange);
+}
+// BUG - end
+
 int CyPlayer::getBuildingGoodHealth()
 {
 	return m_pPlayer ? m_pPlayer->getBuildingGoodHealth() : -1;
