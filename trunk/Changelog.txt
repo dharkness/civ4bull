@@ -52,6 +52,9 @@ New Features:
 
 Improvements:
 
+- CyPlayer
+	void changeExtraHealth(int iChange)
+
 Bug Fixes:
 
 

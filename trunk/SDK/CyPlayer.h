@@ -282,6 +282,9 @@ public:
 	int getLevelExperienceModifier() const;
 
 	int getExtraHealth();
+// BUG - start
+	void changeExtraHealth(int iChange);
+// BUG - end
 	int getBuildingGoodHealth();
 	int getBuildingBadHealth();
 
