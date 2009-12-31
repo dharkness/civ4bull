@@ -212,11 +212,15 @@
 	</Define>
 	
 	<Define>
-		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_UNITS_FOREVER</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
+		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_CIVILIAN_UNITS_FOREVER</DefineName>
+		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
+  <Define>
+    <DefineName>BUG_PRODUCTION_POPUP_TRAIN_MILITARY_UNITS_FOREVER</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
 
-<!-- Actions -->
+  <!-- Actions -->
 
   <!-- Ask Declare War -->
   <Define>

@@ -30,7 +30,7 @@ New Features:
 - Examine City button
 	Hover shows details using City Bar hover
 - Choose Production popup
-	Can set to train units forever by default, similar to using ALT with buttons
+	Can set to train civilian and/or military units forever, similar to using ALT with buttons
 - Ask to Declare War
 	Can disable popup asking to declare war when moving onto tile containing a rival unit (won't declare war)
 	Will always ask when moving into rival territory without open borders
