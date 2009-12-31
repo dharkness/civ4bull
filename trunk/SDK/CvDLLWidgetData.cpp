@@ -1186,8 +1186,20 @@ void CvDLLWidgetData::doTrain(CvWidgetDataStruct &widgetDataStruct)
 
 	if (widgetDataStruct.m_iData2 != FFreeList::INVALID_INDEX)
 	{
-		bool bAlt = getBugOptionBOOL("CityScreen__ProductionPopupTrainUnitsForever", true, "BUG_PRODUCTION_POPUP_TRAIN_UNITS_FOREVER");
+// Train Units Forever - start
+		bool bAlt;
+		CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+
+		if (kUnit.getCombat() || kUnit.getAirCombat())
+		{
+			bAlt = getBugOptionBOOL("CityScreen__ProductionPopupTrainMilitaryUnitsForever", true, "BUG_PRODUCTION_POPUP_TRAIN_MILITARY_UNITS_FOREVER");
+		}
+		else
+		{
+			bAlt = getBugOptionBOOL("CityScreen__ProductionPopupTrainCivilianUnitsForever", false, "BUG_PRODUCTION_POPUP_TRAIN_CIVILIAN_UNITS_FOREVER");
+		}
 		CvMessageControl::getInstance().sendPushOrder(widgetDataStruct.m_iData2, ORDER_TRAIN, eUnit, bAlt, false, false);
+// Train Units Forever - end
 	}
 	else
 	{
