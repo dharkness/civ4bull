@@ -34,6 +34,8 @@ New Features:
 - Ask to Declare War
 	Can disable popup asking to declare war when moving onto tile containing a rival unit (won't declare war)
 	Will always ask when moving into rival territory without open borders
+- Culture Flip
+	Can examine the city before accepting or razing cities that flip due to your culture
 
 Improvements:
 
