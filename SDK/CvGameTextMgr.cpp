@@ -14427,7 +14427,10 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 		CvTeamAI& kTeam = GET_TEAM((TeamTypes) iTeam);
 		if (kTeam.isAlive() && !kTeam.isMinorCiv() && iTeam != kThisPlayer.getTeam() && iTeam != kOtherPlayer.getTeam())
 		{
-			if (kTeam.isHasMet(kOtherPlayer.getTeam()))
+// BUG - Unofficial Patch - start
+			// EF: don't show enemies status of or wars with players that the active player hasn't met
+			if (kTeam.isHasMet(kOtherPlayer.getTeam()) && kTeam.isHasMet(GC.getGameINLINE().getActiveTeam()))
+// BUG - Unofficial Patch - end
 			{
 				if (::atWar((TeamTypes) iTeam, kThisPlayer.getTeam()))
 				{
@@ -14435,10 +14438,7 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 					szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", kTeam.getName().GetCString()));
 				}
 
-// BUG - Unofficial Patch - start
-				// EF: don't show enemies that active player hasn't met
-				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam() && kTeam.isHasMet(GC.getGameINLINE().getActiveTeam()))
-// BUG - Unofficial Patch - end
+				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam())
 				{
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", kTeam.getName().GetCString()));
