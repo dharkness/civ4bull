@@ -47,6 +47,8 @@ Improvements:
 
 Bug Fixes:
 
+- Hide "War with <team>" in leaderhead hover text if active player hasn't met <team>
+
 
 MODDING
 
