@@ -52,6 +52,8 @@ Bug Fixes:
 	Fixed building unhealthiness effect shown when city has a Recycling Center
 	Fixed building unhealthiness effect shown for Recycling Center
 	Fixed display of negative integral commerce effects (e.g. when removing a specialist)
+- Collateral Damage
+	Removed extraneous effect from old 3.17 UP
 
 
 MODDING
