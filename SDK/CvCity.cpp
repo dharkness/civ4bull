@@ -6488,6 +6488,12 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	}
 
 	// No Unhealthiness from Buildings
+	if (isBuildingOnlyHealthy())
+	{
+		// undo bad from this building
+		iBad = iStartingBad;
+	}
+
 	if (kBuilding.isBuildingOnlyHealthy())
 	{
 		// reset bad to undo any additional bad from above
