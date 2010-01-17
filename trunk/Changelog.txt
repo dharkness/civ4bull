@@ -36,6 +36,9 @@ New Features:
 	Will always ask when moving into rival territory without open borders
 - Culture Flip
 	Can examine the city before accepting or razing cities that flip due to your culture
+- Scoreboard
+	Leaderhead hover shows wars and worst enemy status, CTRL to show trade deals
+	Trade Network hover shows trade deals
 
 Improvements:
 
