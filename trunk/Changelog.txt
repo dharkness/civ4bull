@@ -48,9 +48,10 @@ Improvements:
 Bug Fixes:
 
 - Hide "War with <team>" in leaderhead hover text if active player hasn't met <team>
-- Building Actual Effects
-	Fixed unhealthiness effect shown when city has a Recycling Center
-	Fixed unhealthiness effect shown for Recycling Center
+- Actual Effects
+	Fixed building unhealthiness effect shown when city has a Recycling Center
+	Fixed building unhealthiness effect shown for Recycling Center
+	Fixed display of negative integral commerce effects (e.g. when removing a specialist)
 
 
 MODDING
