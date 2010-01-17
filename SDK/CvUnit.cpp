@@ -11644,14 +11644,6 @@ void CvUnit::collateralCombat(const CvPlot* pPlot, CvUnit* pSkipUnit)
 			{
 				iTheirStrength = pBestUnit->baseCombatStr();
 
-// BUG - Unofficial Patch - start
-				// Barrage promotions made working again on Tanks and other units with no base collateral ability
-				if (iCollateralStrength == 0)
-				{
-					iCollateralStrength = baseCombatStr();
-				}
-// BUG - Unofficial Patch - end
-
 				iStrengthFactor = ((iCollateralStrength + iTheirStrength + 1) / 2);
 
 				iCollateralDamage = (GC.getDefineINT("COLLATERAL_COMBAT_DAMAGE") * (iCollateralStrength + iStrengthFactor)) / (iTheirStrength + iStrengthFactor);
