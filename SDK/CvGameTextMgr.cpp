@@ -11219,7 +11219,7 @@ bool CvGameTextMgr::setResumableCommerceTimes100ChangeHelp(CvWStringBuffer &szBu
 
 			if (iChange % 100 == 0)
 			{
-				szTempBuffer.Format(L"%s%d%c", iChange >= 0 ? L"+" : L"-", iChange / 100, GC.getCommerceInfo((CommerceTypes) iI).getChar());
+				szTempBuffer.Format(L"%+d%c", iChange / 100, GC.getCommerceInfo((CommerceTypes) iI).getChar());
 			}
 			else
 			{
