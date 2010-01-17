@@ -6454,6 +6454,18 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	// Area
 	addGoodOrBad(kBuilding.getAreaHealth(), iGood, iBad);
 
+	// No Unhealthiness from Buildings
+	if (isBuildingOnlyHealthy())
+	{
+		// undo bad from this building
+		iBad = iStartingBad;
+	}
+	if (kBuilding.isBuildingOnlyHealthy())
+	{
+		// undo bad from this and all existing buildings
+		iBad = iStartingBad + totalBadBuildingHealth();
+	}
+
 	// Bonus
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
@@ -6485,19 +6497,6 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 				subtractGoodOrBad(GC.getDefineINT("DIRTY_POWER_HEALTH_CHANGE"), iGood, iBad);
 			}
 		}
-	}
-
-	// No Unhealthiness from Buildings
-	if (isBuildingOnlyHealthy())
-	{
-		// undo bad from this building
-		iBad = iStartingBad;
-	}
-
-	if (kBuilding.isBuildingOnlyHealthy())
-	{
-		// reset bad to undo any additional bad from above
-		iBad = iStartingBad + getBuildingBadHealth();
 	}
 
 	// No Unhealthiness from Population
