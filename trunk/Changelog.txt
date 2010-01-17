@@ -48,6 +48,8 @@ Improvements:
 Bug Fixes:
 
 - Hide "War with <team>" in leaderhead hover text if active player hasn't met <team>
+- Building Actual Effects
+	Unhealthiness ignored when city has a Recycling Center
 
 
 MODDING
