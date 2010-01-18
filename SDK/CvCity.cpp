@@ -7164,6 +7164,20 @@ void CvCity::changeBuildingDefense(int iChange)
 	}
 }
 
+// BUG - Building Additional Defense - start
+int CvCity::getAdditionalDefenseByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iDefense = std::max(getBuildingDefense() + kBuilding.getDefenseModifier(), getNaturalDefense()) + GET_PLAYER(getOwnerINLINE()).getCityDefenseModifier() + kBuilding.getAllCityDefenseModifier();
+
+	// doesn't take bombardment into account
+	return iDefense - getTotalDefense(false);
+}
+// BUG - Building Additional Defense - end
+
 
 int CvCity::getBuildingBombardDefense() const
 {
@@ -7179,6 +7193,20 @@ void CvCity::changeBuildingBombardDefense(int iChange)
 		FAssert(getBuildingBombardDefense() >= 0);
 	}
 }
+
+// BUG - Building Additional Bombard Defense - start
+int CvCity::getAdditionalBombardDefenseByBuilding(BuildingTypes eBuilding) const
+{
+	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
+	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
+
+	CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+	int iBaseDefense = getBuildingBombardDefense();
+
+	// cap total bombard defense at 100
+	return std::min(kBuilding.getBombardDefenseModifier() + iBaseDefense, 100) - iBaseDefense;
+}
+// BUG - Building Additional Bombard Defense - end
 
 
 int CvCity::getFreeExperience() const

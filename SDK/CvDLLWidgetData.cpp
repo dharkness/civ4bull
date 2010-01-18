@@ -229,6 +229,9 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 		break;
 
 	case WIDGET_HELP_DEFENSE:
+// BUG - Defense Hover - start
+		parseDefenseHelp(widgetDataStruct, szBuffer);
+// BUG - Defense Hover - end
 		break;
 
 	case WIDGET_HELP_HEALTH:
@@ -3853,7 +3856,7 @@ void CvDLLWidgetData::parseHealthHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 		{
 			GAMETEXT.setBuildingAdditionalHealthHelp(szBuffer, *pHeadSelectedCity, DOUBLE_SEPARATOR);
 		}
-// BUG - Building Additional Health- end
+// BUG - Building Additional Health - end
 	}
 }
 
@@ -4837,10 +4840,22 @@ void CvDLLWidgetData::parseScoreHelp(CvWidgetDataStruct& widgetDataStruct, CvWSt
 	GAMETEXT.setScoreHelp(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1);
 }
 
-// BUG - Foreign Advisor INFO Trade - start
+// BUG - Trade Hover - start
 void CvDLLWidgetData::parseTradeRoutes(CvWidgetDataStruct& widgetDataStruct, CvWStringBuffer& szBuffer)
 {
 	GAMETEXT.buildTradeString(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1, (PlayerTypes)widgetDataStruct.m_iData2);
 	GAMETEXT.getActiveDealsString(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1, (PlayerTypes)widgetDataStruct.m_iData2);
 }
-// BUG - Foreign Advisor INFO Trade - end
+// BUG - Trade Hover - end
+
+// BUG - Defense Hover - start
+
+void CvDLLWidgetData::parseDefenseHelp(CvWidgetDataStruct& widgetDataStruct, CvWStringBuffer& szBuffer)
+{
+	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
+	if (NULL != pHeadSelectedCity)
+	{
+		GAMETEXT.setDefenseHelp(szBuffer, *pHeadSelectedCity);
+	}
+}
+// BUG - Defense Hover - end

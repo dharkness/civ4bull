@@ -38,7 +38,9 @@ New Features:
 	Can examine the city before accepting or razing cities that flip due to your culture
 - Scoreboard
 	Leaderhead hover shows wars and worst enemy status, CTRL to show trade deals
-	Trade Network hover shows trade deals
+	Trade Network and INFO Trade Routes hovers show trade deals
+- Defense Hover
+	Shows breakdown of city defense modifier and damage from bombardment on City Screen
 
 Improvements:
 
@@ -47,6 +49,8 @@ Improvements:
 	Works with Jungles or new features if you mod them to produce hammers when cleared
 - Sentry Healing
 	Units on Auto-Explore that are healing can act as sentries
+- Actual Effects
+	Added city and bombardment defense
 
 Bug Fixes:
 

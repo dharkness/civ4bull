@@ -286,7 +286,13 @@ public:
 	int getTradeRouteModifier();
 	int getForeignTradeRouteModifier();
 	int getBuildingDefense();
+// BUG - Building Additional Defense - start
+	int getAdditionalDefenseByBuilding(int /*BuildingTypes*/ eBuilding);
+// BUG - Building Additional Defense - end
 	int getBuildingBombardDefense();
+// BUG - Building Additional Bombard Defense - start
+	int getAdditionalBombardDefenseByBuilding(int /*BuildingTypes*/ eBuilding);
+// BUG - Building Additional Bombard Defense - end
 	int getFreeExperience();
 	int getCurrAirlift();
 	int getMaxAirlift();

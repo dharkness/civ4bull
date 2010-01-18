@@ -489,9 +489,15 @@ public:
 
 	int getBuildingDefense() const;																				// Exposed to Python
 	void changeBuildingDefense(int iChange);
+// BUG - Building Additional Defense - start
+	int getAdditionalDefenseByBuilding(BuildingTypes eBuilding) const;											// Exposed to Python
+// BUG - Building Additional Defense - start
 
 	int getBuildingBombardDefense() const;																				// Exposed to Python
 	void changeBuildingBombardDefense(int iChange);
+// BUG - Building Additional Bombard Defense - start
+	int getAdditionalBombardDefenseByBuilding(BuildingTypes eBuilding) const;									// Exposed to Python
+// BUG - Building Additional Bombard Defense - start
 
 	int getFreeExperience() const;																				// Exposed to Python
 	void changeFreeExperience(int iChange);															

@@ -235,6 +235,16 @@ public:
 	void buildTradeString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer, PlayerTypes eWithPlayer=NO_PLAYER, bool bDomestic=true, bool bForeign=true, bool bHeading=true);
 // BUG - Trade Hover - end
 
+// BUG - Defense Hover - start
+	void setDefenseHelp(CvWStringBuffer &szBuffer, CvCity& city);
+// BUG - Defense Hover - end
+// BUG - Building Additional Defense - start
+	bool setBuildingAdditionalDefenseHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted = false);
+// BUG - Building Additional Defense - end
+// BUG - Building Additional Bombard Defense - start
+	bool setBuildingAdditionalBombardDefenseHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted = false);
+// BUG - Building Additional Bombard Defense - end
+
 	DllExport void getGlobeLayerName(GlobeLayerTypes eType, int iOption, CvWString& strName);
 
 	DllExport void getPlotHelp(CvPlot* pMouseOverPlot, CvCity* pCity, CvPlot* pFlagPlot, bool bAlt, CvWStringBuffer& strHelp);

@@ -385,6 +385,74 @@
 		<Italian>-----------------------[NEWLINE]%s1_commerce_type totale: %s2%F3</Italian>
 		<Spanish>-----------------------[NEWLINE]Total %s1_commerce_type: %s2%F3</Spanish>
 	</TEXT>
+	
+	<!-- Defense Hover -->
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_BUILDING_DEFENSE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_DEFENSE] from Buildings</English>
+		<French>[ICON_BULLET]%D1%%[ICON_DEFENSE] en raison des b&#226;timents</French>
+		<German>[ICON_BULLET]%D1%%[ICON_DEFENSE] durch Geb&#228;ude</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_DEFENSE] dagli edifici</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_DEFENSE] por edificios</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_CULTURE_DEFENSE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_DEFENSE] from Culture</English>
+		<French>[ICON_BULLET]%D1%%[ICON_DEFENSE] en raison des Culture</French>
+		<German>[ICON_BULLET]%D1%%[ICON_DEFENSE] durch Kultur</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_DEFENSE] dagli Cultura</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_DEFENSE] por Cultura</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_CULTURE_DEFENSE_PARTIAL</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_DEFENSE] from Culture (%d2%%)</English>
+		<French>[ICON_BULLET]%D1%%[ICON_DEFENSE] en raison des Culture (%d2%%)</French>
+		<German>[ICON_BULLET]%D1%%[ICON_DEFENSE] durch Kultur (%d2%%)</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_DEFENSE] dagli Cultura (%d2%%)</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_DEFENSE] por Cultura (%d2%%)</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_WONDER_DEFENSE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_DEFENSE] from Wonders</English>
+		<French>[ICON_BULLET]%D1%%[ICON_DEFENSE] pour Merveilles</French>
+		<German>[ICON_BULLET]%D1%%[ICON_DEFENSE] f&#252;r Wunder</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_DEFENSE] dalle Meraviglie</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_DEFENSE] por maravillas</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_TOTAL_DEFENSE</Tag>
+		<English>Total Defense: %D1%%[ICON_DEFENSE]</English>
+		<French>D&#233;fense totale : %D1%%[ICON_DEFENSE]</French>
+		<German>Insgesamt Verteidigung: %D1%%[ICON_DEFENSE]</German>
+		<Italian>Difesa totale: %D1%%[ICON_DEFENSE]</Italian>
+		<Spanish>Defensa total: %D1%%[ICON_DEFENSE]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_DEFENSE_DAMAGE</Tag>
+		<English>[ICON_BULLET]%D1%%[ICON_DEFENSE] from Bombardment</English>
+		<French>[ICON_BULLET]%D1%%[ICON_DEFENSE] pour Merveilles</French>
+		<German>[ICON_BULLET]%D1%%[ICON_DEFENSE] f&#252;r Wunder</German>
+		<Italian>[ICON_BULLET]%D1%%[ICON_DEFENSE] dalle Meraviglie</Italian>
+		<Spanish>[ICON_BULLET]%D1%%[ICON_DEFENSE] por maravillas</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_NET_DEFENSE</Tag>
+		<English>Net Defense: %D1%%[ICON_DEFENSE]</English>
+		<French>D&#233;fense nette : %D1%%[ICON_DEFENSE]</French>
+		<German>Nettoertrag Verteidigung: %D1%%[ICON_DEFENSE]</German>
+		<Italian>Difesa netto: %D1%%[ICON_DEFENSE]</Italian>
+		<Spanish>Defensa neto: %D1%%[ICON_DEFENSE]</Spanish>
+	</TEXT>
+	
+	<TEXT>
+		<Tag>TXT_KEY_MISC_HELP_TOTAL_BOMBARD_DEFENSE</Tag>
+		<English>Total Bombard Defense: %d1%%[ICON_DEFENSE]</English>
+		<French>D&#233;fense bombardement totale : %d1%%[ICON_DEFENSE]</French>
+		<German>Insgesamt bombardieren Verteidigung: %d1%%[ICON_DEFENSE]</German>
+		<Italian>Difesa bombardmento totale: %d1%%[ICON_DEFENSE]</Italian>
+		<Spanish>Defensa bombardear total: %d1%%[ICON_DEFENSE]</Spanish>
+	</TEXT>
 
 <!-- Hurry Hover -->
 
