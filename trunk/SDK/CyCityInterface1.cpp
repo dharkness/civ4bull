@@ -275,7 +275,13 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getTradeRouteModifier", &CyCity::getTradeRouteModifier, "int ()")
 		.def("getForeignTradeRouteModifier", &CyCity::getForeignTradeRouteModifier, "int ()")
 		.def("getBuildingDefense", &CyCity::getBuildingDefense, "int () - building defense")
+// BUG - Building Additional Defense - start
+		.def("getAdditionalDefenseByBuilding", &CyCity::getAdditionalDefenseByBuilding, "int (int /*BuildingTypes*/) - additional building defense")
+// BUG - Building Additional Defense - end
 		.def("getBuildingBombardDefense", &CyCity::getBuildingBombardDefense, "int () - building defense")
+// BUG - Building Additional Bombard Defense - start
+		.def("getAdditionalBombardDefenseByBuilding", &CyCity::getAdditionalBombardDefenseByBuilding, "int (int /*BuildingTypes*/) - additional building bombard defense")
+// BUG - Building Additional Bombard Defense - end
 		.def("getFreeExperience", &CyCity::getFreeExperience, "int () - # of free experience newly trained units receive")
 		.def("getCurrAirlift", &CyCity::getCurrAirlift, "int ()")
 		.def("getMaxAirlift", &CyCity::getMaxAirlift, "int ()")

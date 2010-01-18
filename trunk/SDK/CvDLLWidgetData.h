@@ -222,6 +222,9 @@ public:
 // BUG - Trade Hover - start
 	void parseTradeRoutes(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
 // BUG - Trade Hover - end
+// BUG - Defense Hover - start
+	void parseDefenseHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer);
+// BUG - Defense Hover - end
 
 protected:
 	

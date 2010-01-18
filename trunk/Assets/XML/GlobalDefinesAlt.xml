@@ -210,6 +210,10 @@
 		<DefineName>BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+  <Define>
+    <DefineName>BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
 	
 	<Define>
 		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_CIVILIAN_UNITS_FOREVER</DefineName>

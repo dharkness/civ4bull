@@ -1266,10 +1266,24 @@ int CyCity::getBuildingDefense()
 	return m_pCity ? m_pCity->getBuildingDefense() : -1;
 }
 
+// BUG - Building Additional Defense - start
+int CyCity::getAdditionalDefenseByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	return m_pCity ? m_pCity->getAdditionalDefenseByBuilding((BuildingTypes)eBuilding) : -1;
+}
+// BUG - Building Additional Defense - end
+
 int CyCity::getBuildingBombardDefense()
 {
 	return m_pCity ? m_pCity->getBuildingBombardDefense() : -1;
 }
+
+// BUG - Building Additional Bombard Defense - start
+int CyCity::getAdditionalBombardDefenseByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	return m_pCity ? m_pCity->getAdditionalBombardDefenseByBuilding((BuildingTypes)eBuilding) : -1;
+}
+// BUG - Building Additional Bombard Defense - end
 
 int CyCity::getFreeExperience()
 {

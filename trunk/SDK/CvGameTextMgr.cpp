@@ -8542,6 +8542,10 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWStrin
 	if (NULL != pCity)
 	{
 		bool bStarted = false;
+
+		// Defense
+		int iDefense = pCity->getAdditionalDefenseByBuilding(eBuilding);
+		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iDefense, gDLL->getSymbolID(DEFENSE_CHAR), true, bNewLine, bStarted);
 		
 		// Happiness
 		int iGood = 0;
@@ -17753,3 +17757,178 @@ void CvGameTextMgr::getCorporationDataForWB(bool bHeadquarters, std::vector<CvWB
 		mapCorporationData.push_back(CvWBData(i, strDescription, kInfo.getButton()));
 	}
 }
+
+// BUG - Defense Help - start
+
+/*
+	Defense = max(building, culture) + player
+
+	+50% from Buildings
+	+10% from Culture (60%)
+	+25% from Wonders
+	-----------------------
+	Total Defense: 85%
+	-----------------------
+	-37% from Bombardment
+	-----------------------
+	Net Defense: 48%
+	=======================
+	* Castle: +50%
+	=======================
+	+50% from Buildings
+	-----------------------
+	Total Bombard Defense: 50%
+	=======================
+	* Castle: +25%
+*/
+void CvGameTextMgr::setDefenseHelp(CvWStringBuffer &szBuffer, CvCity& city)
+{
+	FAssertMsg(NO_PLAYER != city.getOwnerINLINE(), "City must have an owner");
+
+	bool bFirst = true;
+
+	// Buildings
+	int iBuildingDefense = city.getBuildingDefense();
+	if (iBuildingDefense != 0)
+	{
+		bFirst = false;
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_BUILDING_DEFENSE", iBuildingDefense));
+	}
+
+	// Culture
+	int iCultureDefense = city.getNaturalDefense();
+	if (iCultureDefense != 0)
+	{
+		if (!bFirst)
+		{
+			szBuffer.append(NEWLINE);
+		}
+		else
+		{
+			bFirst = false;
+		}
+		if (iBuildingDefense == 0)
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_CULTURE_DEFENSE", iCultureDefense));
+		}
+		else
+		{
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_CULTURE_DEFENSE_PARTIAL", std::max(iCultureDefense, iBuildingDefense) - iBuildingDefense, iCultureDefense));
+		}
+	}
+
+	// Wonders (or other player sources in mods)
+	int iWonderDefense = GET_PLAYER(city.getOwnerINLINE()).getCityDefenseModifier();
+	if (iWonderDefense != 0)
+	{
+		if (!bFirst)
+		{
+			szBuffer.append(NEWLINE);
+		}
+		else
+		{
+			bFirst = false;
+		}
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_WONDER_DEFENSE", iWonderDefense));
+	}
+
+	// Total
+	int iDefense = city.getTotalDefense(false);
+	if (!bFirst)
+	{
+		szBuffer.append(SEPARATOR NEWLINE);
+	}
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_DEFENSE", iDefense));
+
+	// Damage and Net
+	int iDamage = GC.getMAX_CITY_DEFENSE_DAMAGE() * city.getDefenseDamage() / GC.getMAX_CITY_DEFENSE_DAMAGE();
+	if (iDamage != 0)
+	{
+		szBuffer.append(SEPARATOR NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_DEFENSE_DAMAGE", -iDamage));
+		szBuffer.append(SEPARATOR NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_NET_DEFENSE", std::max(0, iDefense - iDamage)));
+	}
+
+// BUG - Building Additional Defense - start
+	if (city.getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalDefense", true, "BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER"))
+	{
+		setBuildingAdditionalDefenseHelp(szBuffer, city, SEPARATOR);
+	}
+// BUG - Building Additional Defense - end
+
+	// ==========================
+	// Bombardment Defense
+
+	szBuffer.append(DOUBLE_SEPARATOR NEWLINE);
+	szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_TOTAL_BOMBARD_DEFENSE", city.getBuildingBombardDefense()));
+
+// BUG - Building Additional Bombard Defense - start
+	if (city.getOwnerINLINE() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalDefense", true, "BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER"))
+	{
+		setBuildingAdditionalBombardDefenseHelp(szBuffer, city, SEPARATOR);
+	}
+// BUG - Building Additional Bombard Defense - end
+
+	// ==========================
+	// Air Defense - not worth it for just one building
+}
+// BUG - Defense Help - end
+
+// BUG - Building Additional Defense - start
+bool CvGameTextMgr::setBuildingAdditionalDefenseHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
+		{
+			int iChange = city.getAdditionalDefenseByBuilding((BuildingTypes)i);
+
+			if (iChange != 0)
+			{
+				if (!bStarted)
+				{
+					szBuffer.append(szStart);
+					bStarted = true;
+				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iChange, gDLL->getSymbolID(DEFENSE_CHAR), true, true);
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Additional Defense - end
+
+// BUG - Building Additional Bombard Defense - start
+bool CvGameTextMgr::setBuildingAdditionalBombardDefenseHelp(CvWStringBuffer &szBuffer, const CvCity& city, const CvWString& szStart, bool bStarted)
+{
+	CvWString szLabel;
+
+	for (int i = 0; i < GC.getNumBuildingInfos(); i++)
+	{
+		if (city.canConstruct((BuildingTypes)i, false, true, false))
+		{
+			int iChange = city.getAdditionalBombardDefenseByBuilding((BuildingTypes)i);
+
+			if (iChange != 0)
+			{
+				if (!bStarted)
+				{
+					szBuffer.append(szStart);
+					bStarted = true;
+				}
+
+				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iChange, gDLL->getSymbolID(DEFENSE_CHAR), true, true);
+			}
+		}
+	}
+
+	return bStarted;
+}
+// BUG - Building Additional Bombard Defense - end

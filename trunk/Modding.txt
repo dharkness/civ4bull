@@ -154,6 +154,9 @@ CyCity
 	int getSavedMaintenanceByBuilding(BuildingTypes eBuilding)
 	int getSavedMaintenanceTimes100ByBuilding(BuildingTypes eBuilding)
 	
+	int getAdditionalDefenseByBuilding(BuildingTypes eBuilding)
+	int getAdditionalBombardDefenseByBuilding(BuildingTypes eBuilding)
+	
 [1]	int calculateTradeProfitTimes100(CyCity pCity)
 
 CyDeal
