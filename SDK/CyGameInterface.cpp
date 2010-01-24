@@ -274,6 +274,13 @@ void CyGamePythonInterface()
 		.def("getDLLPath", &CyGame::getDLLPath, "string getDLLPath()")
 		.def("getExePath", &CyGame::getExePath, "string getExePath()")
 // BUG - EXE/DLL Paths - end
+
+// BUFFY - Security Checks - start
+#ifdef _BUFFY
+		.def("checkCRCs", &CyGame::checkCRCs, "checkCRCs (string, string, string, string, string, string)")
+		.def("getWarningStatus", &CyGame::getWarningStatus, "int getWarningStatus()")
+#endif
+// BUFFY - Security Checks - end
 		;
 
 	python::class_<CyDeal>("CyDeal")

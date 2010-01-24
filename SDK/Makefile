@@ -26,6 +26,16 @@ LINK = "$(TOOLKIT)/bin/link.exe"
 
 ### Compiler Options
 
+# Optional BULL Components (Mods)
+#   _BUFFY
+#   _MOD_FRACTRADE
+#   _MOD_SENTRY
+#   _MOD_GOVWORKERS
+#   _MOD_AIAUTOPLAY
+#   _MOD_GWARM
+
+MODFLAGS = /D_BUFFY /D_MOD_FRACTRADE /D_MOD_GOVWORKERS
+
 # /EHsc		catch C++ exceptions only; assume that extern C functions never throw a C++ exception
 # /Gd		Use the __cdecl calling convention (x86 only). 
 # /GR		enable run-time type information (RTTI)
@@ -35,14 +45,7 @@ LINK = "$(TOOLKIT)/bin/link.exe"
 # /O2		optimize for speed
 # /W3		warning level 3
 
-# Optional BULL Components
-#   _MOD_FRACTRADE
-#   _MOD_SENTRY
-#   _MOD_GOVWORKERS
-#   _MOD_AIAUTOPLAY
-#   _MOD_GWARM
-
-CFLAGS = /EHsc /Gd /GR /G7 /W3 /DWIN32 /D_WINDOWS /D_USRDLL /DCVGAMECOREDLL_EXPORTS
+CFLAGS = /EHsc /Gd /GR /G7 /W3 /DWIN32 /D_WINDOWS /D_USRDLL /DCVGAMECOREDLL_EXPORTS  $(MODFLAGS)
 DEBUG_CFLAGS = $(CFLAGS) /MDd /D_DEBUG
 RELEASE_CFLAGS = $(CFLAGS) /MD /O2 /DNDEBUG /DFINAL_RELEASE
 

@@ -880,6 +880,16 @@ public:
 	const wchar* getBullVersion() const;
 // BUG - DLL Info - end
 
+// BUFFY - DLL Info - start
+#ifdef _BUFFY
+	bool isBuffy() const;
+	int getBuffyApiVersion() const;
+
+	const wchar* getBuffyName() const;
+	const wchar* getBuffyVersion() const;
+#endif
+// BUFFY - DLL Info - end
+
 	void deleteInfoArrays();
 
 protected:

@@ -328,6 +328,19 @@ public:
 	std::wstring pyGetBullVersion() { return getBullVersion(); }							// Exposed to Python
 // BUG - DLL Info - end
 
+// BUFFY - DLL Info - start
+#ifdef _BUFFY
+	bool isBuffy() const { return GC.isBuffy(); }
+	int getBuffyApiVersion() const { return GC.getBuffyApiVersion(); }
+
+	const wchar* getBuffyName() const { return GC.getBuffyName(); }
+	const wchar* getBuffyVersion() const { return GC.getBuffyVersion(); }
+	
+	std::wstring pyGetBuffyName() { return getBuffyName(); }								// Exposed to Python
+	std::wstring pyGetBuffyVersion() { return getBuffyVersion(); }							// Exposed to Python
+#endif
+// BUFFY - DLL Info - end
+
 };
 
 #endif	// CyGlobalContext_h
