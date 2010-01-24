@@ -5,7 +5,7 @@
 	This file is used only when BULL is running without BUG, but it will cause no harm to include it with BUG.
 
 	Copyright (c) 2009 The BUG Mod.
-  -->
+-->
 <Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
 
 <!-- City Bar -->
@@ -210,27 +210,29 @@
 		<DefineName>BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
-  <Define>
-    <DefineName>BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER</DefineName>
-    <iDefineIntVal>1</iDefineIntVal>
-  </Define>
+	<Define>
+		<DefineName>BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
+	<!-- Production Popup Unit Training -->
 	
 	<Define>
 		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_CIVILIAN_UNITS_FOREVER</DefineName>
 		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
-  <Define>
-    <DefineName>BUG_PRODUCTION_POPUP_TRAIN_MILITARY_UNITS_FOREVER</DefineName>
-    <iDefineIntVal>1</iDefineIntVal>
-  </Define>
+	<Define>
+		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_MILITARY_UNITS_FOREVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 
-  <!-- Actions -->
+	<!-- Actions -->
 
-  <!-- Ask Declare War -->
-  <Define>
-    <DefineName>BUG_ASK_DECLARE_WAR_UNITS</DefineName>
-    <iDefineIntVal>1</iDefineIntVal>
-  </Define>
+	<!-- Ask Declare War -->
+	<Define>
+		<DefineName>BUG_ASK_DECLARE_WAR_UNITS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	
 	<!-- Sentry Healing -->
 	<Define>
