@@ -125,5 +125,14 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getBullVersion", &CyGlobalContext::pyGetBullVersion, "wstring () - returns display version of BULL")
 // BUG - DLL Info - end
 
+// BUFFY - DLL Info - start
+#ifdef _BUFFY
+		.def("isBuffy", &CyGlobalContext::isBuffy, "bool () - returns true to mark presence of BUFFY")
+		.def("getBuffyApiVersion", &CyGlobalContext::getBuffyApiVersion, "int () - returns BUFFY Python API version")
+		.def("getBuffyName", &CyGlobalContext::pyGetBuffyName, "wstring () - returns display name of BUFFY")
+		.def("getBuffyVersion", &CyGlobalContext::pyGetBuffyVersion, "wstring () - returns display version of BUFFY")
+#endif
+// BUFFY - DLL Info - end
+
 	;
 }

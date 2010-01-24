@@ -284,6 +284,13 @@ public:
 	std::string getExePath() const;
 // BUG - EXE/DLL Paths - end
 
+// BUFFY - Security Checks - start
+#ifdef _BUFFY
+	int checkCRCs(std::string fileName_, std::string expectedModCRC_, std::string expectedDLLCRC_, std::string expectedShaderCRC_, std::string expectedPythonCRC_, std::string expectedXMLCRC_) const;
+	int getWarningStatus() const;
+#endif
+// BUFFY - Security Checks - end
+
 protected:
 	CvGame* m_pGame;
 };

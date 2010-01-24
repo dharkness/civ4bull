@@ -757,6 +757,12 @@ enum GameOptionTypes				// Exposed to Python
 	GAMEOPTION_NO_EVENTS,
 	GAMEOPTION_NO_ESPIONAGE,
 
+// BUG - Global Warming Mod - start
+#ifdef _MOD_GWARM
+	GAMEOPTION_RISING_SEAS,
+#endif
+// BUG - Global Warming Mod - end
+
 #ifdef _USRDLL
 	NUM_GAMEOPTION_TYPES
 #endif

@@ -29,7 +29,7 @@ The following are all of the compile-time options for BULL. Each one has a uniqu
 [0] BUFFY
 
 	Flag: _BUFFY
-	by HOF Team
+	by BUG/HOF Team
 		
 		Flags the saved game as a HOF-compatible game
 
@@ -110,6 +110,11 @@ CyGlobalContext
 	wstring getBullName()
 	wstring getBullVersion()
 
+[0]	bool isBuffy()
+[0]	int getBuffyApiVersion()
+[0]	wstring getBuffyName()
+[0]	wstring getBuffyVersion()
+
 	bool isUnofficialPatch()
 	int getUnofficialPatchVersion()
 
@@ -120,10 +125,14 @@ CyGame
 
 	void saveGame(string filename)
 	void takeJPEGScreenShot(string filename)
+	
+	string getDLLPath()
+	string getExePath()
 
 CyPlayer
 
 	bool AI_isWillingToTalk(PlayerTypes ePlayer)
+	void changeExtraHealth(int iChange)
 
 CyCity
 

@@ -12666,6 +12666,11 @@ m_iGrowthProbability(0),
 m_iDefenseModifier(0),
 m_iAdvancedStartRemoveCost(0),
 m_iTurnDamage(0),
+// BUG - Global Warming Mod - start
+#ifdef _MOD_GWARM
+m_iWarmingDefense(0),
+#endif
+// BUG - Global Warming Mod - end
 m_bNoCoast(false),				
 m_bNoRiver(false),					
 m_bNoAdjacent(false),			
@@ -12747,6 +12752,15 @@ int CvFeatureInfo::getTurnDamage() const
 {
 	return m_iTurnDamage; 
 }
+
+// BUG - Global Warming Mod - start
+#ifdef _MOD_GWARM
+int CvFeatureInfo::getWarmingDefense() const
+{
+	return m_iWarmingDefense; 
+}
+#endif
+// BUG - Global Warming Mod - end
 
 bool CvFeatureInfo::isNoCoast() const	
 {
@@ -12941,6 +12955,11 @@ bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetChildXmlValByName(&m_iDefenseModifier, "iDefense");
 	pXML->GetChildXmlValByName(&m_iAdvancedStartRemoveCost, "iAdvancedStartRemoveCost");
 	pXML->GetChildXmlValByName(&m_iTurnDamage, "iTurnDamage");
+// BUG - Global Warming Mod - start
+#ifdef _MOD_GWARM
+	pXML->GetChildXmlValByName(&m_iWarmingDefense, "iWarmingDefense");
+#endif
+// BUG - Global Warming Mod - end
 	pXML->GetChildXmlValByName(&m_iAppearanceProbability, "iAppearance");
 	pXML->GetChildXmlValByName(&m_iDisappearanceProbability, "iDisappearance");
 	pXML->GetChildXmlValByName(&m_iGrowthProbability, "iGrowth");

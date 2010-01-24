@@ -54,23 +54,32 @@ Improvements:
 
 Bug Fixes:
 
-- Hide "War with <team>" in leaderhead hover text if active player hasn't met <team>
+- Multiplayer
+	Fixed OOS error in Safe Move when a human player attacks an AI unit
+- Leaderhead
+	Hide "War with <team>" if active player hasn't met <team>
 - Actual Effects
 	Fixed building unhealthiness effect shown when city has a Recycling Center
 	Fixed building unhealthiness effect shown for Recycling Center
 	Fixed display of negative integral commerce effects (e.g. when removing a specialist)
 - Collateral Damage
-	Removed extraneous effect from old 3.17 UP
+	Removed extraneous effect from old 3.17 Unofficial Patch
 
 
 MODDING
 
 New Features:
 
+- Merged BUFFY code into BULL
+- Python API
+	Building Additional [Bombard] Defense functions on CyCity
+
 Improvements:
 
-- CyPlayer
-	void changeExtraHealth(int iChange)
+- Makefile
+	Added MODFLAGS variable to hold compiler flags for optional mods
+- Python API
+	Exposed CyPlayer::changeExtraHealth(int iChange)
 
 Bug Fixes:
 

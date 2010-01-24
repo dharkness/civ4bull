@@ -25,6 +25,12 @@
 #include "CvBugOptions.h"
 // BUG - end
 
+// BUFFY - start
+#ifdef _BUFFY
+#include "Buffy.h"
+#endif
+// BUFFY - end
+
 CvDLLWidgetData* CvDLLWidgetData::m_pInst = NULL;
 
 CvDLLWidgetData& CvDLLWidgetData::getInstance()
@@ -3715,6 +3721,14 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	float fVersion = GC.getDefineINT("CIV4_VERSION") / 100.0f;
 	szTempBuffer.Format(SETCOLR L"Beyond the Sword %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), fVersion);
 	szBuffer.append(szTempBuffer);
+
+// BUG - Version Info - start
+#ifdef _BUFFY
+	// BUFFY Version
+	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s [Build %s]" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"), 
+			BUFFY_DLL_NAME, BUFFY_DLL_VERSION, BUFFY_DLL_BUILD);
+	szBuffer.append(szTempBuffer);
+#else
 	// BUG Mod version
 	if (isBug())
 	{
@@ -3727,6 +3741,9 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s [Build %s]" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"), 
 			BUG_DLL_NAME, BUG_DLL_VERSION, BUG_DLL_BUILD);
 	szBuffer.append(szTempBuffer);
+#endif
+// BUG - Version Info - start
+
 	// compile-time mods
 	szTempBuffer.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
 #ifdef _MOD_FRACTRADE
@@ -4849,7 +4866,6 @@ void CvDLLWidgetData::parseTradeRoutes(CvWidgetDataStruct& widgetDataStruct, CvW
 // BUG - Trade Hover - end
 
 // BUG - Defense Hover - start
-
 void CvDLLWidgetData::parseDefenseHelp(CvWidgetDataStruct& widgetDataStruct, CvWStringBuffer& szBuffer)
 {
 	CvCity* pHeadSelectedCity = gDLL->getInterfaceIFace()->getHeadSelectedCity();
