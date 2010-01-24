@@ -1794,9 +1794,9 @@ void CvSelectionGroup::continueMission(int iSteps)
 // BUG - Sentry Actions - end
 				if (at(headMissionQueueNode()->m_data.iData1, headMissionQueueNode()->m_data.iData2))
 				{
-// BUG - Safe Moves - start
+// BUG - Safe Move - start
 					clearLastPathPlot();
-// BUG - Safe Moves - end
+// BUG - Safe Move - end
 					bDone = true;
 				}
 				break;
@@ -3245,12 +3245,9 @@ bool CvSelectionGroup::groupAttack(int iX, int iY, int iFlags, bool& bFailedAlre
 					}
 
 // BUG - Safe Move - start
-					if (isHuman())
+					if (isHuman() && !isLastPathPlotVisible() && getDomainType() != DOMAIN_AIR)
 					{
-						if (!(isLastPathPlotVisible()) && (getDomainType() != DOMAIN_AIR))
-						{
-							return false;
-						}
+						return false;
 					}
 // BUG - Safe Move - end
 
@@ -3699,12 +3696,9 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 	{
 // BUG - Safe Move - start
 		// don't perform amphibious landing on plot that was unrevealed when goto order was issued
-		if (isHuman())
+		if (isHuman() && !isLastPathPlotRevealed())
 		{
-			if (!isLastPathPlotRevealed())
-			{
-				return false;
-			}
+			return false;
 		}
 // BUG - Safe Move - end
 
@@ -4868,14 +4862,14 @@ bool CvSelectionGroup::allMatch(UnitTypes eUnit) const
 }
 // BUG - All Units Actions - end
 
-// BUG - Safe Moves - start
+// BUG - Safe Move - start
 void CvSelectionGroup::checkLastPathPlot(CvPlot* pPlot)
 {
 	m_bLastPathPlotChecked = true;
 	if (pPlot != NULL)
 	{
 		m_bLastPlotVisible = pPlot->isActiveVisible(false);
-		m_bLastPlotRevealed = pPlot->isRevealed(GC.getGameINLINE().getActiveTeam(), false);
+		m_bLastPlotRevealed = pPlot->isRevealed(getTeam(), false);
 	}
 	else
 	{
@@ -4903,4 +4897,4 @@ bool CvSelectionGroup::isLastPathPlotRevealed() const
 {
 	return m_bLastPathPlotChecked ? m_bLastPlotRevealed : false;
 }
-// BUG - Safe Moves - end
+// BUG - Safe Move - end
