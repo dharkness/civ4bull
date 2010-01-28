@@ -36,9 +36,13 @@ New Features:
 	Will always ask when moving into rival territory without open borders
 - Culture Flip
 	Can examine the city before accepting or razing cities that flip due to your culture
-- Scoreboard
-	Leaderhead hover shows wars and worst enemy status, CTRL to show trade deals
+- Trade Deals
 	Trade Network and INFO Trade Routes hovers show trade deals
+	Hold CTRL to show trade deals in Leaderhead hover
+- Leaderheads
+	Wars and Worst Enemy status shown in scoreboard Leaderhead hover
+	Shows Worst Enemy of AI players
+	Shows Defensive Pacts
 - Defense Hover
 	Shows breakdown of city defense modifier and damage from bombardment on City Screen
 
@@ -56,7 +60,7 @@ Bug Fixes:
 
 - Multiplayer
 	Fixed OOS error in Safe Move when a human player attacks an AI unit
-- Leaderhead
+- Leaderhead Hover
 	Hide "War with <team>" if active player hasn't met <team>
 - Actual Effects
 	Fixed building unhealthiness effect shown when city has a Recycling Center

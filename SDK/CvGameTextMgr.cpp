@@ -14419,12 +14419,29 @@ void CvGameTextMgr::getActiveDealsString(CvWStringBuffer &szBuffer, PlayerTypes 
 
 void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer)
 {
+
 	if (eThisPlayer == NO_PLAYER || eOtherPlayer == NO_PLAYER)
 	{
 		return;
 	}
 	CvPlayer& kThisPlayer = GET_PLAYER(eThisPlayer);
 	CvPlayer& kOtherPlayer = GET_PLAYER(eOtherPlayer);
+
+// BUG - Leaderhead Worst Enemy - start
+	if (getBugOptionBOOL("MiscHover__LeaderheadWorstEnemy", true, "BUG_LEADERHEAD_HOVER_WORST_ENEMY"))
+	{
+		CvTeamAI& kThisTeam = GET_TEAM(kThisPlayer.getTeam());
+		if (!kThisTeam.isHuman())
+		{
+			TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
+			if (eWorstEnemy != NO_TEAM)
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
+			}
+		}
+	}
+// BUG - Leaderhead Worst Enemy - end
 
 	for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
 	{
@@ -14447,6 +14464,14 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 					szString.append(NEWLINE);
 					szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", kTeam.getName().GetCString()));
 				}
+
+// BUG - Leaderhead Defensive Pacts - start
+				if (kTeam.isDefensivePact(kThisPlayer.getTeam()) && getBugOptionBOOL("MiscHover__LeaderheadDefensivePacts", true, "BUG_LEADERHEAD_HOVER_DEFENSIVE_PACTS"))
+				{
+					szString.append(NEWLINE);
+					szString.append(gDLL->getText(L"TXT_KEY_DEFENSIVE_PACT_WITH", kTeam.getName().GetCString()));
+				}
+// BUG - Leaderhead Defensive Pacts - start
 			}
 		}
 	}
