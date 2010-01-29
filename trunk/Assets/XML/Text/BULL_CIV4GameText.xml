@@ -183,7 +183,7 @@
 		<Tag>TXT_KEY_WORST_ENEMY_IS</Tag>
 		<English>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player is Worst Enemy[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player est pire ennemi[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player ist Schlecht feindlich[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_WARNING_TEXT]Erzfeind: %s1_player[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player è peggiore ostile[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player es peor enemigo[COLOR_REVERT]</Spanish>
 	</TEXT>
