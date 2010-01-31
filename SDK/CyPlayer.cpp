@@ -2242,3 +2242,11 @@ void  CyPlayer::forcePeace(int iPlayer)
 	if (m_pPlayer)
 		m_pPlayer->forcePeace((PlayerTypes)iPlayer);
 }
+
+// BUG - Reminder Mod - start
+void CyPlayer::addReminder(int iGameTurn, std::wstring szMessage) const
+{
+	if (m_pPlayer)
+		m_pPlayer->addReminder(iGameTurn, CvWString(szMessage));
+}
+// BUG - Reminder Mod - end

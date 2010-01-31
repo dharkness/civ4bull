@@ -504,6 +504,10 @@ public:
 
 	void forcePeace(int iPlayer);
 
+// BUG - Reminder Mod - start
+	void addReminder(int iGameTurn, std::wstring szMessage) const;
+// BUG - Reminder Mod - start
+
 private:
 	CvPlayer* m_pPlayer;
 };

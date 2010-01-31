@@ -133,6 +133,7 @@ CyPlayer
 
 	bool AI_isWillingToTalk(PlayerTypes ePlayer)
 	void changeExtraHealth(int iChange)
+	void addReminder(int iGameTurn, wstring szMessage)
 
 CyCity
 

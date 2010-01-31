@@ -2641,6 +2641,9 @@ enum GameMessageTypes				// Exposed to Python
 	GAMEMESSAGE_ADVANCED_START_ACTION,
 	GAMEMESSAGE_FOUND_RELIGION,
 	GAMEMESSAGE_MOD_NET_MESSAGE
+// BUG - Reminder Mod - start
+	, GAMEMESSAGE_ADD_REMINDER
+// BUG - Reminder Mod - end
 };
 
 enum PopupControlLayout		// Exposed to Python
