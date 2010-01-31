@@ -21664,3 +21664,11 @@ bool CvPlayer::hasSpaceshipArrived() const
 
 	return false;
 }
+
+// BUG - Reminder Mod - start
+#include "CvMessageControl.h"
+void CvPlayer::addReminder(int iGameTurn, CvWString szMessage) const
+{
+	CvMessageControl::getInstance().sendAddReminder(getID(), iGameTurn, szMessage);
+}
+// BUG - Reminder Mod - end

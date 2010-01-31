@@ -45,6 +45,8 @@ New Features:
 	Shows Defensive Pacts
 - Defense Hover
 	Shows breakdown of city defense modifier and damage from bombardment on City Screen
+- Reminders
+	Saves reminders for all players in multiplayer games [BUG]
 
 Improvements:
 
