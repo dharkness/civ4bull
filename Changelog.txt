@@ -57,6 +57,8 @@ Improvements:
 	Units on Auto-Explore that are healing can act as sentries
 - Actual Effects
 	Added city and bombardment defense
+- Scoreboard
+	Redrawn in some cases when an AI's attitude toward the active player changes (memory counter)
 
 Bug Fixes:
 
