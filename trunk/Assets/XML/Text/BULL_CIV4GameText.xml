@@ -180,12 +180,36 @@
 <!-- Leaderhead Hover -->
 
 	<TEXT>
+		<Tag>TXT_KEY_AT_WAR_WITH</Tag>
+		<English>[ICON_BULLET][COLOR_YELLOW]War with %s1_player[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_YELLOW]Guerre avec %s1_player[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_YELLOW]Krieg mit %s1_player[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_YELLOW]Guerra con %s1_player[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_YELLOW]Guerra con %s1_player[COLOR_REVERT]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_WORST_ENEMY_OF</Tag>
+		<English>[ICON_BULLET][COLOR_YELLOW]Worst Enemy of %s1_player[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_YELLOW]Pire ennemi de %s1_player[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_YELLOW]Schlecht feindlich von %s1_player[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_YELLOW]Peggiore ostile di %s1_player[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_YELLOW]Peor enemigo de %s1_player[COLOR_REVERT]</Spanish>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_WORST_ENEMY_IS</Tag>
-		<English>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player is Worst Enemy[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player est pire ennemi[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_WARNING_TEXT]Erzfeind: %s1_player[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player è peggiore ostile[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_WARNING_TEXT]%s1_player es peor enemigo[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_YELLOW]%s1_player is Worst Enemy[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_YELLOW]%s1_player est pire ennemi[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_YELLOW]Erzfeind: %s1_player[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_YELLOW]%s1_player è peggiore ostile[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_YELLOW]%s1_player es peor enemigo[COLOR_REVERT]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_WORST_ENEMY_IS_YOU</Tag>
+		<English>[ICON_BULLET][COLOR_YELLOW]You are Worst Enemy[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_YELLOW]Vous êtes pire ennemi[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_YELLOW]Sie sind Schlecht feindlich[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_YELLOW]Tu sei peggiore ostile[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_YELLOW]Usted es peor enemigo[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_DEFENSIVE_PACT_WITH</Tag>

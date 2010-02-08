@@ -41,7 +41,6 @@ New Features:
 	Hold CTRL to show trade deals in Leaderhead hover
 - Leaderheads
 	Wars and Worst Enemy status shown in scoreboard Leaderhead hover
-	Shows Worst Enemy of AI players
 	Shows Defensive Pacts
 - Defense Hover
 	Shows breakdown of city defense modifier and damage from bombardment on City Screen
