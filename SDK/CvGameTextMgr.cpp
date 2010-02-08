@@ -14434,7 +14434,12 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 		if (!kThisTeam.isHuman())
 		{
 			TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
-			if (eWorstEnemy != NO_TEAM)
+			if (eWorstEnemy == GC.getGame().getActiveTeam())
+			{
+				szString.append(NEWLINE);
+				szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS_YOU"));
+			}
+			else if (eWorstEnemy != NO_TEAM)
 			{
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
