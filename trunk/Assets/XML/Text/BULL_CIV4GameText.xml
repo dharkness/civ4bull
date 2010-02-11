@@ -191,7 +191,7 @@
 		<Tag>TXT_KEY_WORST_ENEMY_OF</Tag>
 		<English>[ICON_BULLET][COLOR_YELLOW]Worst Enemy of %s1_player[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_YELLOW]Pire ennemi de %s1_player[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_YELLOW]Schlecht feindlich von %s1_player[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_YELLOW]Erzfeind von %s1_player[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_YELLOW]Peggiore ostile di %s1_player[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_YELLOW]Peor enemigo de %s1_player[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -207,7 +207,7 @@
 		<Tag>TXT_KEY_WORST_ENEMY_IS_YOU</Tag>
 		<English>[ICON_BULLET][COLOR_YELLOW]You are Worst Enemy[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_YELLOW]Vous êtes pire ennemi[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_YELLOW]Sie sind Schlecht feindlich[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_YELLOW]Euer Erzfeind[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_YELLOW]Tu sei peggiore ostile[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_YELLOW]Usted es peor enemigo[COLOR_REVERT]</Spanish>
 	</TEXT>
