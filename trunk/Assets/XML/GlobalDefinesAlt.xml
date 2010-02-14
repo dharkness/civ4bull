@@ -353,7 +353,7 @@
 	
 	<Define>
 		<DefineName>ACO_SHOW_SHIFT_INSTRUCTIONS</DefineName>
-	</Define>
 		<iDefineIntVal>1</iDefineIntVal>
-	
+	</Define>
+
 </Civ4Defines>
