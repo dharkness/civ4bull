@@ -71,6 +71,8 @@ Bug Fixes:
 	Fixed display of negative integral commerce effects (e.g. when removing a specialist)
 - Collateral Damage
 	Removed extraneous effect from old 3.17 Unofficial Patch
+- Combat Hover
+	No longer picks friendly units as best defender (hold ALT for old behavior)
 
 
 MODDING
