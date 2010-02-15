@@ -213,6 +213,11 @@ public:
 	void getDealString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer1, PlayerTypes ePlayer2, const CLinkList<TradeData>* pListPlayer1, const CLinkList<TradeData>* pListPlayer2, PlayerTypes ePlayerPerspective = NO_PLAYER);
 	DllExport void getActiveDealsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer);
 	void getOtherRelationsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer);
+// BUG - Leaderhead Relations - start
+	void getAllRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam);
+	void getActiveTeamRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam);
+	void getOtherRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam, TeamTypes eOtherTeam, TeamTypes eSkipTeam);
+// BUG - Leaderhead Relations - end
 
 // BUG - Finance Advisor - start
 	void buildFinanceSpecialistGoldString(CvWStringBuffer& szBuffer, PlayerTypes ePlayer);
