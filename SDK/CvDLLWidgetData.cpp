@@ -1313,7 +1313,12 @@ void CvDLLWidgetData::doResearch(CvWidgetDataStruct &widgetDataStruct)
 		}
 	}
 
-// BUG - Free Tech Popup Fix - start
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/07/09                            Emperor Fool      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Free Tech Popup Fix
 	if (widgetDataStruct.m_iData2 > 0)
 	{
 		CvPlayer& kPlayer = GET_PLAYER(GC.getGameINLINE().getActivePlayer());
@@ -1328,7 +1333,9 @@ void CvDLLWidgetData::doResearch(CvWidgetDataStruct &widgetDataStruct)
 			kPlayer.setChoosingFreeTech(false);
 		}
 	}
-// BUG - Free Tech Popup Fix - end
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	CvMessageControl::getInstance().sendResearch(((TechTypes)widgetDataStruct.m_iData1), widgetDataStruct.m_iData2, bShift);
 }
@@ -3727,7 +3734,6 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	szTempBuffer.Format(SETCOLR L"Beyond the Sword %0.2f" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), fVersion);
 	szBuffer.append(szTempBuffer);
 
-// BUG - Version Info - start
 #ifdef _BUFFY
 	// BUFFY Version
 	szTempBuffer.Format(NEWLINE SETCOLR L"%s %s [Build %s]" ENDCOLR, TEXT_COLOR("COLOR_POSITIVE_TEXT"), 
@@ -3747,10 +3753,14 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 			BUG_DLL_NAME, BUG_DLL_VERSION, BUG_DLL_BUILD);
 	szBuffer.append(szTempBuffer);
 #endif
-// BUG - Version Info - start
+
+	szTempBuffer.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
+
+	// unofficial patch
+	szBuffer.append(szTempBuffer);
+	szBuffer.append(L"Unofficial 3.19 Patch v1.40");
 
 	// compile-time mods
-	szTempBuffer.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
 #ifdef _MOD_FRACTRADE
 	szBuffer.append(szTempBuffer);
 	szBuffer.append(gDLL->getText("TXT_KEY_MOD_FRACTRADE"));

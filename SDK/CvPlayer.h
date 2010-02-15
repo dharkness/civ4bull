@@ -70,8 +70,16 @@ public:
 	bool hasTrait(TraitTypes eTrait) const;																																			// Exposed to Python						
 // BUG - AIAutoPlay - start
 #ifdef _MOD_AIAUTOPLAY
-	void setHumanDisabled(bool newVal);
-	bool isHumanDisabled() const;
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                       07/09/08                                jdog5000      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+	void setHumanDisabled( bool newVal );
+	bool isHumanDisabled( );
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                        END                                                  */
+/************************************************************************************************/
 #endif
 // BUG - AIAutoPlay - end
 	DllExport bool isHuman() const;																																							// Exposed to Python						
@@ -127,10 +135,17 @@ public:
 	DllExport bool hasAutoUnit() const;
 	DllExport bool hasBusyUnit() const;
 
-// BUG - Free Tech Popup Fix - start
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/07/09                            Emperor Fool      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Free Tech Popup Fix
 	bool isChoosingFreeTech() const;
 	void setChoosingFreeTech(bool bValue);
-// BUG - Free Tech Popup Fix - end
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	DllExport void chooseTech(int iDiscover = 0, CvWString szText = "", bool bFront = false);				// Exposed to Python
 
@@ -1175,13 +1190,28 @@ protected:
 	bool m_bHuman;
 // BUG - AIAutoPlay - start
 #ifdef _MOD_AIAUTOPLAY
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                        09/01/07                            MRGENIE          */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
 	bool m_bDisableHuman;				// Set to true to disable isHuman() check
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                        END                                                  */
+/************************************************************************************************/
 #endif
 // BUG - AIAutoPlay - end
 
-// BUG - Free Tech Popup Fix - start
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/07/09                            Emperor Fool      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Free Tech Popup Fix
 	bool m_bChoosingFreeTech;
-// BUG - Free Tech Popup Fix - end
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	PlayerTypes m_eID;
 	LeaderHeadTypes m_ePersonalityType;

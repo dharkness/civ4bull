@@ -609,6 +609,16 @@ void CvTeam::addTeam(TeamTypes eTeam)
 			GET_TEAM((TeamTypes)iI).AI_setEnemyPeacetimeTradeValue(getID(), ((GET_TEAM((TeamTypes)iI).AI_getEnemyPeacetimeTradeValue(getID()) + GET_TEAM((TeamTypes)iI).AI_getEnemyPeacetimeTradeValue(eTeam)) / 2));
 			GET_TEAM((TeamTypes)iI).AI_setEnemyPeacetimeGrantValue(getID(), ((GET_TEAM((TeamTypes)iI).AI_getEnemyPeacetimeGrantValue(getID()) + GET_TEAM((TeamTypes)iI).AI_getEnemyPeacetimeGrantValue(eTeam)) / 2));
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       09/17/09                                jdog5000      */
+/*                                                                                              */
+/* Bugfix				                                                                         */
+/************************************************************************************************/
+			GET_TEAM((TeamTypes)iI).setEspionagePointsAgainstTeam( getID(), std::max(GET_TEAM((TeamTypes)iI).getEspionagePointsAgainstTeam(getID()), GET_TEAM((TeamTypes)iI).getEspionagePointsAgainstTeam(eTeam)));
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
+
 			if (GET_TEAM((TeamTypes)iI).isAlive())
 			{
 				GET_TEAM((TeamTypes)iI).AI_setWarPlan(getID(), NO_WARPLAN, false);
@@ -798,10 +808,28 @@ void CvTeam::shareCounters(TeamTypes eTeam)
 			setResearchProgress(((TechTypes)iI), GET_TEAM(eTeam).getResearchProgress((TechTypes)iI), getLeaderID());
 		}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       07/06/09                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		if (GET_TEAM(eTeam).isNoTradeTech((TechTypes)iI))
 		{
 			setNoTradeTech(((TechTypes)iI), true);
 		}
+*/
+		// Clear no tech trade if it is false for other team
+		// Fixes bug where if, with no tech brokering, team A trades a tech to team B, then later joins B in
+		// a permanent alliance.  Previous code would block the AB alliance from "brokering" the tech, even
+		// though A had researched it on their own.
+		if ( GET_TEAM(eTeam).isHasTech((TechTypes)iI) && !(GET_TEAM(eTeam).isNoTradeTech((TechTypes)iI)) )
+		{
+			setNoTradeTech(((TechTypes)iI), false);
+		}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	}
 }
 
