@@ -23,6 +23,12 @@ Note: Changes marked [BUG] only take effect when the optional BUG Mod is install
 ____________________________________________________________________________________________________
 BULL x.x unreleased
 
+KNOWN ISSUES
+
+- Multiplayer
+	All players must have the same settings for Pre-Chop to avoid OOS errors
+
+
 CHANGES
 
 New Features:
@@ -62,17 +68,17 @@ Improvements:
 Bug Fixes:
 
 - Multiplayer
-	Fixed OOS error in Safe Move when a human player attacks an AI unit
+	Fixed OOS errors in Safe Move when a human player attacks or unloads ships
 - Leaderhead Hover
 	Hide "War with <team>" if active player hasn't met <team>
 - Actual Effects
 	Fixed building unhealthiness effect shown when city has a Recycling Center
 	Fixed building unhealthiness effect shown for Recycling Center
-	Fixed display of negative integral commerce effects (e.g. when removing a specialist)
+	Fixed display of negative commerce effects (e.g. when removing a specialist)
 - Collateral Damage
 	Removed extraneous effect from old 3.17 Unofficial Patch
 - Combat Hover
-	No longer picks friendly units as best defender (hold ALT for old behavior)
+	No longer shows friendly units as best defender (hold ALT for old behavior)
 
 
 MODDING
