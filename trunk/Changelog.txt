@@ -40,8 +40,8 @@ New Features:
 	Trade Network and INFO Trade Routes hovers show trade deals
 	Hold CTRL to show trade deals in Leaderhead hover
 - Leaderheads
-	Wars and Worst Enemy status shown in scoreboard Leaderhead hover
-	Shows Defensive Pacts
+	Wars, Peace Treaties, Defensive Pacts, and Worst Enemies shown in Leaderhead hover
+	Foreign Advisor and Military Advisor show relations only between the respective leaders when asking one about the other
 - Defense Hover
 	Shows breakdown of city defense modifier and damage from bombardment on City Screen
 - Reminders

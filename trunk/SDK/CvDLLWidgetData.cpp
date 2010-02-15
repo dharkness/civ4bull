@@ -3391,7 +3391,7 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 		}
 
 // BUG - Other Relations in Scoreboard - start
-		GAMETEXT.getOtherRelationsString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
+		GAMETEXT.getAllRelationsString(szBuffer, GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam());
 // BUG - Other Relations in Scoreboard - end
 
 // BUG - Deals in Scoreboard - start

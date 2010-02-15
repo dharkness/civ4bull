@@ -1698,7 +1698,9 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
 	if (pAttacker != NULL)
 	{
+// BUG - Combat Odds for Friendlies - start
 		pDefender = pPlot->getBestDefender(NO_PLAYER, pAttacker->getOwnerINLINE(), pAttacker, !gDLL->altKey(), NO_TEAM == pAttacker->getDeclareWarMove(pPlot));
+// BUG - Combat Odds for Friendlies - end
 
 		if (pDefender != NULL && pDefender != pAttacker && pDefender->canDefend(pPlot) && pAttacker->canAttack(*pDefender))
 		{
@@ -14343,20 +14345,49 @@ void CvGameTextMgr::parseLeaderHeadHelp(CvWStringBuffer &szBuffer, PlayerTypes e
 
 	szBuffer.append(L"\n");
 
-	if (eOtherPlayer != NO_PLAYER)
+// BUG - Leaderhead Relations - start
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	TeamTypes eThisTeam = GET_PLAYER(eThisPlayer).getTeam();
+	CvTeam& kThisTeam = GET_TEAM(eThisTeam);
+
+	if (eOtherPlayer == NO_PLAYER)
 	{
-		CvTeam& kThisTeam = GET_TEAM(GET_PLAYER(eThisPlayer).getTeam());
-		if (eOtherPlayer != eThisPlayer && kThisTeam.isHasMet(GET_PLAYER(eOtherPlayer).getTeam()))
+		if (eThisPlayer != eActivePlayer)
 		{
-			getEspionageString(szBuffer, eThisPlayer, eOtherPlayer);
+			getEspionageString(szBuffer, eThisPlayer, eActivePlayer);
 
-			getAttitudeString(szBuffer, eThisPlayer, eOtherPlayer);
+			getAttitudeString(szBuffer, eThisPlayer, eActivePlayer);
 
-			getActiveDealsString(szBuffer, eThisPlayer, eOtherPlayer);
+			if (gDLL->ctrlKey())
+			{
+				getActiveDealsString(szBuffer, eThisPlayer, eActivePlayer);
+			}
+		}
 
+		getAllRelationsString(szBuffer, eThisTeam);
+	}
+	else if (eThisPlayer != eOtherPlayer && kThisTeam.isHasMet(GET_PLAYER(eOtherPlayer).getTeam()))
+	{
+		getEspionageString(szBuffer, eThisPlayer, eOtherPlayer);
+
+		getAttitudeString(szBuffer, eThisPlayer, eOtherPlayer);
+
+		getActiveDealsString(szBuffer, eThisPlayer, eOtherPlayer);
+
+		if (eOtherPlayer == eActivePlayer)
+		{
+			getActiveTeamRelationsString(szBuffer, eThisTeam);
+		}
+		else
+		{
 			getOtherRelationsString(szBuffer, eThisPlayer, eOtherPlayer);
 		}
 	}
+	else
+	{
+		getAllRelationsString(szBuffer, eThisTeam);
+	}
+// BUG - Leaderhead Relations - end
 }
 
 
@@ -14417,70 +14448,146 @@ void CvGameTextMgr::getActiveDealsString(CvWStringBuffer &szBuffer, PlayerTypes 
 	}
 }
 
+// BUG - Leaderhead Relations - start
+/**
+ * Shows the peace/war/enemy/pact status between eThisTeam and all rivals known to the active player.
+ * Relations for the active player are shown first.
+ */
+void CvGameTextMgr::getAllRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam)
+{
+	getActiveTeamRelationsString(szString, eThisTeam);
+	getOtherRelationsString(szString, eThisTeam, NO_TEAM, GC.getGameINLINE().getActiveTeam());
+}
+
+/**
+ * Shows the peace/war/enemy/pact status between eThisTeam and the active player.
+ */
+void CvGameTextMgr::getActiveTeamRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam)
+{
+	CvTeamAI& kThisTeam = GET_TEAM(eThisTeam);
+	TeamTypes eActiveTeam = GC.getGameINLINE().getActiveTeam();
+
+	if (!kThisTeam.isHasMet(eActiveTeam))
+	{
+		return;
+	}
+
+	if (kThisTeam.isAtWar(eActiveTeam))
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH_YOU"));
+	}
+	else if (kThisTeam.isForcePeace(eActiveTeam))
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_PEACE_TREATY_WITH_YOU"));
+	}
+
+	if (!kThisTeam.isHuman() && kThisTeam.AI_getWorstEnemy() == eActiveTeam)
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS_YOU"));
+	}
+
+	if (kThisTeam.isDefensivePact(eActiveTeam))
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_DEFENSIVE_PACT_WITH_YOU"));
+	}
+}
+
+/**
+ * Shows the peace/war/enemy/pact status between eThisPlayer and eOtherPlayer (both must not be NO_PLAYER).
+ * If eOtherTeam is not NO_TEAM, only relations between it and eThisTeam are shown.
+ * if eSkipTeam is not NO_TEAM, relations involving it are not shown.
+ */
 void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer)
 {
-
 	if (eThisPlayer == NO_PLAYER || eOtherPlayer == NO_PLAYER)
 	{
 		return;
 	}
-	CvPlayer& kThisPlayer = GET_PLAYER(eThisPlayer);
-	CvPlayer& kOtherPlayer = GET_PLAYER(eOtherPlayer);
 
-// BUG - Leaderhead Worst Enemy - start
-	if (getBugOptionBOOL("MiscHover__LeaderheadWorstEnemy", true, "BUG_LEADERHEAD_HOVER_WORST_ENEMY"))
+	getOtherRelationsString(szString, GET_PLAYER(eThisPlayer).getTeam(), GET_PLAYER(eOtherPlayer).getTeam(), NO_TEAM);
+}
+
+/**
+ * Shows the peace/war/enemy/pact status between eThisPlayer and all rivals known to the active player.
+ * If eOtherTeam is not NO_TEAM, only relations between it and eThisTeam are shown.
+ * if eSkipTeam is not NO_TEAM, relations involving it are not shown.
+ */
+void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam, TeamTypes eOtherTeam, TeamTypes eSkipTeam)
+{
+	if (eThisTeam == NO_TEAM)
 	{
-		CvTeamAI& kThisTeam = GET_TEAM(kThisPlayer.getTeam());
-		if (!kThisTeam.isHuman())
-		{
-			TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
-			if (eWorstEnemy == GC.getGame().getActiveTeam())
-			{
-				szString.append(NEWLINE);
-				szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS_YOU"));
-			}
-			else if (eWorstEnemy != NO_TEAM)
-			{
-				szString.append(NEWLINE);
-				szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
-			}
-		}
+		return;
 	}
-// BUG - Leaderhead Worst Enemy - end
+
+	CvTeamAI& kThisTeam = GET_TEAM(eThisTeam);
+	CvWString szWar, szPeace, szEnemy, szPact;
+	bool bFirstWar = true, bFirstPeace = true, bFirstEnemy = true, bFirstPact = true;
 
 	for (int iTeam = 0; iTeam < MAX_CIV_TEAMS; ++iTeam)
 	{
 		CvTeamAI& kTeam = GET_TEAM((TeamTypes) iTeam);
-		if (kTeam.isAlive() && !kTeam.isMinorCiv() && iTeam != kThisPlayer.getTeam() && iTeam != kOtherPlayer.getTeam())
+		if (kTeam.isAlive() && !kTeam.isMinorCiv() && iTeam != eThisTeam && iTeam != eSkipTeam && (eOtherTeam == NO_TEAM || iTeam == eOtherTeam))
 		{
-// BUG - Unofficial Patch - start
-			// EF: don't show enemies status of or wars with players that the active player hasn't met
-			if (kTeam.isHasMet(kOtherPlayer.getTeam()) && kTeam.isHasMet(GC.getGameINLINE().getActiveTeam()))
-// BUG - Unofficial Patch - end
+			if (kTeam.isHasMet(eThisTeam) && kTeam.isHasMet(GC.getGameINLINE().getActiveTeam()))
 			{
-				if (::atWar((TeamTypes) iTeam, kThisPlayer.getTeam()))
+				if (::atWar((TeamTypes) iTeam, eThisTeam))
 				{
-					szString.append(NEWLINE);
-					szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", kTeam.getName().GetCString()));
+					setListHelp(szWar, L"", kTeam.getName().GetCString(), L", ", bFirstWar);
+					bFirstWar = false;
+				}
+				else if (kTeam.isForcePeace(eThisTeam))
+				{
+					setListHelp(szPeace, L"", kTeam.getName().GetCString(), L", ", bFirstPeace);
+					bFirstPeace = false;
 				}
 
-				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == kThisPlayer.getTeam())
+				if (!kTeam.isHuman() && kTeam.AI_getWorstEnemy() == eThisTeam)
 				{
-					szString.append(NEWLINE);
-					szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", kTeam.getName().GetCString()));
+					setListHelp(szEnemy, L"", kTeam.getName().GetCString(), L", ", bFirstEnemy);
+					bFirstEnemy = false;
 				}
 
-// BUG - Leaderhead Defensive Pacts - start
-				if (kTeam.isDefensivePact(kThisPlayer.getTeam()) && getBugOptionBOOL("MiscHover__LeaderheadDefensivePacts", true, "BUG_LEADERHEAD_HOVER_DEFENSIVE_PACTS"))
+				if (kTeam.isDefensivePact(eThisTeam))
 				{
-					szString.append(NEWLINE);
-					szString.append(gDLL->getText(L"TXT_KEY_DEFENSIVE_PACT_WITH", kTeam.getName().GetCString()));
+					setListHelp(szPact, L"", kTeam.getName().GetCString(), L", ", bFirstPact);
+					bFirstPact = false;
 				}
-// BUG - Leaderhead Defensive Pacts - start
 			}
 		}
 	}
+
+	TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
+	if (!kThisTeam.isHuman() && eWorstEnemy != NO_TEAM && eWorstEnemy != eSkipTeam && (eOtherTeam == NO_TEAM || eWorstEnemy == eOtherTeam))
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
+	}
+	if (!szWar.empty())
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", szWar.GetCString()));
+	}
+	if (!szPeace.empty())
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_PEACE_TREATY_WITH", szPeace.GetCString()));
+	}
+	if (!szEnemy.empty())
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", szEnemy.GetCString()));
+	}
+	if (!szPact.empty())
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_DEFENSIVE_PACT_WITH", szPact.GetCString()));
+	}
 }
+// BUG - Leaderhead Relations - end
 
 void CvGameTextMgr::buildHintsList(CvWStringBuffer& szBuffer)
 {
