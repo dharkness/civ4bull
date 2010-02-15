@@ -79,6 +79,8 @@ Bug Fixes:
 	Removed extraneous effect from old 3.17 Unofficial Patch
 - Combat Hover
 	No longer shows friendly units as best defender (hold ALT for old behavior)
+- Unofficial Patch
+	Updated to release version 1.40
 
 
 MODDING
