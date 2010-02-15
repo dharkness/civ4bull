@@ -14560,26 +14560,26 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, TeamTypes
 		}
 	}
 
+	if (!szWar.empty())
+	{
+		szString.append(NEWLINE);
+		szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", szWar.GetCString()));
+	}
 	TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
 	if (!kThisTeam.isHuman() && eWorstEnemy != NO_TEAM && eWorstEnemy != eSkipTeam && (eOtherTeam == NO_TEAM || eWorstEnemy == eOtherTeam))
 	{
 		szString.append(NEWLINE);
 		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
 	}
-	if (!szWar.empty())
+	if (!szEnemy.empty())
 	{
 		szString.append(NEWLINE);
-		szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", szWar.GetCString()));
+		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", szEnemy.GetCString()));
 	}
 	if (!szPeace.empty())
 	{
 		szString.append(NEWLINE);
 		szString.append(gDLL->getText(L"TXT_KEY_PEACE_TREATY_WITH", szPeace.GetCString()));
-	}
-	if (!szEnemy.empty())
-	{
-		szString.append(NEWLINE);
-		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_OF", szEnemy.GetCString()));
 	}
 	if (!szPact.empty())
 	{
