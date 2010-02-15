@@ -1635,15 +1635,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 {
 	PROFILE_FUNC();
 
-	CvUnit* pAttacker;
-	CvUnit* pDefender;
-	CvWString szTempBuffer;
-	CvWString szOffenseOdds;
-	CvWString szDefenseOdds;
-	bool bValid;
-	int iModifier;
-
-// BUG - Advanced Combat Odds - start
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/*
+Note that due to the large amount of extra content added to this function (setCombatPlotHelp), this should never be used in any function that needs to be called repeatedly (e.g. hundreds of times) quickly.
+It is fine for a human player mouse-over (which is what it is used for).
+*/
+/* New Code */
     bool ACO_enabled = getBugOptionBOOL("ACO__Enabled", true, "ACO_ENABLED");
     bool bShift = gDLL->shiftKey();
 	int iView = bShift ? 2 : 1;
@@ -1652,7 +1652,18 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
         iView = 3 - iView; //swaps 1 and 2.
     }
 	CvWString szTempBuffer2;
-// BUG - Advanced Combat Odds - end
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
+
+	CvUnit* pAttacker;
+	CvUnit* pDefender;
+	CvWString szTempBuffer;
+	CvWString szOffenseOdds;
+	CvWString szDefenseOdds;
+	bool bValid;
+	int iModifier;
 
 	if (gDLL->getInterfaceIFace()->getLengthSelectionList() == 0)
 	{
@@ -1722,15 +1733,25 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					{
 						szTempBuffer.Format(L"%.1f", ((float)iCombatOdds) / 10.0f);
 					}
-// BUG - Advanced Combat Odds - start
-					if (!ACO_enabled || getBugOptionBOOL("ACO__ForceOriginalOdds", false, "ACO_FORCE_ORIGINAL_ODDS"))
-					{
-						// unchanged
-						szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS", szTempBuffer.GetCString()));
-						szString.append(NEWLINE);
-					}
-// BUG - Advanced Combat Odds - end
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/* Old Code */
+/*
+					szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS", szTempBuffer.GetCString()));
+*/
+/* New Code */
+					if ((!ACO_enabled) || (getBugOptionBOOL("ACO__ForceOriginalOdds", false, "ACO_FORCE_ORIGINAL_ODDS")))
+                    {
+                        szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS", szTempBuffer.GetCString()));
+                    }
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
 				}
+
 
 				int iWithdrawal = 0;
 
@@ -1756,25 +1777,46 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 						szTempBuffer.Format(L"%.1f", iWithdrawal / 1000.0f);
 					}
 
-// BUG - Advanced Combat Odds - start
-					if (!ACO_enabled || getBugOptionBOOL("ACO__ForceOriginalOdds", false, "ACO_FORCE_ORIGINAL_ODDS"))
-					{
-						// unchanged
-						szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS_RETREAT", szTempBuffer.GetCString()));
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/* Old Code */
+/*
+					szString.append(NEWLINE);
+					szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS_RETREAT", szTempBuffer.GetCString()));
+*/
+/* New Code */
+					if ((!ACO_enabled) || (getBugOptionBOOL("ACO__ForceOriginalOdds", false, "ACO_FORCE_ORIGINAL_ODDS")))
+                    {
 						szString.append(NEWLINE);
-					}
-// BUG - Advanced Combat Odds - end
+                        szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS_RETREAT", szTempBuffer.GetCString()));
+                        if (ACO_enabled)
+                        {
+                            szString.append(NEWLINE);
+                        }
+                    }
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
 				}
 
 				//szTempBuffer.Format(L"AI odds: %d%%", iOdds);
 				//szString += NEWLINE + szTempBuffer;
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/* New Code */
+                if (ACO_enabled)
+                {
 
-// BUG - Advanced Combat Odds - start
-// by PieceOfMind: http://forums.civfanatics.com/showthread.php?t=310415
-				if (ACO_enabled)
-				{
-					//Change this to true when you need to spot errors, particular in the expected hit points calculations
-					bool ACO_debug = getBugOptionBOOL("ACO__Debug", false, "ACO_DEBUG");
+                    BOOL ACO_debug = false;
+                    //Change this to true when you need to spot errors, particular in the expected hit points calculations
+					ACO_debug = getBugOptionBOOL("ACO__Debug", false, "ACO_DEBUG");
+
+                    /** phungus sart **/
 //					bool bctrl; bctrl = gDLL->ctrlKey();
 //					if (bctrl)
 //					{//SWITCHAROO IS DISABLED IN V1.0.  Hopefully it will be available in the next version. At the moment is has issues when modifiers are present.
@@ -1802,6 +1844,9 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 							iDefenderExperienceModifier += GC.getPromotionInfo((PromotionTypes)ePromotion).getExperiencePercent();
 						}
 					}
+                    /** phungus end **/ //thanks to phungus420
+
+
 
 					/** Many thanks to DanF5771 for some of these calculations! **/
 					int iAttackerStrength  = pAttacker->currCombatStr(NULL, NULL);
@@ -1819,8 +1864,9 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					int iDefenderOdds = ((GC.getDefineINT("COMBAT_DIE_SIDES") * iDefenderStrength) / (iAttackerStrength + iDefenderStrength));
 					int iAttackerOdds = GC.getDefineINT("COMBAT_DIE_SIDES") - iDefenderOdds;
 
+
                     // Barbarian related code.
-                    if (getBugOptionBOOL("ACO__IgnoreBarbFreeWins", false, "ACO_IGNORE_BARB_FREE_WINS"))
+                    if (getBugOptionBOOL("ACO__IgnoreBarbFreeWins", false, "ACO_IGNORE_BARB_FREE_WINS"))//Are we not going to ignore barb free wins?  If not, skip this section...
                     {    
                         if (pDefender->isBarbarian())
                         {
@@ -1858,11 +1904,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					}
 
 
-					//                szTempBuffer.Format(L"\nAtt Odds, Def Odds, after norm\n%d  %d",
-					//                                iDefenderOdds,iAttackerOdds);
-					//                                szString.append(NEWLINE);szString.append(szTempBuffer.GetCString());
-
-
+                    //XP calculations
 					int iExperience;
 					int iWithdrawXP;//thanks to phungus420
 					iWithdrawXP = GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL");//thanks to phungus420
@@ -1884,6 +1926,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 					int iBonusAttackerXP = (iExperience * iAttackerExperienceModifier) / 100;
 					int iBonusDefenderXP = (iDefExperienceKill * iDefenderExperienceModifier) / 100;
 					int iBonusWithdrawXP = (GC.getDefineINT("EXPERIENCE_FROM_WITHDRAWL") * iAttackerExperienceModifier) / 100;
+
 
                     //The following code adjusts the XP for barbarian encounters.  In standard game, barb and animal xp cap is 10,5 respectively.
 					/**Thanks to phungus420 for the following block of code! **/
@@ -1975,6 +2018,8 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
 					float prob_bottom_Att_HP; // The probability the attacker exits combat with min HP
 					float prob_bottom_Def_HP; // The probability the defender exits combat with min HP
+
+
 
                     if (ACO_debug)
                     {
@@ -2099,6 +2144,8 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                                 }
                             }//for
                         }//else
+
+
                     }
                     if (ACO_debug)
                     {
@@ -2115,10 +2162,13 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     float CombatRatio = ((float)(pAttacker->currCombatStr(NULL, NULL))) / ((float)(pDefender->currCombatStr(pPlot, pAttacker)));
                     // THE ALL-IMPORTANT COMBATRATIO
 
-                    float AttXP = (pDefender->attackXPValue())/CombatRatio;
+
+					float AttXP = (pDefender->attackXPValue())/CombatRatio;
                     float DefXP = (pAttacker->defenseXPValue())*CombatRatio;// These two values are simply for the Unrounded XP display
 
-                    // General odds
+
+
+					// General odds
                     if (pAttacker->combatLimit() == (pDefender->maxHitPoints() )) //ie. we can kill the defender... I hope this is the most general form
                     {
                         //float AttackerKillOdds = 0.0f;
@@ -2878,10 +2928,20 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     }
 
                 }//if ACO_enabled
-// BUG - Advanced Combat Odds - end
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
 			}
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/* Old Code */
+/*
 
-// BUG - Advanced Combat Odds - start
+*/
+/* New Code */
             if (ACO_enabled)
             {
                 szString.append(NEWLINE);
@@ -2928,8 +2988,13 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     setUnitHelp(szString, pAttacker, true, true);
                 }
 
+
+  
                 szString.append(gDLL->getText("TXT_KEY_COLOR_POSITIVE"));
+
                 szString.append(L' ');//XXX
+
+
 
                 if (!(pDefender->immuneToFirstStrikes()))
                 {
@@ -2964,7 +3029,9 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_EXTRA_STRENGTH", iModifier));
                 }
 
+
                 szString.append(gDLL->getText("TXT_KEY_COLOR_REVERT"));
+
                 szString.append(L' ');//XXX
 
                 if (((!(pAttacker->immuneToFirstStrikes())) && (pDefender->maxFirstStrikes() > 0)) || (pDefender->maxCombatStr(pPlot,pAttacker)!=pDefender->baseCombatStr()*100))
@@ -2981,9 +3048,15 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     setUnitHelp(szString, pDefender, true, true);
                 }
 
+
+
+
                 if (iView & getBugOptionINT("ACO__ShowDefenseModifiers", 3, "ACO_SHOW_DEFENSE_MODIFIERS"))
                 {
                     //if defense modifiers are enabled - recommend leaving this on unless Total defense Modifier is enabled
+
+
+
                     szString.append(gDLL->getText("TXT_KEY_COLOR_NEGATIVE"));
 
                     szString.append(L' ');//XXX
@@ -3256,6 +3329,8 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 
                 if (iView & getBugOptionINT("ACO__ShowTotalDefenseModifier", 2, "ACO_SHOW_TOTAL_DEFENSE_MODIFIER"))
                 {
+
+
                     //szString.append(L' ');//XXX
                     if (pDefender->maxCombatStr(pPlot,pAttacker)>pDefender->baseCombatStr()*100) // modifier is positive
                     {
@@ -3271,16 +3346,24 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
                     szString.append(gDLL->getText("TXT_ACO_TotalDefenseModifier"));
                     szString.append(szTempBuffer.GetCString());
                 }
+
+
+
+
             }//if
+
 
             /** What follows in the "else" block, is the original code **/
             else
 			{
                 //ACO is not enabled
-			// unchanged
-// BUG - Advanced Combat Odds - end
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
 			szOffenseOdds.Format(L"%.2f", ((pAttacker->getDomainType() == DOMAIN_AIR) ? pAttacker->airCurrCombatStrFloat(pDefender) : pAttacker->currCombatStrFloat(NULL, NULL)));
 			szDefenseOdds.Format(L"%.2f", pDefender->currCombatStrFloat(pPlot, pAttacker));
+			szString.append(NEWLINE);
 			szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS_VS", szOffenseOdds.GetCString(), szDefenseOdds.GetCString()));
 
 			szString.append(L' ');//XXX
@@ -3592,11 +3675,16 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer &szString, CvPlot* pPlot)
 				szString.append(NEWLINE);
 				szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_HP", pDefender->currHitPoints(), pDefender->maxHitPoints()));
 			}
-			
-// BUG - Advanced Combat Odds - start
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** BEGIN                                                                       v2.0             */
+/*************************************************************************************************/
+/* New Code */
 			}
-// BUG - Advanced Combat Odds - end
-
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      3/11/09                           PieceOfMind      */
+/** END                                                                         v2.0             */
+/*************************************************************************************************/
 			if ((gDLL->getChtLvl() > 0))
 			{
 				szTempBuffer.Format(L"\nStack Compare Value = %d",
