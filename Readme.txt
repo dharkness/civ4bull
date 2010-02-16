@@ -4,8 +4,9 @@ README for BULL
 1. Introduction
 2. Installation
 3. Configuration
-4. Troubleshooting
-5. Modding
+4. Known Issues
+5. Troubleshooting
+6. Modding
 
 
 ____________________________________________________________________________________________________
@@ -70,7 +71,21 @@ If you are using BULL alone, you can change BULL settings in the file Assets/XML
 
 
 ____________________________________________________________________________________________________
-4. TROUBLESHOOTING
+4. KNOWN ISSUES
+
+BULL can cause Out of Sync (OOS) errors in multiplayer games if a few options are set to different values for the different players. Make sure that every player in the game has the same setting for these options:
+
+	Pre-Chop
+	- Forests
+	- Improvements
+	
+	Sentry Healing
+	- Enabled
+	- Only in Neutral Territory
+
+
+____________________________________________________________________________________________________
+5. TROUBLESHOOTING
 
 If you are having any trouble getting BULL to work, start with our Troubleshooting wiki page:
 
@@ -86,6 +101,6 @@ If you find a feature or option that doesn't work properly, please post to our B
 
 
 ____________________________________________________________________________________________________
-5. MODDING
+6. MODDING
 
 See the separate document Modding.txt for information helpful to modders.

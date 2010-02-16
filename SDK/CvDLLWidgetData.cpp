@@ -3781,6 +3781,10 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 	szBuffer.append(szTempBuffer);
 	szBuffer.append(gDLL->getText("TXT_KEY_MOD_GWARM"));
 #endif
+#ifdef _MOD_SHAM_SPOILER
+	szBuffer.append(szTempBuffer);
+	szBuffer.append(gDLL->getText("TXT_KEY_MOD_SHAM_SPOILER"));
+#endif
 	// separator line
 	szBuffer.append(NEWLINE L"==============================" NEWLINE);
 // BUG - Version Info - end
