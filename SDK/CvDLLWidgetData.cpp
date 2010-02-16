@@ -3429,6 +3429,13 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 			// CTRL instructions moved below
 // BUG - end
 		}
+// BUG - Espionage for Humans - start
+		else
+		{
+			szBuffer.append(NEWLINE);
+			GAMETEXT.getEspionageString(szBuffer, ePlayer, eActivePlayer);
+		}
+// BUG - Espionage for Humans - end
 
 // BUG - Deals in Scoreboard - start
 		if (gDLL->ctrlKey())
@@ -3437,17 +3444,14 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 		}
 // BUG - Deals in Scoreboard - end
 
-// BUG - Other Relations in Scoreboard - start
+// BUG - Relations in Scoreboard - start
 		GAMETEXT.getAllRelationsString(szBuffer, eTeam);
-// BUG - Other Relations in Scoreboard - end
+// BUG - Relations in Scoreboard - end
 
 // BUG - start
 		// moved from above to organize the hover text
-		if (!(kPlayer.isHuman()))
-		{
-			szBuffer.append(NEWLINE);
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_CTRL_TRADE"));
-		}
+		szBuffer.append(NEWLINE);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_CTRL_TRADE"));
 // BUG - end
 
 		if ((eTeam != eActiveTeam) && !(kActiveTeam.isAtWar(eTeam)))
