@@ -214,6 +214,7 @@ public:
 	DllExport void getActiveDealsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer);
 	void getOtherRelationsString(CvWStringBuffer& szString, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer);
 // BUG - Leaderhead Relations - start
+	void parseLeaderHeadRelationsHelp(CvWStringBuffer &szBuffer, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer);
 	void getAllRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam);
 	void getActiveTeamRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam);
 	void getOtherRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam, TeamTypes eOtherTeam, TeamTypes eSkipTeam);

@@ -73,7 +73,7 @@ The following are all of the compile-time options for BULL. Each one has a uniqu
 	
 		Makes effects of global warming more tolerable and interesting
 
-[5] Show Hidden Attitude - Spoiler
+[5] Show Hidden Attitudes - Spoiler
 
 	Flag: _MOD_SHAM_SPOILER
 	by DaveMcW
@@ -109,7 +109,7 @@ City
 ____________________________________________________________________________________________________
 4. PYTHON API
 
-Any entry that requires on of the optional components above will be marked with its number between brackets, e.g. [1].
+Any entry that requires one of the optional components above will be marked with its number between brackets, e.g. [1].
 
 CyGlobalContext
 
@@ -201,6 +201,8 @@ WidgetTypes
 	
 	WIDGET_PEDIA_JUMP_TO_BONUS_TRADE
 	WIDGET_PEDIA_JUMP_TO_TECH_TRADE
+	
+	WIDGET_LEADERHEAD_RELATIONS
 
 ActivityTypes
 
@@ -218,3 +220,7 @@ MissionTypes
 InterfaceModeTypes
 
 [2]	INTERFACEMODE_GO_TO_SENTRY
+
+GameOptionTypes
+
+[5] GAMEOPTION_RISING_SEAS

@@ -417,6 +417,10 @@ void CyEnumsPythonInterface()
 		.value("WIDGET_FOOD_MOD_HELP", WIDGET_FOOD_MOD_HELP)
 // BUG - Food Rate Hover - end
 
+// BUG - Leaderhead Relations - start
+		.value("WIDGET_LEADERHEAD_RELATIONS", WIDGET_LEADERHEAD_RELATIONS)
+// BUG - Leaderhead Relations - end
+
 		.value("NUM_WIDGET_TYPES", NUM_WIDGET_TYPES)
 		;
 
