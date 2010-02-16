@@ -149,11 +149,20 @@ bool isPotentialEnemy(TeamTypes eOurTeam, TeamTypes eTheirTeam)
 		return false;
 	}
 
-// BUG - Unofficial Patch - start
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/05/09                                jdog5000      */
+/*                                                                                              */
+/* Bugfix, General AI                                                                           */
+/************************************************************************************************/
+/* original bts code
+	return (atWar(eOurTeam, eTheirTeam) || GET_TEAM(eOurTeam).AI_isSneakAttackReady(eTheirTeam));
+*/
 	// Fixes bug where AI would launch invasion while unable to declare war
 	// which caused units to be bumped once forced peace expired
 	return (atWar(eOurTeam, eTheirTeam) || (GET_TEAM(eOurTeam).AI_isSneakAttackReady(eTheirTeam) && GET_TEAM(eOurTeam).canDeclareWar(eTheirTeam)));
-// BUG - Unofficial Patch - end
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 }
 
 CvCity* getCity(IDInfo city)
@@ -215,114 +224,122 @@ bool isBeforeUnitCycle(const CvUnit* pFirstUnit, const CvUnit* pSecondUnit)
 	return (pFirstUnit->getID() < pSecondUnit->getID());
 }
 
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      11/7/09                           PieceOfMind      */
+/** BEGIN                                                                       v?.?             */
+/*************************************************************************************************/
 bool isPromotionValid(PromotionTypes ePromotion, UnitTypes eUnit, bool bLeader)
 {
-	CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
-	CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
+    CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+    CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
 
-	if (kUnit.getFreePromotions(ePromotion))
-	{
-		return true;
-	}
+    if (kUnit.getFreePromotions(ePromotion))
+    {
+        return true;
+    }
 
-	if (kUnit.getUnitCombatType() == NO_UNITCOMBAT)
-	{
-		return false;
-	}
+    if (kUnit.getUnitCombatType() == NO_UNITCOMBAT)
+    {
+        return false;
+    }
 
-	if (!bLeader && kPromotion.isLeader())
-	{
-		return false;
-	}
+    if (!bLeader && kPromotion.isLeader())
+    {
+        return false;
+    }
 
-	if (!(kPromotion.getUnitCombat(kUnit.getUnitCombatType())))
-	{
-		return false;
-	}
+    if (!(kPromotion.getUnitCombat(kUnit.getUnitCombatType())))
+    {
+        return false;
+    }
 
-	if (kUnit.isOnlyDefensive())
-	{
-		if ((kPromotion.getCityAttackPercent() != 0) ||
-			  (kPromotion.getWithdrawalChange() != 0) ||
-			  (kPromotion.getCollateralDamageChange() != 0) ||
-			  (kPromotion.isBlitz()) ||
-			  (kPromotion.isAmphib()) ||
-			  (kPromotion.isRiver()) ||
-			  (kPromotion.getHillsAttackPercent() != 0))
-		{
-			return false;
-		}
-	}
+    if (kUnit.isOnlyDefensive())
+    {
+        if ((kPromotion.getCityAttackPercent() != 0) ||
+                (kPromotion.getWithdrawalChange() != 0) ||
+                (kPromotion.getCollateralDamageChange() != 0) ||
+                (kPromotion.isBlitz()) ||
+                (kPromotion.isAmphib()) ||
+                (kPromotion.isRiver()) ||
+                (kPromotion.getHillsAttackPercent() != 0))
+        {
+            return false;
+        }
+    }
 
-	if (kUnit.isIgnoreTerrainCost())
-	{
-		if (kPromotion.getMoveDiscountChange() != 0)
-		{
-			return false;
-		}
-	}
+    if (kUnit.isIgnoreTerrainCost())
+    {
+        if (kPromotion.getMoveDiscountChange() != 0)
+        {
+            return false;
+        }
+    }
 
-	if (kUnit.getMoves() == 1)
-	{
-		if (kPromotion.isBlitz())
-		{
-			return false;
-		}
-	}
+    if (kUnit.getMoves() == 1)
+    {
+        if (kPromotion.isBlitz())
+        {
+            return false;
+        }
+    }
 
-	if ((kUnit.getCollateralDamage() == 0) || (kUnit.getCollateralDamageLimit() == 0) || (kUnit.getCollateralDamageMaxUnits() == 0))
-	{
-		if (kPromotion.getCollateralDamageChange() != 0)
-		{
-			return false;
-		}
-	}
+    if ((kUnit.getCollateralDamage() == 0) || (kUnit.getCollateralDamageLimit() == 0) || (kUnit.getCollateralDamageMaxUnits() == 0))
+    {
+        if (kPromotion.getCollateralDamageChange() != 0)
+        {
+            return false;
+        }
+    }
 
-	if (kUnit.getInterceptionProbability() == 0)
-	{
-		if (kPromotion.getInterceptChange() != 0)
-		{
-			return false;
-		}
-	}
+    if (kUnit.getInterceptionProbability() == 0)
+    {
+        if (kPromotion.getInterceptChange() != 0)
+        {
+            return false;
+        }
+    }
 
-	if (NO_PROMOTION != kPromotion.getPrereqPromotion())
-	{
-		if (!isPromotionValid((PromotionTypes)kPromotion.getPrereqPromotion(), eUnit, bLeader))
-		{
-			return false;
-		}
-	}
+    if (NO_PROMOTION != kPromotion.getPrereqPromotion())
+    {
+        if (!isPromotionValid((PromotionTypes)kPromotion.getPrereqPromotion(), eUnit, bLeader))
+        {
+            return false;
+        }
+    }
 
-	PromotionTypes ePrereq1 = (PromotionTypes)kPromotion.getPrereqOrPromotion1();
-	PromotionTypes ePrereq2 = (PromotionTypes)kPromotion.getPrereqOrPromotion2();
-	if (NO_PROMOTION != ePrereq1 || NO_PROMOTION != ePrereq2)
-	{
-		bool bValid = false;
-		if (!bValid)
-		{
-			if (NO_PROMOTION != ePrereq1 && isPromotionValid(ePrereq1, eUnit, bLeader))
-			{
-				bValid = true;
-			}
-		}
+    PromotionTypes ePrereq1 = (PromotionTypes)kPromotion.getPrereqOrPromotion1();
+    PromotionTypes ePrereq2 = (PromotionTypes)kPromotion.getPrereqOrPromotion2();
+    if (NO_PROMOTION != ePrereq1 || NO_PROMOTION != ePrereq2)
+    {
+        bool bValid = false;
+        if (!bValid)
+        {
+            if (NO_PROMOTION != ePrereq1 && isPromotionValid(ePrereq1, eUnit, bLeader))
+            {
+                bValid = true;
+            }
+        }
 
-		if (!bValid)
-		{
-			if (NO_PROMOTION != ePrereq2 && isPromotionValid(ePrereq2, eUnit, bLeader))
-			{
-				bValid = true;
-			}
-		}
+        if (!bValid)
+        {
+            if (NO_PROMOTION != ePrereq2 && isPromotionValid(ePrereq2, eUnit, bLeader))
+            {
+                bValid = true;
+            }
+        }
 
-		if (!bValid)
-		{
-			return false;
-		}
-	}
+        if (!bValid)
+        {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      11/7/09                           PieceOfMind      */
+/** END                                                                                          */
+/*************************************************************************************************/
 
 int getPopulationAsset(int iPopulation)
 {
@@ -820,8 +837,10 @@ int getCombatOdds(CvUnit* pAttacker, CvUnit* pDefender)
 	return iOdds;
 }
 
-// BUG - Advanced Combat Odds - start
-// by PieceOfMind
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      11/7/09                           PieceOfMind      */
+/** BEGIN                                                                       v1.1             */
+/*************************************************************************************************/
 
 //Calculates the probability of a particular combat outcome
 //Returns a float value (between 0 and 1)
@@ -1040,8 +1059,13 @@ float getCombatOddsSpecific(CvUnit* pAttacker, CvUnit* pDefender, int n_A, int n
 
     answer = answer / ((float)(AttFSC+DefFSC+1)); // dividing by (t+w+1) as is necessary
     return answer;
-}
-// BUG - Advanced Combat Odds - end
+}// getCombatOddsSpecific
+
+// I had to add this function to the header file CvGameCoreUtils.h
+/*************************************************************************************************/
+/** ADVANCED COMBAT ODDS                      11/7/09                           PieceOfMind      */
+/** END                                                                                          */
+/*************************************************************************************************/
 
 int getEspionageModifier(TeamTypes eOurTeam, TeamTypes eTargetTeam)
 {
