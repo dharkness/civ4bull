@@ -569,6 +569,10 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_FOOD_MOD_HELP,
 // BUG - Food Rate Hover - end
 
+// BUG - Leaderhead Relations - start
+	WIDGET_LEADERHEAD_RELATIONS,
+// BUG - Leaderhead Relations - end
+
 #ifdef _USRDLL
 	NUM_WIDGET_TYPES
 #endif

@@ -628,6 +628,12 @@ void CvDLLWidgetData::parseHelp(CvWStringBuffer &szBuffer, CvWidgetDataStruct &w
 		parseLeaderheadHelp(widgetDataStruct, szBuffer);
 		break;
 
+// BUG - Leaderhead Relations - start
+	case WIDGET_LEADERHEAD_RELATIONS:
+		parseLeaderheadRelationsHelp(widgetDataStruct, szBuffer);
+		break;
+// BUG - Leaderhead Relations - end
+
 	case WIDGET_LEADER_LINE:
 		parseLeaderLineHelp(widgetDataStruct, szBuffer);
 		break;
@@ -1046,6 +1052,12 @@ bool CvDLLWidgetData::executeAltAction( CvWidgetDataStruct &widgetDataStruct )
 	case WIDGET_LEADERHEAD:
 		doContactCiv(widgetDataStruct);
 		break;
+
+// BUG - Leaderhead Relations - start
+	case WIDGET_LEADERHEAD_RELATIONS:
+		doContactCiv(widgetDataStruct);
+		break;
+// BUG - Leaderhead Relations - end
 
 	default:
 		bHandled = false;
@@ -3358,71 +3370,87 @@ void CvDLLWidgetData::parseSetPercentHelp(CvWidgetDataStruct &widgetDataStruct, 
 
 void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {
-	//	Do not execute this if we are trying to contact ourselves...
-	if (widgetDataStruct.m_iData1 >= MAX_PLAYERS || GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getCivilizationType() == NO_CIVILIZATION)
+	// do not execute if player is out of range
+	PlayerTypes ePlayer = (PlayerTypes) widgetDataStruct.m_iData1;
+	if (ePlayer >= MAX_PLAYERS)
 	{
 		return;
 	}
-	if (GC.getGameINLINE().getActivePlayer() == widgetDataStruct.m_iData1)
+
+	// do not execute if player is not a real civ
+	CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
+	if (kPlayer.getCivilizationType() == NO_CIVILIZATION)
+	{
+		return;
+	}
+
+	TeamTypes eTeam = (TeamTypes) kPlayer.getTeam();
+	CvTeamAI& kTeam = GET_TEAM(eTeam);
+
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	TeamTypes eActiveTeam = (TeamTypes) GET_PLAYER(eActivePlayer).getTeam();
+	CvTeamAI& kActiveTeam = GET_TEAM(eActiveTeam);
+
+	if (GC.getGameINLINE().getActivePlayer() == ePlayer)
 	{
 		parseScoreHelp(widgetDataStruct, szBuffer);
 		return;
 	}
 
-	szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CONTACT_LEADER", GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getNameKey(), GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getCivilizationShortDescription()));
+	szBuffer.assign(gDLL->getText("TXT_KEY_MISC_CONTACT_LEADER", kPlayer.getNameKey(), kPlayer.getCivilizationShortDescription()));
 
 	szBuffer.append(NEWLINE);
-	GAMETEXT.parsePlayerTraits(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1);
+	GAMETEXT.parsePlayerTraits(szBuffer, ePlayer);
 
-	if (!(GET_TEAM(GC.getGameINLINE().getActiveTeam()).isHasMet(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam())))
+	if (!(kActiveTeam.isHasMet(eTeam)))
 	{
 		szBuffer.append(NEWLINE);
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HAVENT_MET_CIV"));
 	}
 	else
 	{
-		if (!(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).isHuman()))
+		if (!(kPlayer.isHuman()))
 		{
-			if (!(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).AI_isWillingToTalk(GC.getGameINLINE().getActivePlayer())))
+			if (!(kPlayer.AI_isWillingToTalk(eActivePlayer)))
 			{
 				szBuffer.append(NEWLINE);
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_REFUSES_TO_TALK"));
 			}
 
 			szBuffer.append(NEWLINE);
-			GAMETEXT.getAttitudeString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
+			GAMETEXT.getAttitudeString(szBuffer, ePlayer, eActivePlayer);
+
+			szBuffer.append(NEWLINE);
+			GAMETEXT.getEspionageString(szBuffer, ePlayer, eActivePlayer);
 
 // BUG - start
-		// Espionage and CTRL instructions moved below
+			// CTRL instructions moved below
 // BUG - end
 		}
-
-// BUG - Other Relations in Scoreboard - start
-		GAMETEXT.getAllRelationsString(szBuffer, GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam());
-// BUG - Other Relations in Scoreboard - end
 
 // BUG - Deals in Scoreboard - start
 		if (gDLL->ctrlKey())
 		{
-			GAMETEXT.getActiveDealsString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
+			GAMETEXT.getActiveDealsString(szBuffer, ePlayer, eActivePlayer);
 		}
 // BUG - Deals in Scoreboard - end
 
+// BUG - Other Relations in Scoreboard - start
+		GAMETEXT.getAllRelationsString(szBuffer, eTeam);
+// BUG - Other Relations in Scoreboard - end
+
 // BUG - start
 		// moved from above to organize the hover text
-		szBuffer.append(NEWLINE);
-		GAMETEXT.getEspionageString(szBuffer, ((PlayerTypes)widgetDataStruct.m_iData1), GC.getGameINLINE().getActivePlayer());
-
-		if (!(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).isHuman()))
+		if (!(kPlayer.isHuman()))
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_MISC_CTRL_TRADE"));
 		}
 // BUG - end
 
-		if ((GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam() != GC.getGameINLINE().getActiveTeam()) && !(GET_TEAM(GC.getGameINLINE().getActiveTeam()).isAtWar(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam())))
+		if ((eTeam != eActiveTeam) && !(kActiveTeam.isAtWar(eTeam)))
 		{
-			if (GET_TEAM(GC.getGameINLINE().getActiveTeam()).canDeclareWar(GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).getTeam()))
+			if (kActiveTeam.canDeclareWar(eTeam))
 			{
 				szBuffer.append(NEWLINE);
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_ALT_DECLARE_WAR"));
@@ -3435,7 +3463,7 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 		}
 	}
 
-	if (GET_PLAYER((PlayerTypes)widgetDataStruct.m_iData1).isHuman())
+	if (kPlayer.isHuman())
 	{
 //		szBuffer += "\n(<SHIFT> to Send Chat Message)";
 		szBuffer.append(NEWLINE);
@@ -4861,6 +4889,13 @@ void CvDLLWidgetData::parseLeaderLineHelp(CvWidgetDataStruct &widgetDataStruct, 
 {
 	GAMETEXT.parseLeaderLineHelp(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1, (PlayerTypes)widgetDataStruct.m_iData2);
 }
+
+// BUG - Leaderhead Relations - start
+void CvDLLWidgetData::parseLeaderheadRelationsHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
+{
+	GAMETEXT.parseLeaderHeadRelationsHelp(szBuffer, (PlayerTypes)widgetDataStruct.m_iData1, (PlayerTypes)widgetDataStruct.m_iData2);
+}
+// BUG - Leaderhead Relations - end
 
 void CvDLLWidgetData::parseCommerceModHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {

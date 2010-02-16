@@ -14683,21 +14683,51 @@ void CvGameTextMgr::parseLeaderHeadHelp(CvWStringBuffer &szBuffer, PlayerTypes e
 
 	if (eOtherPlayer == NO_PLAYER)
 	{
-		if (eThisPlayer != eActivePlayer)
-		{
-			getEspionageString(szBuffer, eThisPlayer, eActivePlayer);
-
-			getAttitudeString(szBuffer, eThisPlayer, eActivePlayer);
-
-			if (gDLL->ctrlKey())
-			{
-				getActiveDealsString(szBuffer, eThisPlayer, eActivePlayer);
-			}
-		}
-
-		getAllRelationsString(szBuffer, eThisTeam);
+		eOtherPlayer = eActivePlayer;
 	}
-	else if (eThisPlayer != eOtherPlayer && kThisTeam.isHasMet(GET_PLAYER(eOtherPlayer).getTeam()))
+	if (eThisPlayer != eOtherPlayer && kThisTeam.isHasMet(GET_PLAYER(eOtherPlayer).getTeam()))
+	{
+		getEspionageString(szBuffer, eThisPlayer, eOtherPlayer);
+
+		getAttitudeString(szBuffer, eThisPlayer, eOtherPlayer);
+
+		if (gDLL->ctrlKey())
+		{
+			getActiveDealsString(szBuffer, eThisPlayer, eOtherPlayer);
+		}
+	}
+
+	getAllRelationsString(szBuffer, eThisTeam);
+// BUG - Leaderhead Relations - end
+}
+
+// BUG - Leaderhead Relations - start
+/*
+ * Displays the relations between two leaders only. This is used by the F4:GLANCE and F5:SIT-REP tabs.
+ */
+void CvGameTextMgr::parseLeaderHeadRelationsHelp(CvWStringBuffer &szBuffer, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer)
+{
+	if (NO_PLAYER == eThisPlayer)
+	{
+		return;
+	}
+	if (NO_PLAYER == eOtherPlayer)
+	{
+		parseLeaderHeadHelp(szBuffer, eThisPlayer, NO_PLAYER);
+		return;
+	}
+
+	szBuffer.append(CvWString::format(L"%s", GET_PLAYER(eThisPlayer).getName()));
+
+	parsePlayerTraits(szBuffer, eThisPlayer);
+
+	szBuffer.append(L"\n");
+
+	PlayerTypes eActivePlayer = GC.getGameINLINE().getActivePlayer();
+	TeamTypes eThisTeam = GET_PLAYER(eThisPlayer).getTeam();
+	CvTeam& kThisTeam = GET_TEAM(eThisTeam);
+
+	if (eThisPlayer != eOtherPlayer && kThisTeam.isHasMet(GET_PLAYER(eOtherPlayer).getTeam()))
 	{
 		getEspionageString(szBuffer, eThisPlayer, eOtherPlayer);
 
@@ -14718,9 +14748,8 @@ void CvGameTextMgr::parseLeaderHeadHelp(CvWStringBuffer &szBuffer, PlayerTypes e
 	{
 		getAllRelationsString(szBuffer, eThisTeam);
 	}
-// BUG - Leaderhead Relations - end
 }
-
+// BUG - Leaderhead Relations - end
 
 void CvGameTextMgr::parseLeaderLineHelp(CvWStringBuffer &szBuffer, PlayerTypes eThisPlayer, PlayerTypes eOtherPlayer)
 {
@@ -14780,7 +14809,7 @@ void CvGameTextMgr::getActiveDealsString(CvWStringBuffer &szBuffer, PlayerTypes 
 }
 
 // BUG - Leaderhead Relations - start
-/**
+/*
  * Shows the peace/war/enemy/pact status between eThisTeam and all rivals known to the active player.
  * Relations for the active player are shown first.
  */
@@ -14790,7 +14819,7 @@ void CvGameTextMgr::getAllRelationsString(CvWStringBuffer& szString, TeamTypes e
 	getOtherRelationsString(szString, eThisTeam, NO_TEAM, GC.getGameINLINE().getActiveTeam());
 }
 
-/**
+/*
  * Shows the peace/war/enemy/pact status between eThisTeam and the active player.
  */
 void CvGameTextMgr::getActiveTeamRelationsString(CvWStringBuffer& szString, TeamTypes eThisTeam)
@@ -14827,7 +14856,7 @@ void CvGameTextMgr::getActiveTeamRelationsString(CvWStringBuffer& szString, Team
 	}
 }
 
-/**
+/*
  * Shows the peace/war/enemy/pact status between eThisPlayer and eOtherPlayer (both must not be NO_PLAYER).
  * If eOtherTeam is not NO_TEAM, only relations between it and eThisTeam are shown.
  * if eSkipTeam is not NO_TEAM, relations involving it are not shown.
@@ -14842,7 +14871,7 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, PlayerTyp
 	getOtherRelationsString(szString, GET_PLAYER(eThisPlayer).getTeam(), GET_PLAYER(eOtherPlayer).getTeam(), NO_TEAM);
 }
 
-/**
+/*
  * Shows the peace/war/enemy/pact status between eThisPlayer and all rivals known to the active player.
  * If eOtherTeam is not NO_TEAM, only relations between it and eThisTeam are shown.
  * if eSkipTeam is not NO_TEAM, relations involving it are not shown.
