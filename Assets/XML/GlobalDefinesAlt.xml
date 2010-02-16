@@ -112,6 +112,10 @@
 	
 	<!-- Leaderhead -->
 	<Define>
+		<DefineName>BUG_LEADERHEAD_HOVER_HIDDEN_ATTITUDE</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
 		<DefineName>BUG_LEADERHEAD_HOVER_WORST_ENEMY</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
