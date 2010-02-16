@@ -26,7 +26,13 @@ BULL x.x unreleased
 KNOWN ISSUES
 
 - Multiplayer
-	All players must have the same settings for Pre-Chop to avoid OOS errors
+	To avoid OOS errors, all players must have the same settings for these options:
+	
+		Pre-Chop Forests
+		Pre-Chop Improvements
+		
+		Sentry Healing
+		Sentry Healing Only Neutral
 
 
 CHANGES
@@ -79,6 +85,15 @@ Bug Fixes:
 	Removed extraneous effect from old 3.17 Unofficial Patch
 - Combat Hover
 	No longer shows friendly units as best defender (hold ALT for old behavior)
+
+Merged Mods:
+
+- Unofficial Patch
+	Updated to release version 1.40
+- Advanced Combat Odds
+	Updated to release version 2.01
+- Show Hidden Attitudes
+	Added release version
 
 
 MODDING

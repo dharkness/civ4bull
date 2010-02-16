@@ -3912,7 +3912,19 @@ void CvGame::setAIAutoPlay(int iNewValue)
 
 // BUG - AIAutoPlay - start
 #ifdef _MOD_AIAUTOPLAY
-		// Multiplayer compatibility idea from Jeckel
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                           07/09/08                            jdog5000      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+// Multiplayer compatibility idea from Jeckel
+/* original code
+		if ((iOldValue == 0) && (getAIAutoPlay() > 0))
+		{
+			GET_PLAYER(getActivePlayer()).killUnits();
+			GET_PLAYER(getActivePlayer()).killCities();
+		}
+*/
 		for( int iI = 0; iI < MAX_CIV_PLAYERS; iI++ )
 		{
 			if( GET_PLAYER((PlayerTypes)iI).isHuman() || GET_PLAYER((PlayerTypes)iI).isHumanDisabled() )
@@ -3920,6 +3932,9 @@ void CvGame::setAIAutoPlay(int iNewValue)
 				GET_PLAYER(getActivePlayer()).setHumanDisabled((getAIAutoPlay() != 0));
 			}
 		}
+/************************************************************************************************/
+/* AI_AUTO_PLAY_MOD                            END                                              */
+/************************************************************************************************/
 #else
 		if ((iOldValue == 0) && (getAIAutoPlay() > 0))
 		{
@@ -8282,14 +8297,40 @@ bool CvGame::hasSkippedSaveChecksum() const
 
 void CvGame::addPlayer(PlayerTypes eNewPlayer, LeaderHeadTypes eLeader, CivilizationTypes eCiv)
 {
+	// UNOFFICIAL_PATCH Start
+	// * Fixed bug with colonies who occupy recycled player slots showing the old leader or civ names.
+	CvWString szEmptyString = L"";
+	LeaderHeadTypes eOldLeader = GET_PLAYER(eNewPlayer).getLeaderType();
+	if ( (eOldLeader != NO_LEADER) && (eOldLeader != eLeader) ) 
+	{
+		GC.getInitCore().setLeaderName(eNewPlayer, szEmptyString);
+	}
+	CivilizationTypes eOldCiv = GET_PLAYER(eNewPlayer).getCivilizationType();
+	if ( (eOldCiv != NO_CIVILIZATION) && (eOldCiv != eCiv) ) 
+	{
+		GC.getInitCore().setCivAdjective(eNewPlayer, szEmptyString);
+		GC.getInitCore().setCivDescription(eNewPlayer, szEmptyString);
+		GC.getInitCore().setCivShortDesc(eNewPlayer, szEmptyString);
+	}
+	// UNOFFICIAL_PATCH End
 	PlayerColorTypes eColor = (PlayerColorTypes)GC.getCivilizationInfo(eCiv).getDefaultPlayerColor();
 
 	for (int iI = 0; iI < MAX_CIV_PLAYERS; iI++)
 	{
-// BUG - Unofficial Patch - start
+
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       12/30/08                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
+		if (eColor == NO_PLAYERCOLOR || GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor)
+*/
 		// Don't invalidate color choice if it's taken by this player
-		if (eColor == NO_PLAYERCOLOR || ((PlayerTypes)iI != eNewPlayer && GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor))
-// BUG - Unofficial Patch - end
+		if (eColor == NO_PLAYERCOLOR || (GET_PLAYER((PlayerTypes)iI).getPlayerColor() == eColor && (PlayerTypes)iI != eNewPlayer) )
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		{
 			for (int iK = 0; iK < GC.getNumPlayerColorInfos(); iK++)
 			{

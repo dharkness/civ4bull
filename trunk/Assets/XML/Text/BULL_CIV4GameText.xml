@@ -730,5 +730,13 @@
 		<Italian>Global Warming</Italian>
 		<Spanish>Global Warming</Spanish>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MOD_SHAM_SPOILER</Tag>
+		<English>Show Hidden Attitudes [spoiler]</English>
+		<French>Show Hidden Attitudes [spoiler]</French>
+		<German>Show Hidden Attitudes [spoiler]</German>
+		<Italian>Show Hidden Attitudes [spoiler]</Italian>
+		<Spanish>Show Hidden Attitudes [spoiler]</Spanish>
+	</TEXT>
 
 </Civ4GameText>

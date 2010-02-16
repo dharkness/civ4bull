@@ -29,12 +29,13 @@ LINK = "$(TOOLKIT)/bin/link.exe"
 # Optional BULL Components (Mods)
 #   _BUFFY
 #   _MOD_FRACTRADE
-#   _MOD_SENTRY
-#   _MOD_GOVWORKERS
+#   _MOD_SENTRY				has extra assets
+#   _MOD_GOVWORKERS			has extra assets
 #   _MOD_AIAUTOPLAY
-#   _MOD_GWARM
+#   _MOD_GWARM				has extra assets; effectively eliminates global warming
+#   _MOD_SHAM_SPOILER		enables AG modifiers in mod
 
-MODFLAGS = /D_BUFFY /D_MOD_FRACTRADE /D_MOD_GOVWORKERS
+MODFLAGS = /D_MOD_AIAUTOPLAY /D_MOD_FRACTRADE /D_MOD_GOVWORKERS
 
 # /EHsc		catch C++ exceptions only; assume that extern C functions never throw a C++ exception
 # /Gd		Use the __cdecl calling convention (x86 only). 
