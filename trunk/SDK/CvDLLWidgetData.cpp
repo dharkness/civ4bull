@@ -3417,13 +3417,15 @@ void CvDLLWidgetData::parseContactCivHelp(CvWidgetDataStruct &widgetDataStruct, 
 				szBuffer.append(gDLL->getText("TXT_KEY_MISC_REFUSES_TO_TALK"));
 			}
 
-			szBuffer.append(NEWLINE);
-			GAMETEXT.getAttitudeString(szBuffer, ePlayer, eActivePlayer);
-
+// BUG - start
+			// moved up here to match other leaderhead hovers
 			szBuffer.append(NEWLINE);
 			GAMETEXT.getEspionageString(szBuffer, ePlayer, eActivePlayer);
 
-// BUG - start
+			//szBuffer.append(NEWLINE);
+			GAMETEXT.getAttitudeString(szBuffer, ePlayer, eActivePlayer);
+
+			// espionage moved above
 			// CTRL instructions moved below
 // BUG - end
 		}
