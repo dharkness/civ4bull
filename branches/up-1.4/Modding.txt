@@ -73,6 +73,14 @@ The following are all of the compile-time options for BULL. Each one has a uniqu
 	
 		Makes effects of global warming more tolerable and interesting
 
+[5] Show Hidden Attitude - Spoiler
+
+	Flag: _MOD_SHAM_SPOILER
+	by DaveMcW
+	http://forums.civfanatics.com/showthread.php?t=335966
+	
+		The mod is already enabled; setting this flag shows the Altered Gameplay modifiers
+
 
 ____________________________________________________________________________________________________
 3. EVENTS

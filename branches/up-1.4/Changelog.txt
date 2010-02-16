@@ -92,6 +92,8 @@ Merged Mods:
 	Updated to release version 1.40
 - Advanced Combat Odds
 	Updated to release version 2.01
+- Show Hidden Attitudes
+	Added release version
 
 
 MODDING
