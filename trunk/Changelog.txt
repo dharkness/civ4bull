@@ -2,7 +2,9 @@ CHANGELOG for BULL
 ==================
 
 1. Introduction
+2. Known Issues
 
+* BULL x.x
 * BULL 1.1
 * BULL 1.0
 * BULL 0.9
@@ -21,9 +23,7 @@ Note: Changes marked [BUG] only take effect when the optional BUG Mod is install
 
 
 ____________________________________________________________________________________________________
-BULL 1.1 released February 16th, 2010
-
-KNOWN ISSUES
+2. KNOWN ISSUES
 
 - Multiplayer
 	To avoid OOS errors, all players must have the same settings for these options:
@@ -34,6 +34,32 @@ KNOWN ISSUES
 		Sentry Healing
 		Sentry Healing Only Neutral
 
+
+____________________________________________________________________________________________________
+BULL x.x unreleased
+
+CHANGES
+
+New Features:
+
+Improvements:
+
+Bug Fixes:
+
+Merged Mods:
+
+
+MODDING
+
+New Features:
+
+Improvements:
+
+Bug Fixes:
+
+
+____________________________________________________________________________________________________
+BULL 1.1 released February 16th, 2010
 
 CHANGES
 
