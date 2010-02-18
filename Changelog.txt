@@ -46,6 +46,9 @@ Improvements:
 
 Bug Fixes:
 
+- Leaderheads
+	Worst Enemies you haven't met are no longer shown
+
 Merged Mods:
 
 

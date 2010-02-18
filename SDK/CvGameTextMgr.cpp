@@ -14929,7 +14929,7 @@ void CvGameTextMgr::getOtherRelationsString(CvWStringBuffer& szString, TeamTypes
 		szString.append(gDLL->getText(L"TXT_KEY_AT_WAR_WITH", szWar.GetCString()));
 	}
 	TeamTypes eWorstEnemy = kThisTeam.AI_getWorstEnemy();
-	if (!kThisTeam.isHuman() && eWorstEnemy != NO_TEAM && eWorstEnemy != eSkipTeam && (eOtherTeam == NO_TEAM || eWorstEnemy == eOtherTeam))
+	if (!kThisTeam.isHuman() && eWorstEnemy != NO_TEAM && eWorstEnemy != eSkipTeam && (eOtherTeam == NO_TEAM || eWorstEnemy == eOtherTeam) && GET_TEAM(eWorstEnemy).isHasMet(GC.getGameINLINE().getActiveTeam()))
 	{
 		szString.append(NEWLINE);
 		szString.append(gDLL->getText(L"TXT_KEY_WORST_ENEMY_IS", GET_TEAM(eWorstEnemy).getName().GetCString()));
