@@ -18,7 +18,7 @@
 		<Tag>TXT_KEY_MISC_ATTITUDE_TEAM_SIZE</Tag>
 		<English>%D1: "Your team is too big."</English>
 		<French>%D1: "Votre équipe est déjà trop grande."</French>
-		<German>%D1: "Euer Team ist zu groß."</German>
+		<German>%D1: "Ihr habt zu viele Verbündete."</German>
 		<Italian>%D1: "Your team is too big."</Italian>
 		<Spanish>%D1: "Tu equipo es demasiado grande."</Spanish>
 	</TEXT>
