@@ -183,7 +183,7 @@
 		<Tag>TXT_KEY_AT_WAR_WITH</Tag>
 		<English>[ICON_BULLET][COLOR_YELLOW]War with %s1_player[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_YELLOW]Guerre avec %s1_player[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_YELLOW]Krieg mit %s1_player[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_YELLOW]Im Krieg mit %s1_player[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_YELLOW]Guerra con %s1_player[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_YELLOW]Guerra con %s1_player[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -191,7 +191,7 @@
 		<Tag>TXT_KEY_AT_WAR_WITH_YOU</Tag>
 		<English>[ICON_BULLET][COLOR_YELLOW]You are at war![COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_YELLOW]Vous êtes en guerre![COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_YELLOW]Sie sind im Krieg![COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_YELLOW]Im Krieg mit Euch![COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_YELLOW]Si è in guerra![COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_YELLOW]Usted está en guerra![COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -208,7 +208,7 @@
 		<Tag>TXT_KEY_PEACE_TREATY_WITH_YOU</Tag>
 		<English>[ICON_BULLET][COLOR_CYAN]You have a Peace Treaty[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_CYAN]Vous disposez d'un trait&#233; de paix[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_CYAN]Sie haben ein Friedensvertrag[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_CYAN]Friedensvertrag mit Euch[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_CYAN]Si dispone di un trattato di pace[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_CYAN]Ustedes tiene un tratado de paz[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -250,7 +250,7 @@
 		<Tag>TXT_KEY_DEFENSIVE_PACT_WITH_YOU</Tag>
 		<English>[ICON_BULLET][COLOR_BLUE]You have a Defensive Pact[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_BLUE]Vous disposez d'un pacte défensif[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_BLUE]Sie haben ein Verteidigungsbündnis[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_BLUE]Verteidigungsbündnis mit Euch[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_BLUE]Si dispone di un patto di difesa[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_BLUE]Ustedes tiene un pacto defensivo[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -729,14 +729,6 @@
 		<German>Globale Erwärmung</German>
 		<Italian>Global Warming</Italian>
 		<Spanish>Global Warming</Spanish>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_MOD_SHAM_SPOILER</Tag>
-		<English>Show Hidden Attitudes [spoiler]</English>
-		<French>Show Hidden Attitudes [spoiler]</French>
-		<German>Show Hidden Attitudes [spoiler]</German>
-		<Italian>Show Hidden Attitudes [spoiler]</Italian>
-		<Spanish>Show Hidden Attitudes [spoiler]</Spanish>
 	</TEXT>
 
 </Civ4GameText>
