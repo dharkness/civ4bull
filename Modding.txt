@@ -147,7 +147,11 @@ CyCity
 
 	bool isBuildingProductionDecay(BuildingTypes eIndex)
 	int getBuildingProductionDecay(BuildingTypes eIndex)
-	int getBuildingProductionDecayTurns(UnitTypes eIndex)
+	int getBuildingProductionDecayTurns(BuildingTypes eIndex)
+	
+	int getProjectProduction(ProjectTypes eIndex)
+	void setProjectProduction(ProjectTypes eIndex, int iNewValue)
+	void changeProjectProduction(ProjectTypes eIndex, int iChange)
 	
 	int getUnitProductionTime(UnitTypes eIndex) [EXPOSED]
 	void setUnitProductionTime(UnitTypes eIndex, int iNewValue) [EXPOSED]

@@ -2008,6 +2008,25 @@ int CyCity::getUnitProductionDecayTurns(int /*UnitTypes*/ eIndex)
 }
 // BUG - Production Decay - end
 
+// BUG - Project Production - start
+int CyCity::getProjectProduction(int /*ProjectTypes*/ iIndex)
+{
+	return m_pCity ? m_pCity->getProjectProduction((ProjectTypes) iIndex) : -1;
+}
+
+void CyCity::setProjectProduction(int /*ProjectTypes*/ iIndex, int iNewValue)
+{
+	if (m_pCity)
+		m_pCity->setProjectProduction((ProjectTypes) iIndex, iNewValue);
+}
+
+void CyCity::changeProjectProduction(int /*ProjectTypes*/ iIndex, int iChange)
+{
+	if (m_pCity)
+		m_pCity->changeProjectProduction((ProjectTypes) iIndex, iChange);
+}
+// BUG - Project Production - end
+
 int CyCity::getGreatPeopleUnitRate(int /*UnitTypes*/ iIndex)
 {
 	return m_pCity ? m_pCity->getGreatPeopleUnitRate((UnitTypes) iIndex) : -1;
