@@ -452,6 +452,11 @@ public:
 	int getUnitProductionDecay(int /*UnitTypes*/ eIndex);
 	int getUnitProductionDecayTurns(int /*UnitTypes*/ eIndex);
 // BUG - Production Decay - end
+// BUG - Project Production - start
+	int getProjectProduction(int /*ProjectTypes*/ iIndex);
+	void setProjectProduction(int /*ProjectTypes*/ iIndex, int iNewValue);
+	void changeProjectProduction(int /*ProjectTypes*/ iIndex, int iChange);
+// BUG - Project Production - end
 	int getGreatPeopleUnitRate(int /*UnitTypes*/ iIndex);
 	int getGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex);
 	void setGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex, int iNewValue);

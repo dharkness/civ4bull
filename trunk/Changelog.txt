@@ -58,6 +58,9 @@ New Features:
 
 Improvements:
 
+- Python API
+	Exposed CvCity::get/set/changeProjectProduction()
+
 Bug Fixes:
 
 
