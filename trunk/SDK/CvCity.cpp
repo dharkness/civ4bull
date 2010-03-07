@@ -6380,11 +6380,29 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 	// Building Class
 	addGoodOrBad(getBuildingHappyChange((BuildingClassTypes)kBuilding.getBuildingClassType()), iGood, iBad);
 
+	// Other Building Classes
+	CvCivilizationInfo& kCivilization = GC.getCivilizationInfo(getCivilizationType());
+	for (iI = 0; iI < GC.getNumBuildingClassInfos(); iI++)
+	{
+		int iBuildingHappinessChanges = kBuilding.getBuildingHappinessChanges(iI);
+		if (iBuildingHappinessChanges != 0)
+		{
+			BuildingTypes eLoopBuilding = (BuildingTypes)kCivilization.getCivilizationBuildings(iI);
+			if (eLoopBuilding != NO_BUILDING)
+			{
+				addGoodOrBad(iBuildingHappinessChanges * (getNumBuilding(eLoopBuilding) + (eBuilding == eLoopBuilding ? 1 : 0)), iGood, iBad);
+			}
+		}
+	}
+
 	// Player Building
 	addGoodOrBad(GET_PLAYER(getOwnerINLINE()).getExtraBuildingHappiness(eBuilding), iGood, iBad);
 
 	// Area
 	addGoodOrBad(kBuilding.getAreaHappiness(), iGood, iBad);
+
+	// Global
+	addGoodOrBad(kBuilding.getGlobalHappiness(), iGood, iBad);
 
 	// Religion
 	if (kBuilding.getReligionType() != NO_RELIGION && kBuilding.getReligionType() == GET_PLAYER(getOwnerINLINE()).getStateReligion())
@@ -6474,6 +6492,9 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 
 	// Area
 	addGoodOrBad(kBuilding.getAreaHealth(), iGood, iBad);
+
+	// Global
+	addGoodOrBad(kBuilding.getGlobalHealth(), iGood, iBad);
 
 	// No Unhealthiness from Buildings
 	if (isBuildingOnlyHealthy())
