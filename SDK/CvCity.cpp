@@ -6364,7 +6364,7 @@ void CvCity::updateExtraBuildingHappiness()
  * Doesn't reset iGood or iBad to zero.
  * Doesn't check if the building can be constructed in this city.
  */
-int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
+int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iAngryPop) const
 {
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
@@ -6461,6 +6461,12 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 		// override extra unhappiness and completely negate all existing unhappiness
 		iBad = iStartingBad - unhappyLevel();
 	}
+
+	// Effect on Angry Population
+	int iHappy = happyLevel();
+	int iUnhappy = unhappyLevel();
+	int iPop = getPopulation();
+	iAngryPop = range((iUnhappy + iBad) - (iHappy + iGood), 0, iPop) - range(iUnhappy - iHappy, 0, iPop);
 
 	return iGood - iBad - iStarting;
 }

@@ -8739,8 +8739,10 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWStrin
 		// Happiness
 		int iGood = 0;
 		int iBad = 0;
-		int iHappiness = pCity->getAdditionalHappinessByBuilding(eBuilding, iGood, iBad);
+		int iAngryPop = 0;
+		int iHappiness = pCity->getAdditionalHappinessByBuilding(eBuilding, iGood, iBad, iAngryPop);
 		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, bNewLine, bStarted);
+		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iAngryPop, gDLL->getSymbolID(ANGRY_POP_CHAR), false, bNewLine, bStarted);
 
 		// Health
 		iGood = 0;
@@ -11316,9 +11318,10 @@ bool CvGameTextMgr::setBuildingAdditionalHappinessHelp(CvWStringBuffer &szBuffer
 	{
 		if (city.canConstruct((BuildingTypes)i, false, true, false))
 		{
-			int iGood = 0, iBad = 0, iChange = city.getAdditionalHappinessByBuilding((BuildingTypes)i, iGood, iBad);
+			int iGood = 0, iBad = 0, iAngryPop = 0;
+			int iChange = city.getAdditionalHappinessByBuilding((BuildingTypes)i, iGood, iBad, iAngryPop);
 			
-			if (iGood != 0 || iBad != 0)
+			if (iGood != 0 || iBad != 0 || iAngryPop != 0)
 			{
 				if (!bStarted)
 				{
@@ -11327,7 +11330,8 @@ bool CvGameTextMgr::setBuildingAdditionalHappinessHelp(CvWStringBuffer &szBuffer
 				}
 
 				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
-				setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, true);
+				bool bStartedLine = setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HAPPY_CHAR), iBad, gDLL->getSymbolID(UNHAPPY_CHAR), false, true);
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iAngryPop, gDLL->getSymbolID(ANGRY_POP_CHAR), false, true, bStartedLine);
 			}
 		}
 	}
