@@ -397,7 +397,7 @@ public:
 	void updateExtraBuildingHappiness();
 
 // BUG - Building Additional Happiness - start
-	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const;
+	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iAngryPop) const;
 // BUG - Building Additional Happiness - end
 
 	int getExtraBuildingGoodHealth() const;														// Exposed to Python

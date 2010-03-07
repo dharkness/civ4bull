@@ -48,6 +48,7 @@ Improvements:
 	Added Global Happiness and Health [Fuyu]
 	Added Building Class Happiness (unused in original game) [Fuyu]
 	Added Global War Weariness Modifier [Fuyu]
+	Added Angry Population affected by Happiness
 
 Bug Fixes:
 
