@@ -6426,7 +6426,8 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 	}
 
 	// War Weariness Modifier
-	if (kBuilding.getWarWearinessModifier() != 0)
+	int iWarWearinessModifier = kBuilding.getWarWearinessModifier() + kBuilding.getGlobalWarWearinessModifier();
+	if (iWarWearinessModifier != 0)
 	{
 		int iBaseAngerPercent = 0;
 
@@ -6446,7 +6447,7 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 		int iCurrentUnhappiness = iCurrentAngerPercent * getPopulation() / GC.getPERCENT_ANGER_DIVISOR();
 
 		int iNewWarAngerPercent = GET_PLAYER(getOwnerINLINE()).getWarWearinessPercentAnger();
-		iNewWarAngerPercent *= std::max(0, (kBuilding.getWarWearinessModifier() + getWarWearinessModifier() + GET_PLAYER(getOwnerINLINE()).getWarWearinessModifier() + 100));
+		iNewWarAngerPercent *= std::max(0, (iWarWearinessModifier + getWarWearinessModifier() + GET_PLAYER(getOwnerINLINE()).getWarWearinessModifier() + 100));
 		iNewWarAngerPercent /= 100;
 		int iNewAngerPercent = iBaseAngerPercent + iNewWarAngerPercent;
 		int iNewUnhappiness = iNewAngerPercent * getPopulation() / GC.getPERCENT_ANGER_DIVISOR();
