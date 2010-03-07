@@ -169,6 +169,16 @@ CyCity
 	int getAdditionalBaseCommerceRateByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding)
 	int getAdditionalCommerceRateModifierByBuilding(CommerceTypes eIndex, BuildingTypes eBuilding)
 	
+	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding)
+	int getAdditionalGoodHappinessByBuilding(BuildingTypes eBuilding)
+	int getAdditionalBadHappinessByBuilding(BuildingTypes eBuilding)
+	int getAdditionalAngryPopulationByBuilding(BuildingTypes eBuilding)
+	
+	int getAdditionalHealthByBuilding(BuildingTypes eBuilding)
+	int getAdditionalGoodHealthByBuilding(BuildingTypes eBuilding)
+	int getAdditionalBadHealthByBuilding(BuildingTypes eBuilding)
+	int getAdditionalSpoiledFoodByBuilding(BuildingTypes eBuilding)
+	
 	int getAdditionalGreatPeopleRateByBuilding(BuildingTypes eBuilding)
 	int getAdditionalBaseGreatPeopleRateByBuilding(BuildingTypes eBuilding)
 	int getAdditionalGreatPeopleRateModifierByBuilding(BuildingTypes eBuilding)

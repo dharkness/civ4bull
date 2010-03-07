@@ -49,6 +49,7 @@ Improvements:
 	Added Building Class Happiness (unused in original game) [Fuyu]
 	Added Global War Weariness Modifier [Fuyu]
 	Added Angry Population affected by Happiness
+	Added Spoiled Food affected by Health
 
 Bug Fixes:
 
@@ -64,8 +65,13 @@ New Features:
 
 Improvements:
 
+- API
+	Added iAngryPop to CvCity::getAdditionalHappinessByBuilding()
+	Added iSpoiledFood to CvCity::getAdditionalHealthByBuilding()
 - Python API
 	Exposed CvCity::get/set/changeProjectProduction()
+	Exposed CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding)
+	Exposed CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding)
 
 Bug Fixes:
 
@@ -147,9 +153,7 @@ Improvements:
 - Makefile
 	Added MODFLAGS variable to hold compiler flags for optional mods
 - Python API
-	Exposed CyPlayer::changeExtraHealth(int iChange)
-
-Bug Fixes:
+	Exposed CvPlayer::changeExtraHealth(int iChange)
 
 
 ____________________________________________________________________________________________________

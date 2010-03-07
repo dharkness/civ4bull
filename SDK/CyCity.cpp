@@ -1005,6 +1005,67 @@ int CyCity::getBuildingHealth(int /*BuildingTypes*/ eBuilding)
 	return m_pCity ? m_pCity->getBuildingHealth((BuildingTypes)eBuilding) : -1;
 }
 
+// BUG - Building Additional Health - start
+int CyCity::getAdditionalHealthByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalGoodHealthByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iGood;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalBadHealthByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iBad;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalSpoiledFoodByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iSpoiledFood;
+	}
+	else
+	{
+		return -1;
+	}
+}
+// BUG - Building Additional Health - end
+
 int CyCity::getPowerGoodHealth()
 {
 	return m_pCity ? m_pCity->getPowerGoodHealth() : -1;
@@ -1049,6 +1110,67 @@ int CyCity::getBuildingHappiness(int /*BuildingTypes*/ eBuilding)
 {
 	return m_pCity ? m_pCity->getBuildingHappiness((BuildingTypes)eBuilding) : -1;
 }
+
+// BUG - Building Additional Happiness - start
+int CyCity::getAdditionalHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalGoodHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iGood;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalBadHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iBad;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalAngryPopulationByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return iSpoiledFood;
+	}
+	else
+	{
+		return -1;
+	}
+}
+// BUG - Building Additional Happiness - end
 
 int CyCity::getExtraBuildingGoodHappiness()
 {

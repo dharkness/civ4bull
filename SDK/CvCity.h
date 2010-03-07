@@ -397,7 +397,7 @@ public:
 	void updateExtraBuildingHappiness();
 
 // BUG - Building Additional Happiness - start
-	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iAngryPop) const;
+	int getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iAngryPop) const;		// Exposed to Python
 // BUG - Building Additional Happiness - end
 
 	int getExtraBuildingGoodHealth() const;														// Exposed to Python
@@ -405,7 +405,7 @@ public:
 	void updateExtraBuildingHealth();
 
 // BUG - Building Additional Health - start
-	int getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const;
+	int getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iSpoiledFood) const;		// Exposed to Python
 // BUG - Building Additional Health - end
 
 	int getFeatureGoodHappiness() const;																	// Exposed to Python
