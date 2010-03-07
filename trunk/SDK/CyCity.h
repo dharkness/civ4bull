@@ -234,6 +234,12 @@ public:
 	int getFeatureGoodHealth();
 	int getFeatureBadHealth();
 	int getBuildingHealth(int iBuilding);
+// BUG - Building Additional Health - start
+	int getAdditionalHealthByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalGoodHealthByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalBadHealthByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalSpoiledFoodByBuilding(int /*BuildingTypes*/ eBuilding);
+// BUG - Building Additional Health - end
 	int getPowerGoodHealth();
 	int getPowerBadHealth();
 	int getBonusGoodHealth();
@@ -243,6 +249,12 @@ public:
 	int getBuildingGoodHappiness();
 	int getBuildingBadHappiness();
 	int getBuildingHappiness(int iBuilding);
+// BUG - Building Additional Happiness - start
+	int getAdditionalHappinessByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalGoodHappinessByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalBadHappinessByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalAngryPopulationByBuilding(int /*BuildingTypes*/ eBuilding);
+// BUG - Building Additional Happiness - end
 	int getExtraBuildingGoodHappiness();
 	int getExtraBuildingBadHappiness();
 	int getFeatureGoodHappiness();

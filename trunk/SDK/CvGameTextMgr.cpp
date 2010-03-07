@@ -8747,8 +8747,10 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWStrin
 		// Health
 		iGood = 0;
 		iBad = 0;
-		int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad);
+		int iSpoiledFood = 0;
+		int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood);
 		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, bNewLine, bStarted);
+		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR), false, bNewLine, bStarted);
 
 		// Yield
 		int aiYields[NUM_YIELD_TYPES];
@@ -10895,7 +10897,8 @@ bool CvGameTextMgr::setBuildingAdditionalHealthHelp(CvWStringBuffer &szBuffer, c
 	{
 		if (city.canConstruct((BuildingTypes)i, false, true, false))
 		{
-			int iGood = 0, iBad = 0, iChange = city.getAdditionalHealthByBuilding((BuildingTypes)i, iGood, iBad);
+			int iGood = 0, iBad = 0, iSpoiledFood = 0;
+			int iChange = city.getAdditionalHealthByBuilding((BuildingTypes)i, iGood, iBad, iSpoiledFood);
 			
 			if (iGood != 0 || iBad != 0)
 			{
@@ -10906,7 +10909,8 @@ bool CvGameTextMgr::setBuildingAdditionalHealthHelp(CvWStringBuffer &szBuffer, c
 				}
 
 				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo((BuildingTypes)i).getDescription());
-				setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true);
+				bool bStartedLine = setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true);
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR), false, true, bStartedLine);
 			}
 		}
 	}

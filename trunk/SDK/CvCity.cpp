@@ -6466,7 +6466,7 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 	int iHappy = happyLevel();
 	int iUnhappy = unhappyLevel();
 	int iPop = getPopulation();
-	iAngryPop = range((iUnhappy + iBad) - (iHappy + iGood), 0, iPop) - range(iUnhappy - iHappy, 0, iPop);
+	iAngryPop += range((iUnhappy + iBad) - (iHappy + iGood), 0, iPop) - range(iUnhappy - iHappy, 0, iPop);
 
 	return iGood - iBad - iStarting;
 }
@@ -6478,7 +6478,7 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
  * Doesn't reset iGood or iBad to zero.
  * Doesn't check if the building can be constructed in this city.
  */
-int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
+int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iSpoiledFood) const
 {
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
@@ -6553,6 +6553,11 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	{
 		iBad -= getPopulation();
 	}
+
+	// Effect on Spoiled Food
+	int iHealthy = goodHealth();
+	int iUnhealthy = badHealth();
+	iSpoiledFood -= std::min(0, (iHealthy + iGood) - (iUnhealthy + iBad)) - std::min(0, iHealthy - iUnhealthy);
 
 	return iGood - iBad - iStarting;
 }
