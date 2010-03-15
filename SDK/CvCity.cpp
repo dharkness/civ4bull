@@ -6358,8 +6358,19 @@ void CvCity::updateExtraBuildingHappiness()
 
 // BUG - Building Additional Happiness - start
 /*
+ * Returns the total additional happiness that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding) const
+{
+	int iGood = 0, iBad = 0, iAngryPop = 0;
+	return getAdditionalHappinessByBuilding(eBuilding, iGood, iBad, iAngryPop);
+}
+
+/*
  * Returns the total additional happiness that adding one of the given buildings will provide
- * and sets the good and bad levels individually.
+ * and sets the good and bad levels individually and any resulting additional angry population.
  *
  * Doesn't reset iGood or iBad to zero.
  * Doesn't check if the building can be constructed in this city.
@@ -6471,9 +6482,21 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 	return iGood - iBad - iStarting;
 }
 
+
+/*
+ * Returns the total additional health that adding one of the given buildings will provide.
+ *
+ * Doesn't check if the building can be constructed in this city.
+ */
+int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) const
+{
+	int iGood = 0, iBad = 0, iSpoiledFood = 0;
+	return getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood);
+}
+
 /*
  * Returns the total additional health that adding one of the given buildings will provide
- * and sets the good and bad levels individually.
+ * and sets the good and bad levels individually and any resulting additional spoiled food.
  *
  * Doesn't reset iGood or iBad to zero.
  * Doesn't check if the building can be constructed in this city.

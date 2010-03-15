@@ -1116,9 +1116,9 @@ int CyCity::getAdditionalHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iAngryPop = 0;
 
-		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
 	}
 	else
 	{
@@ -1130,9 +1130,9 @@ int CyCity::getAdditionalGoodHappinessByBuilding(int /*BuildingTypes*/ eBuilding
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iAngryPop = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
 		return iGood;
 	}
 	else
@@ -1145,9 +1145,9 @@ int CyCity::getAdditionalBadHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iAngryPop = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
 		return iBad;
 	}
 	else
@@ -1160,10 +1160,10 @@ int CyCity::getAdditionalAngryPopulationByBuilding(int /*BuildingTypes*/ eBuildi
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iAngryPop = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
-		return iSpoiledFood;
+		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
+		return iAngryPop;
 	}
 	else
 	{
