@@ -68,10 +68,12 @@ Improvements:
 - API
 	Added iAngryPop to CvCity::getAdditionalHappinessByBuilding()
 	Added iSpoiledFood to CvCity::getAdditionalHealthByBuilding()
+	Added CvCity::getAdditionalHappinessByBuilding() form that doesn't take any reference arguments
+	Added CvCity::getAdditionalHealthByBuilding() form that doesn't take any reference arguments
 - Python API
 	Exposed CvCity::get/set/changeProjectProduction()
-	Exposed CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding)
-	Exposed CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding)
+	Exposed CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding) [four forms]
+	Exposed CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) [four forms]
 
 Bug Fixes:
 
