@@ -50,11 +50,15 @@ Improvements:
 	Added Global War Weariness Modifier [Fuyu]
 	Added Angry Population affected by Happiness
 	Added Spoiled Food affected by Health
+- Show Hidden Attitudes
+	Debug mode exposes all modifiers
 
 Bug Fixes:
 
 - Leaderheads
 	Worst Enemies you haven't met are no longer shown
+- Show Hidden Attitudes
+	First Impression modifier resets to zero for each leader
 
 Merged Mods:
 
