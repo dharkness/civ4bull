@@ -258,6 +258,12 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
+	<!-- Ignore Harmless Barbarians -->
+	<Define>
+		<DefineName>BUG_IGNORE_HARMLESS_BARBARIANS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
 	<!-- Pre-Chop -->
 	<Define>
 		<DefineName>BUG_PRECHOP_FORESTS</DefineName>

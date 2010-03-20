@@ -42,6 +42,9 @@ CHANGES
 
 New Features:
 
+- Ignore Harmless Barbarians
+	No warnings for nearby barbarians that cannot enter your lands
+
 Improvements:
 
 - Building Actual Effects
