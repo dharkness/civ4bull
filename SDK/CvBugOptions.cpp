@@ -112,6 +112,7 @@ bool getBugOptionBOOL(const char* id, bool bDefault, const char* xmlKey)
 			tmp.append(id);
 			xmlKey = tmp.c_str();
 		}
+		//logMsg("debug - getBugOptionBOOL %s", xmlKey);
 		return getDefineBOOL(xmlKey, bDefault);
 	}
 }
@@ -141,6 +142,7 @@ int getBugOptionINT(const char* id, int iDefault, const char* xmlKey)
 			tmp.append(id);
 			xmlKey = tmp.c_str();
 		}
+		//logMsg("debug - getBugOptionINT %s", xmlKey);
 		return getDefineINT(xmlKey, iDefault);
 	}
 }
