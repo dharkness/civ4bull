@@ -15607,7 +15607,7 @@ void CvPlayer::doWarnings()
 	}
 
 // BUG - Ignore Harmless Barbarians - start
-	bool bCheckBarbarians = getBugOptionBOOL("Actions__IgnoreHarmlessBarbarians", true, "BUG_IGNORE_HARMLESS_BARBARIANS");
+	bool bCheckBarbarians = isHuman() && getBugOptionBOOL("Actions__IgnoreHarmlessBarbarians", true, "BUG_IGNORE_HARMLESS_BARBARIANS");
 // BUG - Ignore Harmless Barbarians - end
 
 	//update enemy units close to your territory
