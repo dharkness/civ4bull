@@ -145,6 +145,10 @@
 		<DefineName>BUG_UPDATE_UNIT_NAME_ON_UPGRADE</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+	<Define>
+		<DefineName>BUG_UNIT_EXPERIENCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 
 	<!-- Specialist -->
 	<Define>
@@ -169,6 +173,18 @@
 	</Define>
 	
 	<!-- Action Buttons -->
+	<Define>
+		<DefineName>BUG_CONSCRIPT_EXPERIENCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CONSCRIPT_LIMIT_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_HURRY_UNIT_EXPERIENCE_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	<Define>
 		<DefineName>BUG_HURRY_OVERFLOW_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>

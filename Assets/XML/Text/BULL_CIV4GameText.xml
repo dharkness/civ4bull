@@ -643,6 +643,52 @@
 		<Spanish>[NEWLINE][ICON_BULLET]Their Civics don't allow Foreign Trade</Spanish>
 	</TEXT>
 
+<!-- Unit Hover -->
+
+	<TEXT>
+		<Tag>TXT_KEY_MISC_EXPERIENCE</Tag>
+		<English>%d1 XP</English>
+		<French>%d1 EXP</French>
+		<German>%d1 EP</German>
+		<Italian>%d1 XP</Italian>
+		<Spanish>%d1 PE</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_PROMOTIONS</Tag>
+		<English>%d1[ICON_STAR]</English>
+		<French>%d1[ICON_STAR]</French>
+		<German>%d1[ICON_STAR]</German>
+		<Italian>%d1[ICON_STAR]</Italian>
+		<Spanish>%d1[ICON_STAR]</Spanish>
+	</TEXT>
+
+<!-- Conscript Hover -->
+
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CITY_HAS_CONSCRIPTED</Tag>
+		<English>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_CONSCRIPT_UNITS_LEFT</Tag>
+		<English>[COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</English>
+		<French>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</French>
+		<German>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</German>
+		<Italian>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</Italian>
+		<Spanish>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</Spanish>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_MISC_NO_CONSCRIPT_UNITS_LEFT</Tag>
+		<English>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</Spanish>
+	</TEXT>
+
 <!-- Pre-Chop -->
 	
 	<TEXT>
