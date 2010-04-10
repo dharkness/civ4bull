@@ -8524,22 +8524,9 @@ int CvUnit::fortifyModifier() const
 
 int CvUnit::experienceNeeded() const
 {
-	// Use python to determine pillage amounts...
-	int iExperienceNeeded;
-	long lExperienceNeeded;
-
-	lExperienceNeeded = 0;
-	iExperienceNeeded = 0;
-
-	CyArgsList argsList;
-	argsList.add(getLevel());	// pass in the units level
-	argsList.add(getOwnerINLINE());	// pass in the units 
-
-	gDLL->getPythonIFace()->callFunction(PYGameModule, "getExperienceNeeded", argsList.makeFunctionArgs(),&lExperienceNeeded);
-
-	iExperienceNeeded = (int)lExperienceNeeded;
-
-	return iExperienceNeeded;
+// BUG - Unit Experience - start
+	return calculateExperience(getLevel(), getOwnerINLINE());
+// BUG - Unit Experience - end
 }
 
 

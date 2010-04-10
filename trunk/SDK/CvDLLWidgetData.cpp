@@ -1888,6 +1888,15 @@ void CvDLLWidgetData::parseHurryHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 	if (pHeadSelectedCity != NULL)
 	{
 		szBuffer.assign(gDLL->getText("TXT_KEY_MISC_HURRY_PROD", pHeadSelectedCity->getProductionNameKey()));
+		
+// BUG - Starting Experience - start
+		if (pHeadSelectedCity->isProductionUnit() && getBugOptionBOOL("MiscHover__HurryUnitExperience", true, "BUG_HURRY_UNIT_EXPERIENCE_HOVER"))
+		{
+			CvWString szStart;
+			szStart.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
+			GAMETEXT.setUnitExperienceHelp(szBuffer, szStart, pHeadSelectedCity->getProductionUnit(), pHeadSelectedCity, false);
+		}
+// BUG - Starting Experience - end
 
 		iHurryGold = pHeadSelectedCity->hurryGold((HurryTypes)(widgetDataStruct.m_iData1));
 
@@ -1997,6 +2006,15 @@ void CvDLLWidgetData::parseConscriptHelp(CvWidgetDataStruct &widgetDataStruct, C
 			CvWString szTemp;
 			szTemp.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_UNIT_TEXT"), GC.getUnitInfo(pHeadSelectedCity->getConscriptUnit()).getDescription());
 			szBuffer.assign(szTemp);
+		
+// BUG - Starting Experience - start
+			if (getBugOptionBOOL("MiscHover__ConscriptExperience", true, "BUG_CONSCRIPT_EXPERIENCE_HOVER"))
+			{
+				CvWString szStart;
+				szStart.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
+				GAMETEXT.setUnitExperienceHelp(szBuffer, szStart, pHeadSelectedCity->getConscriptUnit(), pHeadSelectedCity, true);
+			}
+// BUG - Starting Experience - end
 
 			iConscriptPopulation = pHeadSelectedCity->getConscriptPopulation();
 
@@ -2049,6 +2067,33 @@ void CvDLLWidgetData::parseConscriptHelp(CvWidgetDataStruct &widgetDataStruct, C
 					szBuffer.append(ENDCOLR);
 				}
 			}
+
+// BUG - Conscript Limit - start
+			if (getBugOptionBOOL("MiscHover__ConscriptLimit", true, "BUG_CONSCRIPT_LIMIT_HOVER"))
+			{
+				if (pHeadSelectedCity->isDrafted())
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_MISC_CITY_HAS_CONSCRIPTED"));
+				}
+				else
+				{
+					int iDraftUnits = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getConscriptCount();
+					int iMaxDraftUnits = GET_PLAYER(pHeadSelectedCity->getOwnerINLINE()).getMaxConscript();
+
+					if (iDraftUnits >= iMaxDraftUnits)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_NO_CONSCRIPT_UNITS_LEFT", iDraftUnits));
+					}
+					else
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_MISC_CONSCRIPT_UNITS_LEFT", iMaxDraftUnits - iDraftUnits));
+					}
+				}
+			}
+// BUG - Conscript Limit - end
 		}
 	}
 }

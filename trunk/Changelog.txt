@@ -44,6 +44,11 @@ New Features:
 
 - Ignore Harmless Barbarians
 	No warnings for nearby barbarians that cannot enter your lands
+- Starting Experience
+	Added unit's starting experience and number of promotions to Build, Draft, and Hurry button hovers
+- Draft Limit
+	Added number of units you can draft to Draft button hover
+	Added messages to Draft button hover when you have reached the player or city limits
 
 Improvements:
 
@@ -69,6 +74,12 @@ Merged Mods:
 MODDING
 
 New Features:
+
+- API
+	Added calculateExperience() in CvGameCoreUtils
+	Added calculateLevel() in CvGameCoreUtils
+	Added CvGameTextMgr::setBasicUnitHelpWithCity()
+	Added CvGameTextMgr::setUnitExperienceHelp()
 
 Improvements:
 

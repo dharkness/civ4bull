@@ -362,4 +362,12 @@ void getMissionTypeString(CvWString& szString, MissionTypes eMissionType);
 void getMissionAIString(CvWString& szString, MissionAITypes eMissionAI);
 void getUnitAIString(CvWString& szString, UnitAITypes eUnitAI);
 
+// BUG - Unit Experience - start
+/*
+ * Calculates the experience needed to reach the next level after the given level.
+ */
+int calculateExperience(int iLevel, PlayerTypes ePlayer);
+int calculateLevel(int iExperience, PlayerTypes ePlayer);
+// BUG - Unit Experience - end
+
 #endif

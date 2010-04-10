@@ -7598,6 +7598,13 @@ void CvGameTextMgr::setTechTradeHelp(CvWStringBuffer &szBuffer, TechTypes eTech,
 
 void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText)
 {
+// BUG - Starting Experience - start
+	setBasicUnitHelpWithCity(szBuffer, eUnit, bCivilopediaText);
+}
+
+void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText, CvCity* pCity)
+{
+// BUG - Starting Experience - end
 	PROFILE_FUNC();
 
 	CvWString szTempBuffer;
@@ -7639,6 +7646,13 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 			szBuffer.append(L", ");
 			szBuffer.append(gDLL->getText("TXT_KEY_UNIT_AIR_RANGE", GC.getUnitInfo(eUnit).getAirRange()));
 		}
+		
+// BUG - Starting Experience - start
+		if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true, "BUG_UNIT_EXPERIENCE_HOVER"))
+		{
+			setUnitExperienceHelp(szBuffer, L", ", eUnit, pCity, false);
+		}
+// BUG - Starting Experience - end
 	}
 
 	if (GC.getUnitInfo(eUnit).isGoldenAge())
@@ -8328,6 +8342,28 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 		szBuffer.append(GC.getUnitInfo(eUnit).getHelp());
 	}
 }
+		
+// BUG - Starting Experience - start
+/*
+ * Appends the starting experience and number of promotions the given unit will have.
+ */
+void CvGameTextMgr::setUnitExperienceHelp(CvWStringBuffer &szBuffer, CvWString szStart, UnitTypes eUnit, CvCity* pCity, bool bConscript)
+{
+	int iExperience = pCity->getProductionExperience(eUnit) >> (bConscript ? 1 : 0);
+	if (iExperience > 0)
+	{
+		szBuffer.append(szStart);
+		szBuffer.append(gDLL->getText("TXT_KEY_MISC_EXPERIENCE", iExperience));
+
+		int iLevel = calculateLevel(iExperience, pCity->getOwnerINLINE());
+		if (iLevel > 1)
+		{
+			szBuffer.append(L", ");
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_PROMOTIONS", iLevel - 1));
+		}
+	}
+}
+// BUG - Starting Experience - end
 
 
 void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CvCity* pCity)
@@ -8431,7 +8467,9 @@ void CvGameTextMgr::setUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool
 		szBuffer.append(gDLL->getText("TXT_KEY_UNIT_INSTANCE_COST_MOD", GC.getUnitClassInfo(eUnitClass).getInstanceCostModifier()));
 	}
 
-	setBasicUnitHelp(szBuffer, eUnit, bCivilopediaText);
+// BUG - Starting Experience - start
+	setBasicUnitHelpWithCity(szBuffer, eUnit, bCivilopediaText, pCity);
+// BUG - Starting Experience - end
 
 	if ((pCity == NULL) || !(pCity->canTrain(eUnit)))
 	{

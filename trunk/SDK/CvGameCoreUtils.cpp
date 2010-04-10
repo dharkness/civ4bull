@@ -2421,3 +2421,56 @@ void getUnitAIString(CvWString& szString, UnitAITypes eUnitAI)
 	default: szString = CvWString::format(L"unknown(%d)", eUnitAI); break;
 	}
 }
+
+// BUG - Unit Experience - start
+#include "CyArgsList.h"
+
+/*
+ * Calculates the experience needed to reach the next level after the given level.
+ */
+int calculateExperience(int iLevel, PlayerTypes ePlayer)
+{
+	FAssertMsg(ePlayer != NO_PLAYER, "ePlayer must be a valid player");
+	FAssertMsg(iLevel > 0, "iLevel must be greater than zero");
+
+	long lExperienceNeeded = 0;
+
+	CyArgsList argsList;
+	argsList.add(iLevel);
+	argsList.add(ePlayer);
+
+	gDLL->getPythonIFace()->callFunction(PYGameModule, "getExperienceNeeded", argsList.makeFunctionArgs(), &lExperienceNeeded);
+
+	return (int)lExperienceNeeded;
+}
+
+/*
+ * Calculates the level for a unit with the given experience.
+ */
+int calculateLevel(int iExperience, PlayerTypes ePlayer)
+{
+	FAssertMsg(ePlayer != NO_PLAYER, "ePlayer must be a valid player");
+
+	if (iExperience <= 0)
+	{
+		return 1;
+	}
+
+	int iLevel = 1;
+	while (true)
+	{
+		int iNextLevelExperience = calculateExperience(iLevel, ePlayer);
+		if (iNextLevelExperience > iExperience)
+		{
+			break;
+		}
+		++iLevel;
+		if (iNextLevelExperience == iExperience)
+		{
+			break;
+		}
+	}
+
+	return iLevel;
+}
+// BUG - Unit Experience - end
