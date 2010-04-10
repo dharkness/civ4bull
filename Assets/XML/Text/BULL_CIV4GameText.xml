@@ -666,27 +666,27 @@
 
 	<TEXT>
 		<Tag>TXT_KEY_MISC_CITY_HAS_CONSCRIPTED</Tag>
-		<English>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</English>
-		<French>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</French>
-		<German>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</German>
-		<Italian>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</Italian>
-		<Spanish>[COLOR_WARNING_TEXT]City has already drafted this turn[COLOR_REVERT]</Spanish>
+		<English>[COLOR_WARNING_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_CONSCRIPT_UNITS_LEFT</Tag>
-		<English>[COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</English>
-		<French>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</French>
-		<German>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</German>
-		<Italian>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</Italian>
-		<Spanish>COLOR_POSITIVE_TEXT]You can draft %d1 units this turn[COLOR_REVERT]</Spanish>
+		<English>You can draft %d1 [NUM1:unit:units] this turn</English>
+		<French>You can draft %d1 [NUM1:unit:units] this turn</French>
+		<German>You can draft %d1 [NUM1:unit:units] this turn</German>
+		<Italian>You can draft %d1 [NUM1:unit:units] this turn</Italian>
+		<Spanish>You can draft %d1 [NUM1:unit:units] this turn</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_MISC_NO_CONSCRIPT_UNITS_LEFT</Tag>
-		<English>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</English>
-		<French>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</French>
-		<German>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</German>
-		<Italian>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</Italian>
-		<Spanish>[COLOR_WARNING_TEXT]You have already drafted %d1 units this turn[COLOR_REVERT]</Spanish>
+		<English>[COLOR_WARNING_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</English>
+		<French>[COLOR_WARNING_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</French>
+		<German>[COLOR_WARNING_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</German>
+		<Italian>[COLOR_WARNING_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</Italian>
+		<Spanish>[COLOR_WARNING_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
 
 <!-- Pre-Chop -->
