@@ -8310,7 +8310,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 	}
 		
 // BUG - Starting Experience - start
-	if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true, "BUG_UNIT_EXPERIENCE_HOVER"))
+	if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperienceModifiers", true, "BUG_UNIT_EXPERIENCE_MODIFIERS_HOVER"))
 	{
 		CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
 		UnitCombatTypes eCombatType = (UnitCombatTypes)kUnit.getUnitCombatType();

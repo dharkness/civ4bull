@@ -149,6 +149,10 @@
 		<DefineName>BUG_UNIT_EXPERIENCE_HOVER</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+	<Define>
+		<DefineName>BUG_UNIT_EXPERIENCE_MODIFIERS_HOVER</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 
 	<!-- Specialist -->
 	<Define>
