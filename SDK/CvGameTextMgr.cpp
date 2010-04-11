@@ -8308,6 +8308,74 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 			bFirst = false;
 		}
 	}
+		
+// BUG - Starting Experience - start
+	if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true, "BUG_UNIT_EXPERIENCE_HOVER"))
+	{
+		CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
+		UnitCombatTypes eCombatType = (UnitCombatTypes)kUnit.getUnitCombatType();
+		DomainTypes eDomainType = (DomainTypes)kUnit.getDomainType();
+
+		if (eCombatType != NO_UNITCOMBAT)
+		{
+			CvPlayer& kPlayer = GET_PLAYER(pCity->getOwnerINLINE());
+			int iExperience;
+
+			iExperience = pCity->getFreeExperience();
+			if (iExperience != 0)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_CITY_FREE_EXPERIENCE", iExperience));
+			}
+			iExperience = kPlayer.getFreeExperience();
+			if (iExperience != 0)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_PLAYER_FREE_EXPERIENCE", iExperience));
+			}
+			iExperience = pCity->getSpecialistFreeExperience();
+			if (iExperience != 0)
+			{
+				szBuffer.append(NEWLINE);
+				szBuffer.append(gDLL->getText("TXT_KEY_SPECIALIST_FREE_EXPERIENCE", iExperience));
+			}
+
+			for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+			{
+				CvBuildingInfo& kBuilding = GC.getBuildingInfo((BuildingTypes)iI);
+				iExperience = kBuilding.getDomainFreeExperience(eDomainType) + kBuilding.getUnitCombatFreeExperience(eCombatType);
+				if (iExperience != 0)
+				{
+					if (pCity->getNumBuilding((BuildingTypes)iI) > 0)
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_BUILDING_FREE_EXPERIENCE", iExperience, kBuilding.getTextKeyWide()));
+					}
+					else if (pCity->canConstruct((BuildingTypes)iI, false, true))
+					{
+						szBuffer.append(NEWLINE);
+						szBuffer.append(gDLL->getText("TXT_KEY_NO_BUILDING_FREE_EXPERIENCE", iExperience, kBuilding.getTextKeyWide()));
+					}
+				}
+			}
+
+			if (kPlayer.getStateReligion() != NO_RELIGION)
+			{
+				iExperience = kPlayer.getStateReligionFreeExperience();
+				if (pCity->isHasReligion(kPlayer.getStateReligion()))
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_STATE_RELIGION_FREE_EXPERIENCE", iExperience));
+				}
+				else
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_NO_STATE_RELIGION_FREE_EXPERIENCE", iExperience));
+				}
+			}
+		}
+	}
+// BUG - Starting Experience - end
 
 	if (GC.getUnitInfo(eUnit).getExtraCost() != 0)
 	{
@@ -8345,21 +8413,25 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 		
 // BUG - Starting Experience - start
 /*
- * Appends the starting experience and number of promotions the given unit will have.
+ * Appends the starting experience and number of promotions the given unit will have
+ * when trained or conscripted in the given city.
  */
 void CvGameTextMgr::setUnitExperienceHelp(CvWStringBuffer &szBuffer, CvWString szStart, UnitTypes eUnit, CvCity* pCity, bool bConscript)
 {
-	int iExperience = pCity->getProductionExperience(eUnit) >> (bConscript ? 1 : 0);
-	if (iExperience > 0)
+	if (GC.getUnitInfo(eUnit).getUnitCombatType() != NO_UNITCOMBAT)
 	{
-		szBuffer.append(szStart);
-		szBuffer.append(gDLL->getText("TXT_KEY_MISC_EXPERIENCE", iExperience));
-
-		int iLevel = calculateLevel(iExperience, pCity->getOwnerINLINE());
-		if (iLevel > 1)
+		int iExperience = pCity->getProductionExperience(eUnit) >> (bConscript ? 1 : 0);
+		if (iExperience > 0)
 		{
-			szBuffer.append(L", ");
-			szBuffer.append(gDLL->getText("TXT_KEY_MISC_PROMOTIONS", iLevel - 1));
+			szBuffer.append(szStart);
+			szBuffer.append(gDLL->getText("TXT_KEY_MISC_EXPERIENCE", iExperience));
+
+			int iLevel = calculateLevel(iExperience, pCity->getOwnerINLINE());
+			if (iLevel > 1)
+			{
+				szBuffer.append(L", ");
+				szBuffer.append(gDLL->getText("TXT_KEY_MISC_PROMOTIONS", iLevel - 1));
+			}
 		}
 	}
 }
