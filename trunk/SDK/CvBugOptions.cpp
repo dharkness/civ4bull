@@ -34,6 +34,10 @@ void bugInit()
 		long lResult = 0;
 
 		logMsg("debug - checking for BUG");
+		if (!gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBugReady", NULL))
+		{
+			logMsg("error - isBugReady not available");
+		}
 		if (gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBug", NULL, &lResult))
 		{
 			//logMsg("BULL - got value %ld", lResult);

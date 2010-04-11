@@ -68,6 +68,8 @@ Bug Fixes:
 	Worst Enemies you haven't met are no longer shown
 - Show Hidden Attitudes
 	First Impression modifier resets to zero for each leader
+- Options
+	Starting a new game no longer breaks BULL's access to BUG's options
 
 Merged Mods:
 
@@ -95,6 +97,10 @@ Improvements:
 	Exposed CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) [four forms]
 
 Bug Fixes:
+
+- Initialization
+	You cannot call bugInit() or getOptionXXX() before BUG has initialized
+	TODO: Have BUG tell BULL when it is ready
 
 
 ____________________________________________________________________________________________________

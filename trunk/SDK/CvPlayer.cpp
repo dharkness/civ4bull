@@ -15607,7 +15607,8 @@ void CvPlayer::doWarnings()
 	}
 
 // BUG - Ignore Harmless Barbarians - start
-	bool bCheckBarbarians = isHuman() && getBugOptionBOOL("Actions__IgnoreHarmlessBarbarians", true, "BUG_IGNORE_HARMLESS_BARBARIANS");
+	bool bCheckBarbarians = false;
+	bool bCheckBarbariansInitialized = !isHuman();
 // BUG - Ignore Harmless Barbarians - end
 
 	//update enemy units close to your territory
@@ -15633,6 +15634,11 @@ void CvPlayer::doWarnings()
 						if (!pUnit->isAnimal())
 						{
 // BUG - Ignore Harmless Barbarians - start
+							if (!bCheckBarbariansInitialized)
+							{
+								bCheckBarbarians = getBugOptionBOOL("Actions__IgnoreHarmlessBarbarians", true, "BUG_IGNORE_HARMLESS_BARBARIANS");
+								bCheckBarbariansInitialized = true;
+							}
 							if (bCheckBarbarians && pUnit->isBarbarian() && pUnit->getDomainType() == DOMAIN_LAND)
 							{
 								CvArea* pArea = pUnit->area();
