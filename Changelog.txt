@@ -45,10 +45,11 @@ New Features:
 - Ignore Harmless Barbarians
 	No warnings for nearby barbarians that cannot enter your lands
 - Starting Experience
-	Added unit's starting experience and number of promotions to Build, Draft, and Hurry button hovers
-	Added a list of the present and missing sources of experience and their amounts to the Build button hover
-- Draft Limit
-	Added number of units you can draft to Draft button hover
+	Added starting experience and number of promotions a unit will receive
+	Added list of the present and missing sources of experience and their amounts similar to resource modifiers for buildings
+- Draft Unit and Limit
+	Added full unit description: strength, moves, XP, promotions, abilities, etc.
+	Added number of units you can draft this turn
 	Added messages to Draft button hover when you have reached the player or city limits
 
 Improvements:

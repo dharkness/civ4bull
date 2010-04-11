@@ -1888,15 +1888,6 @@ void CvDLLWidgetData::parseHurryHelp(CvWidgetDataStruct &widgetDataStruct, CvWSt
 	if (pHeadSelectedCity != NULL)
 	{
 		szBuffer.assign(gDLL->getText("TXT_KEY_MISC_HURRY_PROD", pHeadSelectedCity->getProductionNameKey()));
-		
-// BUG - Starting Experience - start
-		if (pHeadSelectedCity->isProductionUnit() && getBugOptionBOOL("MiscHover__HurryUnitExperience", true, "BUG_HURRY_UNIT_EXPERIENCE_HOVER"))
-		{
-			CvWString szStart;
-			szStart.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
-			GAMETEXT.setUnitExperienceHelp(szBuffer, szStart, pHeadSelectedCity->getProductionUnit(), pHeadSelectedCity, false);
-		}
-// BUG - Starting Experience - end
 
 		iHurryGold = pHeadSelectedCity->hurryGold((HurryTypes)(widgetDataStruct.m_iData1));
 
@@ -2008,11 +1999,9 @@ void CvDLLWidgetData::parseConscriptHelp(CvWidgetDataStruct &widgetDataStruct, C
 			szBuffer.assign(szTemp);
 		
 // BUG - Starting Experience - start
-			if (getBugOptionBOOL("MiscHover__ConscriptExperience", true, "BUG_CONSCRIPT_EXPERIENCE_HOVER"))
+			if (getBugOptionBOOL("MiscHover__ConscriptUnit", true, "BUG_CONSCRIPT_UNIT_HOVER"))
 			{
-				CvWString szStart;
-				szStart.Format(NEWLINE L"%c", gDLL->getSymbolID(BULLET_CHAR));
-				GAMETEXT.setUnitExperienceHelp(szBuffer, szStart, pHeadSelectedCity->getConscriptUnit(), pHeadSelectedCity, true);
+				GAMETEXT.setBasicUnitHelpWithCity(szBuffer, pHeadSelectedCity->getConscriptUnit(), false, pHeadSelectedCity);
 			}
 // BUG - Starting Experience - end
 
