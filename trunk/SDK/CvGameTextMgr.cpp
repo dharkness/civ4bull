@@ -7602,7 +7602,7 @@ void CvGameTextMgr::setBasicUnitHelp(CvWStringBuffer &szBuffer, UnitTypes eUnit,
 	setBasicUnitHelpWithCity(szBuffer, eUnit, bCivilopediaText);
 }
 
-void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText, CvCity* pCity)
+void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitTypes eUnit, bool bCivilopediaText, CvCity* pCity, bool bConscript)
 {
 // BUG - Starting Experience - end
 	PROFILE_FUNC();
@@ -7650,7 +7650,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 // BUG - Starting Experience - start
 		if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true, "BUG_UNIT_EXPERIENCE_HOVER"))
 		{
-			setUnitExperienceHelp(szBuffer, L", ", eUnit, pCity, false);
+			setUnitExperienceHelp(szBuffer, L", ", eUnit, pCity, bConscript);
 		}
 // BUG - Starting Experience - end
 	}
