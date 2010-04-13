@@ -666,7 +666,7 @@
 		<Tag>TXT_KEY_CITY_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch die Stadt[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -674,7 +674,7 @@
 		<Tag>TXT_KEY_PLAYER_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Wunder und Gesellschaftsform[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -682,7 +682,7 @@
 		<Tag>TXT_KEY_SPECIALIST_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Spezialisten[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -690,7 +690,7 @@
 		<Tag>TXT_KEY_BUILDING_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch %s2_building[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -698,7 +698,7 @@
 		<Tag>TXT_KEY_NO_BUILDING_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 mit %s2_building[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -706,7 +706,7 @@
 		<Tag>TXT_KEY_STATE_RELIGION_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Staatsreligion[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -714,7 +714,7 @@
 		<Tag>TXT_KEY_NO_STATE_RELIGION_FREE_EXPERIENCE</Tag>
 		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</English>
 		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</German>
+		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 mit Staatsreligion[COLOR_REVERT]</German>
 		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</Italian>
 		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -725,7 +725,7 @@
 		<Tag>TXT_KEY_MISC_CITY_HAS_CONSCRIPTED</Tag>
 		<English>[COLOR_NEGATIVE_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</English>
 		<French>[COLOR_NEGATIVE_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</French>
-		<German>[COLOR_NEGATIVE_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</German>
+		<German>[COLOR_NEGATIVE_TEXT]Die Stadt kann in dieser Runde keine weitere Einheit rekrutieren[COLOR_REVERT]</German>
 		<Italian>[COLOR_NEGATIVE_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_NEGATIVE_TEXT]City cannot draft another unit this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
@@ -733,7 +733,7 @@
 		<Tag>TXT_KEY_MISC_CONSCRIPT_UNITS_LEFT</Tag>
 		<English>You can draft %d1 [NUM1:unit:units] this turn</English>
 		<French>You can draft %d1 [NUM1:unit:units] this turn</French>
-		<German>You can draft %d1 [NUM1:unit:units] this turn</German>
+		<German>Ihr könnt in dieser Runde noch %d1 [NUM1:Einheit:Einheiten] rekrutieren</German>
 		<Italian>You can draft %d1 [NUM1:unit:units] this turn</Italian>
 		<Spanish>You can draft %d1 [NUM1:unit:units] this turn</Spanish>
 	</TEXT>
@@ -741,7 +741,7 @@
 		<Tag>TXT_KEY_MISC_NO_CONSCRIPT_UNITS_LEFT</Tag>
 		<English>[COLOR_NEGATIVE_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</English>
 		<French>[COLOR_NEGATIVE_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</French>
-		<German>[COLOR_NEGATIVE_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</German>
+		<German>[COLOR_NEGATIVE_TEXT]Ihr könnt in dieser Runde keine weitere Einheit rekrutieren[COLOR_REVERT]</German>
 		<Italian>[COLOR_NEGATIVE_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</Italian>
 		<Spanish>[COLOR_NEGATIVE_TEXT]You cannot draft any more units this turn[COLOR_REVERT]</Spanish>
 	</TEXT>
