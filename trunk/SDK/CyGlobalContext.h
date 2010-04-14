@@ -318,8 +318,8 @@ public:
 	int getCITY_HOME_PLOT() const { return GC.getCITY_HOME_PLOT(); }
 
 // BUG - DLL Info - start
-	bool isBull() const { return GC.isBull(); }
-	int getBullApiVersion() const { return GC.getBullApiVersion(); }
+	bool isBull() const { return GC.isBull(); }												// Exposed to Python
+	int getBullApiVersion() const { return GC.getBullApiVersion(); }						// Exposed to Python
 
 	const wchar* getBullName() const { return GC.getBullName(); }
 	const wchar* getBullVersion() const { return GC.getBullVersion(); }
@@ -327,6 +327,10 @@ public:
 	std::wstring pyGetBullName() { return getBullName(); }									// Exposed to Python
 	std::wstring pyGetBullVersion() { return getBullVersion(); }							// Exposed to Python
 // BUG - DLL Info - end
+
+// BUG - BUG Info - start
+	void setIsBug(bool bIsBug) { GC.setIsBug(bIsBug); }										// Exposed to Python
+// BUG - BUG Info - end
 
 // BUFFY - DLL Info - start
 #ifdef _BUFFY

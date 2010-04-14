@@ -16,51 +16,25 @@ Created:	2009-01-21
 #include "CvBugOptions.h"
 
 bool g_bIsBug = false;
-bool g_bInitDone = false;
 
 
 void logMsg(const char* format, ...)
 {
 	static char buf[2048];
-	_vsnprintf( buf, 2048-4, format, (char*)(&format+1) );
+	_vsnprintf(buf, 2048 - 4, format, (char*)(&format + 1));
 	gDLL->logMsg("bull.log", buf);
 }
 
 
-void bugInit()
-{
-	if (!g_bInitDone)
-	{
-		long lResult = 0;
-
-		logMsg("debug - checking for BUG");
-		if (!gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBugReady", NULL))
-		{
-			logMsg("error - isBugReady not available");
-		}
-		if (gDLL->getPythonIFace()->callFunction(PYBugOptionsModule, "isBug", NULL, &lResult))
-		{
-			//logMsg("BULL - got value %ld", lResult);
-			g_bIsBug = lResult;
-			if (g_bIsBug)
-			{
-				logMsg("info  - BUG is present");
-			}
-		}
-		else
-		{
-			logMsg("info  - call to isBug() failed; BUG not present");
-			g_bIsBug = false;
-		}
-
-		g_bInitDone = true;
-	}
-}
-
 bool isBug()
 {
-	bugInit();
 	return g_bIsBug;
+}
+
+void setIsBug(bool bIsBug)
+{
+	logMsg("isBug: %s", bIsBug ? "true" : "false");
+	g_bIsBug = bIsBug;
 }
 
 

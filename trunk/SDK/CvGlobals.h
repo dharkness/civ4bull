@@ -880,6 +880,10 @@ public:
 	const wchar* getBullVersion() const;
 // BUG - DLL Info - end
 
+// BUG - BUG Info - start
+	void setIsBug(bool bIsBug);
+// BUG - BUG Info - end
+
 // BUFFY - DLL Info - start
 #ifdef _BUFFY
 	bool isBuffy() const;

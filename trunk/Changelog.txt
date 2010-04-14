@@ -100,8 +100,8 @@ Improvements:
 Bug Fixes:
 
 - Initialization
-	You cannot call bugInit() or getOptionXXX() before BUG has initialized
-	TODO: Have BUG tell BULL when it is ready
+	Added setIsBug() that is called by BUG once all options have been read
+	The XML values or defaults are used until BUG has been initialized
 
 
 ____________________________________________________________________________________________________
