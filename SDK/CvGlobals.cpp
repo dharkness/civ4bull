@@ -24,6 +24,10 @@
 #include "BugMod.h"
 // BUG - DLL Info - end
 
+// BUG - BUG Info - start
+#include "CvBugOptions.h"
+// BUG - BUG Info - end
+
 // BUFFY - DLL Info - start
 #ifdef _BUFFY
 #include "Buffy.h"
@@ -3598,6 +3602,10 @@ int CvGlobals::getBullApiVersion() const { return BUG_DLL_API_VERSION; }
 const wchar* CvGlobals::getBullName() const { return BUG_DLL_NAME; }
 const wchar* CvGlobals::getBullVersion() const { return BUG_DLL_VERSION; }
 // BUG - DLL Info - end
+
+// BUG - BUG Info - start
+void CvGlobals::setIsBug(bool bIsBug) { ::setIsBug(bIsBug); }
+// BUG - BUG Info - end
 
 // BUFFY - DLL Info - start
 #ifdef _BUFFY

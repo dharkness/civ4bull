@@ -125,6 +125,10 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getBullVersion", &CyGlobalContext::pyGetBullVersion, "wstring () - returns display version of BULL")
 // BUG - DLL Info - end
 
+// BUG - BUG Info - start
+		.def("setIsBug", &CyGlobalContext::setIsBug, "void (bool bIsBug) - tells BULL that BUG is present and can receive queries for options")
+// BUG - BUG Info - end
+
 // BUFFY - DLL Info - start
 #ifdef _BUFFY
 		.def("isBuffy", &CyGlobalContext::isBuffy, "bool () - returns true to mark presence of BUFFY")
