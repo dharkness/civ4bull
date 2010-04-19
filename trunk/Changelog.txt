@@ -82,8 +82,13 @@ New Features:
 - API
 	Added calculateExperience() in CvGameCoreUtils
 	Added calculateLevel() in CvGameCoreUtils
+	Added CvUnitInfo::canAcquireExperience()
 	Added CvGameTextMgr::setBasicUnitHelpWithCity()
 	Added CvGameTextMgr::setUnitExperienceHelp()
+- Python API
+	Exposed calculateExperience()
+	Exposed calculateLevel()
+	Exposed CvUnitInfo::canAcquireExperience()
 
 Improvements:
 
@@ -102,6 +107,8 @@ Bug Fixes:
 - Initialization
 	Added setIsBug() that is called by BUG once all options have been read
 	The XML values or defaults are used until BUG has been initialized
+- Building Additional Effects
+	Only buildings that your civilization can build are checked so asserts aren't triggered
 
 
 ____________________________________________________________________________________________________

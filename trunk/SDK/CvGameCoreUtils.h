@@ -366,8 +366,8 @@ void getUnitAIString(CvWString& szString, UnitAITypes eUnitAI);
 /*
  * Calculates the experience needed to reach the next level after the given level.
  */
-int calculateExperience(int iLevel, PlayerTypes ePlayer);
-int calculateLevel(int iExperience, PlayerTypes ePlayer);
+int calculateExperience(int iLevel, PlayerTypes ePlayer);								// Exposed to Python
+int calculateLevel(int iExperience, PlayerTypes ePlayer);								// Exposed to Python
 // BUG - Unit Experience - end
 
 #endif

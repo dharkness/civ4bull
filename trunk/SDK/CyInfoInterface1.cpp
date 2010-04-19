@@ -306,6 +306,10 @@ void CyInfoPythonInterface1()
 
 		.def("getUnitMaxSpeed", &CvUnitInfo::getUnitMaxSpeed, "float ()")
 		.def("getUnitPadTime", &CvUnitInfo::getUnitPadTime, "float ()")
+		
+// BUG - Unit Experience - start
+		.def("canAcquireExperience", &CvUnitInfo::canAcquireExperience, "int ()")
+// BUG - Unit Experience - end
 
 		// Arrays
 

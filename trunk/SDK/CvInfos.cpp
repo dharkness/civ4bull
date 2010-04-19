@@ -3762,6 +3762,27 @@ void CvUnitInfo::setCommandType(int iNewType)
 	m_iCommandType = iNewType;
 }
 
+// BUG - Unit Experience - start
+/*
+ * Returns true if this unit type is eligible to receive experience points.
+ */
+bool CvUnitInfo::canAcquireExperience() const
+{
+	if (m_iUnitCombatType != NO_UNITCOMBAT)
+	{
+		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		{
+			if (GC.getPromotionInfo((PromotionTypes)iI).getUnitCombat(m_iUnitCombatType))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+// BUG - Unit Experience - end
+
 
 // Arrays
 
