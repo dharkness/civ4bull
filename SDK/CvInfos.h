@@ -921,6 +921,10 @@ public:
 
 	float getUnitMaxSpeed() const;					// Exposed to Python
 	float getUnitPadTime() const;					// Exposed to Python
+	
+// BUG - Unit Experience - start
+	bool canAcquireExperience() const;				// Exposed to Python
+// BUG - Unit Experience - end
 
 	// Arrays
 
