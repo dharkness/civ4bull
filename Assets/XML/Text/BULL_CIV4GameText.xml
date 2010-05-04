@@ -664,59 +664,59 @@
 	
 	<TEXT>
 		<Tag>TXT_KEY_CITY_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch die Stadt[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from City[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from City[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EXP from City[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EP durch die Stadt[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from City[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 PE from City[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_PLAYER_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Wunder und Gesellschaftsform[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Wonders and Civics[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from Wonders and Civics[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EXP from Wonders and Civics[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EP durch Wunder und Gesellschaftsform[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from Wonders and Civics[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 PE from Wonders and Civics[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_SPECIALIST_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Spezialisten[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from Specialists[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from Specialists[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EXP from Specialists[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EP durch Spezialisten[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from Specialists[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 PE from Specialists[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUILDING_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch %s2_building[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from %s2_building[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from %s2_building[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EXP from %s2_building[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EP durch %s2_building[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from %s2_building[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 PE from %s2_building[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_NO_BUILDING_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 mit %s2_building[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with %s2_building[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 XP with %s2_building[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 EXP with %s2_building[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 EP mit %s2_building[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 XP with %s2_building[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 PE with %s2_building[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_STATE_RELIGION_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 durch Staatsreligion[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 from State Religion[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from State Religion[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EXP from State Religion[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 EP durch Staatsreligion[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 XP from State Religion[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_POSITIVE_TEXT]%D1 PE from State Religion[COLOR_REVERT]</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_NO_STATE_RELIGION_FREE_EXPERIENCE</Tag>
-		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</English>
-		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</French>
-		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 mit Staatsreligion[COLOR_REVERT]</German>
-		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</Italian>
-		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 with State Religion[COLOR_REVERT]</Spanish>
+		<English>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 XP with State Religion[COLOR_REVERT]</English>
+		<French>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 EXP with State Religion[COLOR_REVERT]</French>
+		<German>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 EP mit Staatsreligion[COLOR_REVERT]</German>
+		<Italian>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 XP with State Religion[COLOR_REVERT]</Italian>
+		<Spanish>[ICON_BULLET][COLOR_NEGATIVE_TEXT]%D1 PE with State Religion[COLOR_REVERT]</Spanish>
 	</TEXT>
 
 <!-- Conscript Hover -->
