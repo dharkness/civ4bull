@@ -4859,7 +4859,52 @@ void CvDLLWidgetData::parseKillDealHelp(CvWidgetDataStruct &widgetDataStruct, Cv
 		}
 	}
 
-	szBuffer.assign(szTemp);
+	szBuffer.append(szTemp);
+	
+// BUG - Kill Deal Info - start
+	if (pDeal != NULL)
+	{
+		szBuffer.append(NEWLINE);
+		GAMETEXT.getDealString(szBuffer, *pDeal, GC.getGameINLINE().getActivePlayer());
+
+		int iItem = widgetDataStruct.m_iData2;
+		if (iItem != -1)
+		{
+			const CLinkList<TradeData>* listTradeData = NULL;
+
+			if (iItem < pDeal->getLengthFirstTrades())
+			{
+				listTradeData = pDeal->getFirstTrades();
+			}
+			else
+			{
+				iItem -= pDeal->getLengthFirstTrades();
+				if (iItem < pDeal->getLengthSecondTrades())
+				{
+					listTradeData = pDeal->getSecondTrades();
+				}
+			}
+
+			if (listTradeData != NULL)
+			{
+				int iCount = 0;
+				for (CLLNode<TradeData>* pNode = listTradeData->head(); NULL != pNode; pNode = listTradeData->next(pNode))
+				{
+					if (iCount++ == iItem)
+					{
+						TradeData& kTradeData = pNode->m_data;
+						if (kTradeData.m_eItemType == TRADE_RESOURCES)
+						{
+							szBuffer.append(NEWLINE NEWLINE);
+							GAMETEXT.setBonusHelp(szBuffer, (BonusTypes)kTradeData.m_iData);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+// BUG - Kill Deal Info - end
 }
 
 

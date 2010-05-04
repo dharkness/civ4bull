@@ -51,6 +51,8 @@ New Features:
 	Added full unit description: strength, moves, XP, promotions, abilities, etc.
 	Added number of units you can draft this turn
 	Added messages to Draft button hover when you have reached the player or city limits
+- Cancel Deal Info
+	Can click an import/export bonus on the Foreign Advisor to cancel the deal and hover shows full deal [BUG]
 
 Improvements:
 
@@ -69,6 +71,8 @@ Bug Fixes:
 	Worst Enemies you haven't met are no longer shown
 - Show Hidden Attitudes
 	First Impression modifier resets to zero for each leader
+- Production Decay
+	Scales correctly with game speed
 - Options
 	Starting a new game no longer breaks BULL's access to BUG's options
 
@@ -109,6 +113,8 @@ Bug Fixes:
 	The XML values or defaults are used until BUG has been initialized
 - Building Additional Effects
 	Only buildings that your civilization can build are checked so asserts aren't triggered
+- Production Decay
+	CvCity::isBuilding/UnitProductionDecay() and getBuilding/UnitProductionDecayTurns() scale with game speed
 
 
 ____________________________________________________________________________________________________
