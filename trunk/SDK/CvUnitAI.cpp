@@ -1128,7 +1128,7 @@ void CvUnitAI::AI_settleMove()
 		if (pCitySitePlot->getArea() == getArea())
 */
 		// Only count city sites we can get to
-		if (pCitySitePlot->getArea() == getArea() && generatePath(pCitySitePlot, MOVE_SAFE_TERRITORY, true))
+		if ((pCitySitePlot->getArea() == getArea() || canMoveAllTerrain()) && generatePath(pCitySitePlot, MOVE_SAFE_TERRITORY, true))
 /************************************************************************************************/
 /* UNOFFICIAL_PATCH                        END                                                  */
 /************************************************************************************************/
@@ -12756,7 +12756,18 @@ bool CvUnitAI::AI_specialSeaTransportMissionary()
 
 								if (iPathTurns == 1)
 								{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/22/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 									iValue *= 2;
+*/
+									iCorpValue *= 2;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 								}
 
 								iCorpValue *= 1000;

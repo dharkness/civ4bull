@@ -3140,6 +3140,12 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 								iTempValue *= (20 + (40 * kBuilding.getSpecialistCount(iI)));
 								iTempValue /= 100;
 								
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       01/09/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 								if (iFoodDifference < 2)
 								{
 									iValue /= 4;
@@ -3148,6 +3154,18 @@ int CvCityAI::AI_buildingValueThreshold(BuildingTypes eBuilding, int iFocusFlags
 								{
 									iValue /= 1 + iRunnable;
 								}
+*/
+								if (iFoodDifference < 2)
+								{
+									iTempValue /= 4;
+								}
+								if (iRunnable > 0)
+								{
+									iTempValue /= 1 + iRunnable;
+								}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 								iSpecialistsValue += std::max(12, (iTempValue / 100));
 							}
@@ -8367,7 +8385,18 @@ int CvCityAI::AI_calculateCulturePressure(bool bGreatWork)
                         iTempValue += (GET_PLAYER(getOwnerINLINE()).AI_bonusVal(eNonObsoleteBonus) * ((GET_PLAYER(getOwnerINLINE()).getNumTradeableBonuses(eNonObsoleteBonus) == 0) ? 4 : 2));
                     }
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/20/10                          denev & jdog5000    */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
                     if ((iTempValue > 80) && (pLoopPlot->getOwnerINLINE() == getID()))
+*/
+					if ((iTempValue > 80) && (pLoopPlot->getOwnerINLINE() == getOwnerINLINE()))
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
                     {
                         //captured territory special case
                         iTempValue *= (100 - iTempValue);

@@ -78,6 +78,9 @@ Bug Fixes:
 
 Merged Mods:
 
+- Unofficial Patch
+	Updated to release version 1.50
+
 
 MODDING
 
