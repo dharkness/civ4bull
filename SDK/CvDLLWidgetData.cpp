@@ -3825,7 +3825,7 @@ void CvDLLWidgetData::parseFlagHelp(CvWidgetDataStruct &widgetDataStruct, CvWStr
 
 	// unofficial patch
 	szBuffer.append(szTempBuffer);
-	szBuffer.append(L"Unofficial 3.19 Patch v1.40");
+	szBuffer.append(L"Unofficial 3.19 Patch v1.50");
 
 	// compile-time mods
 #ifdef _MOD_FRACTRADE

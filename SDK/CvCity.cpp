@@ -217,7 +217,22 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 
 	if (lResult == 1)
 	{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/01/10                     Mongoose & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		if (pPlot->getFeatureType() != NO_FEATURE)
+*/
+		// From Mongoose SDK
+		// Don't remove floodplains from tiles when founding city
+		//if ((pPlot->getFeatureType() != NO_FEATURE) && (pPlot->getFeatureType() != (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS")))
+		
+		if (pPlot->getFeatureType() != NO_FEATURE)
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		{
 			pPlot->setFeatureType(NO_FEATURE);
 		}
@@ -787,6 +802,33 @@ void CvCity::kill(bool bUpdatePlotGroups)
 /************************************************************************************************/
 
 	pPlot->setPlotCity(NULL);
+
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/04/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Replace floodplains after city is removed
+	if (pPlot->getBonusType() == NO_BONUS)
+	{
+		for (int iJ = 0; iJ < GC.getNumFeatureInfos(); iJ++)
+		{
+			if (GC.getFeatureInfo((FeatureTypes)iJ).isRequiresRiver())
+			{
+				if (pPlot->canHaveFeature((FeatureTypes)iJ))
+				{
+					if (GC.getFeatureInfo((FeatureTypes)iJ).getAppearanceProbability() == 10000)
+					{
+						pPlot->setFeatureType((FeatureTypes)iJ);
+						break;
+					}
+				}
+			}
+		}
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	area()->changeCitiesPerPlayer(getOwnerINLINE(), -1);
 
@@ -3066,7 +3108,16 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 		}
 	}
 
-	return std::max(0, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* For mods                                                                                     */
+/************************************************************************************************/
+//	return std::max(0, iMultiplier);
+	return std::max(-50, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 }
 
 
@@ -3090,7 +3141,16 @@ int CvCity::getProductionModifier(BuildingTypes eBuilding) const
 		}
 	}
 
-	return std::max(0, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* For mods                                                                                     */
+/************************************************************************************************/
+//	return std::max(0, iMultiplier);
+	return std::max(-50, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 }
 
 
@@ -3111,7 +3171,16 @@ int CvCity::getProductionModifier(ProjectTypes eProject) const
 		}
 	}
 
-	return std::max(0, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* For mods                                                                                     */
+/************************************************************************************************/
+//	return std::max(0, iMultiplier);
+	return std::max(-50, iMultiplier);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 }
 
 
@@ -4944,6 +5013,32 @@ bool CvCity::hasActiveWorldWonder() const
 	return false;
 }
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/04/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+int CvCity::getNumActiveWorldWonders() const
+{
+	int iI;
+	int iCount = 0;
+
+	for (iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+	{
+		if (isWorldWonderClass((BuildingClassTypes)(GC.getBuildingInfo((BuildingTypes)iI).getBuildingClassType())))
+		{
+			if (getNumRealBuilding((BuildingTypes)iI) > 0 && !(GET_TEAM(getTeam()).isObsoleteBuilding((BuildingTypes)iI)))
+			{
+				iCount++;
+			}
+		}
+	}
+
+	return iCount;
+}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 int CvCity::getReligionCount() const
 {

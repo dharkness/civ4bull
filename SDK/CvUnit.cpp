@@ -12108,6 +12108,20 @@ bool CvUnit::canRangeStrikeAt(const CvPlot* pPlot, int iX, int iY) const
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Need to check target plot too
+	if (!pTargetPlot->isVisible(getTeam(), false))
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
+
 	if (plotDistance(pPlot->getX_INLINE(), pPlot->getY_INLINE(), pTargetPlot->getX_INLINE(), pTargetPlot->getY_INLINE()) > airRange())
 	{
 		return false;
@@ -12141,10 +12155,24 @@ bool CvUnit::rangeStrike(int iX, int iY)
 		return false;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 	if (!canRangeStrikeAt(pPlot, iX, iY))
 	{
 		return false;
 	}
+*/
+	if (!canRangeStrikeAt(plot(), iX, iY))
+	{
+		return false;
+	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	pDefender = airStrikeTarget(pPlot);
 
@@ -12187,7 +12215,20 @@ bool CvUnit::rangeStrike(int iX, int iY)
 		gDLL->getEntityIFace()->AddMission(&kDefiniton);
 
 		//delay death
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       05/10/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 		pDefender->getGroup()->setMissionTimer(GC.getMissionInfo(MISSION_RANGE_ATTACK).getTime());
+*/
+		// mission timer is not used like this in any other part of code, so it might cause OOS
+		// issues ... at worst I think unit dies before animation is complete, so no real
+		// harm in commenting it out.
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	}
 
 	return true;

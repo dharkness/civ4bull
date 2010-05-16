@@ -5099,15 +5099,17 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 	}
 
 /************************************************************************************************/
-/* UNOFFICIAL_PATCH                       10/04/09                    EmperorFool & jdog5000    */
+/* UNOFFICIAL_PATCH                       02/16/10                    EmperorFool & jdog5000    */
 /*                                                                                              */
 /* Bugfix                                                                                       */
 /************************************************************************************************/
 	// EF: canFoundCitiesOnWater callback handling was incorrect and ignored isWater() if it returned true
-	if (!bValid && pPlot->isWater())
+	if (pPlot->isWater())
 	{
 		if(GC.getUSE_CAN_FOUND_CITIES_ON_WATER_CALLBACK())
 		{
+			bValid = false;
+
 			CyArgsList argsList2;
 			argsList2.add(iX);
 			argsList2.add(iY);
@@ -5977,7 +5979,18 @@ void CvPlayer::removeBuildingClass(BuildingClassTypes eBuildingClass)
 		{
 			if (pLoopCity->getNumRealBuilding(eBuilding) > 0)
 			{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/16/10                          EmperorFool         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 				pLoopCity->setNumRealBuilding(eBuilding, 0);
+*/
+				pLoopCity->setNumRealBuilding(eBuilding, pLoopCity->getNumRealBuilding(eBuilding) - 1);
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 				break;
 			}
 		}
@@ -6913,7 +6926,7 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 	PROFILE_FUNC();
 
 /************************************************************************************************/
-/* UNOFFICIAL_PATCH                       10/05/09                                jdog5000      */
+/* UNOFFICIAL_PATCH                       02/16/10                                jdog5000      */
 /*                                                                                              */
 /* Bugfix                                                                                       */
 /************************************************************************************************/

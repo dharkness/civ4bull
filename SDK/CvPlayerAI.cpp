@@ -1530,7 +1530,7 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 				iWeight /= 50;
 			}
 /************************************************************************************************/
-/* UNOFFICIAL_PATCH                       04/29/09                                jdog5000      */
+/* UNOFFICIAL_PATCH                       03/08/10                                jdog5000      */
 /*                                                                                              */
 /* Poor behavior                                                                                */
 /************************************************************************************************/
@@ -1539,9 +1539,6 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 */
 			// Slider check works for detection of whether human player is going for cultural victory
 			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE3) || getCommercePercent(COMMERCE_CULTURE) > 80 )
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                        END                                                  */
-/************************************************************************************************/
 			{
 				int iCultureRateRank = pCity->findCommerceRateRank(COMMERCE_CULTURE);
 				int iCulturalVictoryNumCultureCities = GC.getGameINLINE().culturalVictoryNumCultureCities();
@@ -1556,12 +1553,19 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 				{
 					iWeight *= 2;
 				}
+				else if (isHuman())
+				{
+					iWeight *= 2;
+				}
 			}
-			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE2))
+// BUG - Unofficial Patch - start
+			// EF: copied second half of test from below
+			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE2) || getCommercePercent(COMMERCE_CULTURE) > 70)
+// BUG - Unofficial Patch - end
 			{
 				iWeight *= 3;
 			}
-			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE1))
+			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE1) || getCommercePercent(COMMERCE_CULTURE) > 50)
 			{
 				iWeight *= 2;
 			}
@@ -1576,17 +1580,17 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 		// pCity == NULL
 		else
 		{
-			if (AI_isDoStrategy(AI_STRATEGY_CULTURE3))
+			if (AI_isDoStrategy(AI_STRATEGY_CULTURE3) || getCommercePercent(COMMERCE_CULTURE) > 90 )
 			{
 				iWeight *= 3;
 				iWeight /= 4;
 			}
-			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE2))
+			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE2) || getCommercePercent(COMMERCE_CULTURE) > 70)
 			{
 				iWeight *= 2;
 			iWeight /= 3;
 		}
-			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE1))
+			else if (AI_isDoStrategy(AI_STRATEGY_CULTURE1) || getCommercePercent(COMMERCE_CULTURE) > 50 )
 			{
 				iWeight /= 2;
 			}
@@ -1595,6 +1599,9 @@ int CvPlayerAI::AI_commerceWeight(CommerceTypes eCommerce, CvCity* pCity) const
 				iWeight /= 3;
 			}
 		}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 		break;
 	case COMMERCE_ESPIONAGE:
 		{
@@ -1898,6 +1905,16 @@ int CvPlayerAI::AI_foundValue(int iX, int iY, int iMinRivalRange, bool bStarting
     int iClaimThreshold = GC.getGameINLINE().getCultureThreshold((CultureLevelTypes)(std::min(2, (GC.getNumCultureLevelInfos() - 1))));
     iClaimThreshold = std::max(1, iClaimThreshold);
     iClaimThreshold *= (std::max(100, iGreed));
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       04/25/10                          denev & jdog5000    */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+	// Was missing this
+	iClaimThreshold /= 100;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
     
     int iYieldLostHere = 0;
 
@@ -2613,15 +2630,26 @@ int CvPlayerAI::AI_targetCityValue(CvCity* pCity, bool bRandomize, bool bIgnoreA
 		iValue++;
 	}
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/04/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
 	if (pCity->hasActiveWorldWonder())
 	{
-		iValue += 1 + pCity->getNumWorldWonders();
+		iValue += 1 + pCity->getNumActiveWorldWonders();
 	}
 
-	if (pCity->isHolyCity())
+	for (iI = 0; iI < GC.getNumReligionInfos(); iI++)
 	{
-		iValue += 2;
+		if (pCity->isHolyCity((ReligionTypes)iI))
+		{
+			iValue += 2;
+		}
 	}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 
 	if (pCity->isEverOwned(getID()))
 	{
@@ -3034,7 +3062,18 @@ int CvPlayerAI::AI_goldTarget() const
 {
 	int iGold = 0;
 
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/24/10                                jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                      */
+/************************************************************************************************/
+/* original bts code
 	if (GC.getGameINLINE().getElapsedGameTurns() >= 40)
+*/
+	if (GC.getGameINLINE().getElapsedGameTurns() >= 40 || getNumCities() > 3)
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 	{
 		int iMultiplier = 0;
 		iMultiplier += GC.getGameSpeedInfo(GC.getGameINLINE().getGameSpeedType()).getResearchPercent();
@@ -6154,7 +6193,18 @@ bool CvPlayerAI::AI_counterPropose(PlayerTypes ePlayer, const CLinkList<TradeDat
 			{
 				iGoldData = iGoldWeight * 100;
 				iGoldData /= iGoldValuePercent;
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       09/17/09                     dilandau & jdog5000      */
+/*                                                                                              */
+/* Bugfix				                                                                        */
+/************************************************************************************************/
+/* original bts code
 				if ((iGoldData * iGoldValuePercent) < iGoldWeight)
+*/
+				if ((iGoldData * iGoldValuePercent) < iGoldWeight * 100)
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 				{
 					iGoldData++;
 				}
@@ -10584,7 +10634,25 @@ void CvPlayerAI::AI_changePeacetimeTradeValue(PlayerTypes eIndex, int iChange)
 					{
 						if (GET_TEAM((TeamTypes)iI).AI_getWorstEnemy() == getTeam())
 						{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/02/10                                Sephi         */
+/*                                                                                              */
+/* Bug fix                                                                                      */
+/************************************************************************************************/
+/* orig bts code
 							GET_TEAM((TeamTypes)iI).AI_changeEnemyPeacetimeTradeValue(GET_PLAYER(eIndex).getTeam(), iChange);
+*/
+                            //make sure that if A trades with B and A is C's worst enemy, C is only mad at B if C has met B before
+                            //A = this
+                            //B = eIndex
+                            //C = (TeamTypes)iI
+                            if (GET_TEAM((TeamTypes)iI).isHasMet(GET_PLAYER(eIndex).getTeam()))
+                            {
+								GET_TEAM((TeamTypes)iI).AI_changeEnemyPeacetimeTradeValue(GET_PLAYER(eIndex).getTeam(), iChange);
+							}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 						}
 					}
 				}
@@ -10628,7 +10696,25 @@ void CvPlayerAI::AI_changePeacetimeGrantValue(PlayerTypes eIndex, int iChange)
 					{
 						if (GET_TEAM((TeamTypes)iI).AI_getWorstEnemy() == getTeam())
 						{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       03/02/10                                Sephi         */
+/*                                                                                              */
+/* Bug fix                                                                                      */
+/************************************************************************************************/
+/* orig bts code
 							GET_TEAM((TeamTypes)iI).AI_changeEnemyPeacetimeGrantValue(GET_PLAYER(eIndex).getTeam(), iChange);
+*/
+                            //make sure that if A trades with B and A is C's worst enemy, C is only mad at B if C has met B before
+                            //A = this
+                            //B = eIndex
+                            //C = (TeamTypes)iI
+                            if (GET_TEAM((TeamTypes)iI).isHasMet(GET_PLAYER(eIndex).getTeam()))
+                            {
+								GET_TEAM((TeamTypes)iI).AI_changeEnemyPeacetimeGrantValue(GET_PLAYER(eIndex).getTeam(), iChange);
+							}
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 						}
 					}
 				}
@@ -14523,7 +14609,18 @@ int CvPlayerAI::AI_getStrategyHash() const
 
 		for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
 		{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/14/10                        denev & jdog5000      */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 			if ((GET_TEAM((TeamTypes)iI).isAlive()) && (iI != getID()))
+*/
+			if ((GET_TEAM((TeamTypes)iI).isAlive()) && (iI != getTeam()))
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 			{
 				if (GET_TEAM(getTeam()).AI_getWarPlan((TeamTypes)iI) != NO_WARPLAN)
 				{
@@ -14546,9 +14643,22 @@ int CvPlayerAI::AI_getStrategyHash() const
 					
 					if ((GET_TEAM(getTeam()).AI_getWarPlan((TeamTypes)iI) == WARPLAN_DOGPILE) && (GET_TEAM(getTeam()).AI_getWarPlanStateCounter((TeamTypes)iI) < 20))
 					{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/14/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
 						for (iJ = 0; iJ < MAX_TEAMS; iJ++)
 						{
 							if ((iJ != iI) && iJ != getID())
+*/
+						for (iJ = 0; iJ < MAX_CIV_TEAMS; iJ++)
+						{
+							if ((iJ != iI) && iJ != getTeam() && GET_TEAM((TeamTypes)iJ).isAlive())
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 							{
 								if ((atWar((TeamTypes)iI, (TeamTypes)iJ)) && !GET_TEAM((TeamTypes)iI).isAVassal())
 								{
@@ -14574,6 +14684,18 @@ int CvPlayerAI::AI_getStrategyHash() const
 		
 		for (iI = 0; iI < MAX_CIV_TEAMS; iI++)
 		{
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                       02/14/10                             jdog5000         */
+/*                                                                                              */
+/* Bugfix                                                                                       */
+/************************************************************************************************/
+/* original bts code
+			if ((GET_TEAM((TeamTypes)iI).isAlive()) && (iI != getID()))
+*/
+			if ((GET_TEAM((TeamTypes)iI).isAlive()) && (iI != getTeam()))
+/************************************************************************************************/
+/* UNOFFICIAL_PATCH                        END                                                  */
+/************************************************************************************************/
 			if ((GET_TEAM((TeamTypes)iI).isAlive()) && (iI != getID()))
 			{
 				CvTeamAI& kOtherTeam = GET_TEAM((TeamTypes)iI);
