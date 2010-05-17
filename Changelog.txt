@@ -4,7 +4,7 @@ CHANGELOG for BULL
 1. Introduction
 2. Known Issues
 
-* BULL x.x
+* BULL 1.2
 * BULL 1.1
 * BULL 1.0
 * BULL 0.9
@@ -13,11 +13,17 @@ CHANGELOG for BULL
 ____________________________________________________________________________________________________
 1. INTRODUCTION
 
-This file lists the new features and fixes contained in each BULL release. The changes for each release are grouped into two major sections--Changes and Modding--and within each section further into New Features, Improvements, and Bug Fixes.
+This file lists the new features and fixes contained in each BULL release.  The changes for each 
+release are grouped into two major sections--CHANGES and MODDING--and within each section further 
+into New Features, Improvements, and Bug Fixes.
 
-The Changes sections are for end-users and list the visible changes in BULL. New Features cover major new additions that add completely new functionality. Improvements are smaller changes made to existing features. And Bug Fixes cover fixes to broken features in both BTS and BULL.
+The CHANGES sections are for end-users and list the visible changes in BULL.  New Features cover 
+major new additions that add completely new functionality.  Improvements are smaller changes made 
+to existing features.  Finally, Bug Fixes cover fixes to existing features in both BTS and BULL.
 
-The Modding sections are mostly of interest to C++ modders merging BULL into their own mods or Python modders using BUG and/or BULL. Changes that affect the Python API are listed along with new events and gameutils callbacks.
+The MODDING sections are mostly of interest to C++ modders merging BULL into their own mods or 
+Python modders using BUG and/or BULL.  Changes that affect the Python API are listed along with 
+new events and gameutils callbacks.
 
 Note: Changes marked [BUG] only take effect when the optional BUG Mod is installed.
 
@@ -36,7 +42,7 @@ ________________________________________________________________________________
 
 
 ____________________________________________________________________________________________________
-BULL x.x unreleased
+BULL 1.2 released May 16th, 2010
 
 CHANGES
 
