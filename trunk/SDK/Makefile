@@ -34,8 +34,10 @@ LINK = "$(TOOLKIT)/bin/link.exe"
 #   _MOD_AIAUTOPLAY
 #   _MOD_GWARM				has extra assets; effectively eliminates global warming
 #   _MOD_SHAM_SPOILER		enables AG modifiers in mod
+#	_MOD_EVENTIMG			requires <EventArt> tag on every EventTriggerInfo
 
 MODFLAGS = /D_MOD_AIAUTOPLAY
+#MODFLAGS = /D_MOD_FRACTRADE /D_MOD_SENTRY /D_MOD_GOVWORKERS /D_MOD_AIAUTOPLAY /D_MOD_GWARM /D_MOD_EVENTIMG
 
 # /EHsc		catch C++ exceptions only; assume that extern C functions never throw a C++ exception
 # /Gd		Use the __cdecl calling convention (x86 only). 
