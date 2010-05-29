@@ -12036,6 +12036,9 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 				changeOverflowProduction(iOverflow, getProductionModifier(eTrainUnit));
 			}
 			setUnitProduction(eTrainUnit, 0);
+// BUG - Unofficial Patch - start
+			setUnitProductionTime(eTrainUnit, 0);
+// BUG - Unofficial Patch - end
 
 // BUG - Overflow Gold Fix - start
 			iLostProduction *= getBaseYieldRateModifier(YIELD_PRODUCTION);
@@ -12125,6 +12128,9 @@ void CvCity::popOrder(int iNum, bool bFinish, bool bChoose)
 				changeOverflowProduction(iOverflow, getProductionModifier(eConstructBuilding));
 			}
 			setBuildingProduction(eConstructBuilding, 0);
+// BUG - Unofficial Patch - start
+			setBuildingProductionTime(eConstructBuilding, 0);
+// BUG - Unofficial Patch - end
 
 // BUG - Overflow Gold Fix - start
 			iLostProduction *= getBaseYieldRateModifier(YIELD_PRODUCTION);

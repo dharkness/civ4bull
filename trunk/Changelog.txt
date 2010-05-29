@@ -4,6 +4,7 @@ CHANGELOG for BULL
 1. Introduction
 2. Known Issues
 
+* BULL x.x
 * BULL 1.2
 * BULL 1.1
 * BULL 1.0
@@ -39,6 +40,38 @@ ________________________________________________________________________________
 		
 		Sentry Healing
 		Sentry Healing Only Neutral
+
+
+____________________________________________________________________________________________________
+BULL x.x unreleased
+
+CHANGES
+
+New Features:
+
+Improvements:
+
+Bug Fixes:
+
+- Production Decay
+	Fixed bug that caused decay to be carried over to items of the same type if built consecutively
+
+Merged Mods:
+
+- Events with Images
+	Added release version [optional]
+
+
+MODDING
+
+New Features:
+
+- Events with Images
+	You can now add an image to any random event using the new <EventArt> tag.
+
+Improvements:
+
+Bug Fixes:
 
 
 ____________________________________________________________________________________________________
