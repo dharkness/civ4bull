@@ -2436,6 +2436,15 @@ bool CvDLLButtonPopup::launchEventPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 	CvEventTriggerInfo& kTrigger = GC.getEventTriggerInfo(pTriggeredData->m_eTrigger);
 	
+// BUG - Events with Images - start
+#ifdef _MOD_EVENTIMG
+	if (kTrigger.getEventArt())
+	{
+		gDLL->getInterfaceIFace()->popupAddDDS(pPopup, kTrigger.getEventArt());
+	}
+#endif
+// BUG - Events with Images - end
+
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, pTriggeredData->m_szText);
 
 	bool bEventAvailable = false;
