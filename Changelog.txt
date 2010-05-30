@@ -60,6 +60,8 @@ Bug Fixes:
 	Fixed bug that caused decay to be carried over to items of the same type if built consecutively
 - Building Actual Effects
 	Added extra modifier from power when city already has power
+- Building Hover
+	Fixed missing normal prereq building when a building requires a minimum number of other buildings
 
 Merged Mods:
 
