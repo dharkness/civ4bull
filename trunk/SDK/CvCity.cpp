@@ -6585,18 +6585,18 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
  */
 int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) const
 {
-	int iGood = 0, iBad = 0, iSpoiledFood = 0;
-	return getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood);
+	int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+	return getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 }
 
 /*
  * Returns the total additional health that adding one of the given buildings will provide
  * and sets the good and bad levels individually and any resulting additional spoiled food.
  *
- * Doesn't reset iGood or iBad to zero.
+ * Doesn't reset iGood, iBad, iSpoiledFood, iStarvation to zero.
  * Doesn't check if the building can be constructed in this city.
  */
-int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iSpoiledFood) const
+int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iSpoiledFood, int& iStarvation) const
 {
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
@@ -6675,7 +6675,26 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	// Effect on Spoiled Food
 	int iHealthy = goodHealth();
 	int iUnhealthy = badHealth();
+	int iFood = getYieldRate(YIELD_FOOD) - foodConsumption();
 	iSpoiledFood -= std::min(0, (iHealthy + iGood) - (iUnhealthy + iBad)) - std::min(0, iHealthy - iUnhealthy);
+	if (iSpoiledFood > 0)
+	{
+		if (iFood <= 0)
+		{
+			iStarvation += iSpoiledFood;
+		}
+		else if (iSpoiledFood > iFood)
+		{
+			iStarvation += iSpoiledFood - iFood;
+		}
+	}
+	else if (iSpoiledFood < 0)
+	{
+		if (iFood < 0)
+		{
+			iStarvation += std::max(iFood, iSpoiledFood);
+		}
+	}
 
 	return iGood - iBad - iStarting;
 }

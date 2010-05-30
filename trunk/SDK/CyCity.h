@@ -239,6 +239,7 @@ public:
 	int getAdditionalGoodHealthByBuilding(int /*BuildingTypes*/ eBuilding);
 	int getAdditionalBadHealthByBuilding(int /*BuildingTypes*/ eBuilding);
 	int getAdditionalSpoiledFoodByBuilding(int /*BuildingTypes*/ eBuilding);
+	int getAdditionalStarvationByBuilding(int /*BuildingTypes*/ eBuilding);
 // BUG - Building Additional Health - end
 	int getPowerGoodHealth();
 	int getPowerBadHealth();
