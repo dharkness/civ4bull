@@ -1010,9 +1010,9 @@ int CyCity::getAdditionalHealthByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
 
-		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 	}
 	else
 	{
@@ -1024,9 +1024,9 @@ int CyCity::getAdditionalGoodHealthByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 		return iGood;
 	}
 	else
@@ -1039,9 +1039,9 @@ int CyCity::getAdditionalBadHealthByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 		return iBad;
 	}
 	else
@@ -1054,10 +1054,25 @@ int CyCity::getAdditionalSpoiledFoodByBuilding(int /*BuildingTypes*/ eBuilding)
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0;
+		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
 
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood);
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 		return iSpoiledFood;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int CyCity::getAdditionalStarvationByBuilding(int /*BuildingTypes*/ eBuilding)
+{
+	if (m_pCity)
+	{
+		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+
+		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
+		return iStarvation;
 	}
 	else
 	{

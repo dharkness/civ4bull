@@ -8873,9 +8873,11 @@ void CvGameTextMgr::setBuildingActualEffects(CvWStringBuffer &szBuffer, CvWStrin
 		iGood = 0;
 		iBad = 0;
 		int iSpoiledFood = 0;
-		int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood);
+		int iStarvation = 0;
+		int iHealth = pCity->getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 		bStarted = setResumableGoodBadChangeHelp(szBuffer, szStart, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, bNewLine, bStarted);
 		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR), false, bNewLine, bStarted);
+		bStarted = setResumableValueChangeHelp(szBuffer, szStart, L": ", L"", iStarvation, gDLL->getSymbolID(BAD_FOOD_CHAR), false, bNewLine, bStarted);
 
 		// Yield
 		int aiYields[NUM_YIELD_TYPES];
@@ -11025,8 +11027,8 @@ bool CvGameTextMgr::setBuildingAdditionalHealthHelp(CvWStringBuffer &szBuffer, c
 
 		if (eBuilding != NO_BUILDING && city.canConstruct(eBuilding, false, true, false))
 		{
-			int iGood = 0, iBad = 0, iSpoiledFood = 0;
-			int iChange = city.getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood);
+			int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+			int iChange = city.getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
 
 			if (iGood != 0 || iBad != 0)
 			{
@@ -11039,6 +11041,7 @@ bool CvGameTextMgr::setBuildingAdditionalHealthHelp(CvWStringBuffer &szBuffer, c
 				szLabel.Format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_BUILDING_TEXT"), GC.getBuildingInfo(eBuilding).getDescription());
 				bool bStartedLine = setResumableGoodBadChangeHelp(szBuffer, szLabel, L": ", L"", iGood, gDLL->getSymbolID(HEALTHY_CHAR), iBad, gDLL->getSymbolID(UNHEALTHY_CHAR), false, true);
 				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iSpoiledFood, gDLL->getSymbolID(EATEN_FOOD_CHAR), false, true, bStartedLine);
+				setResumableValueChangeHelp(szBuffer, szLabel, L": ", L"", iStarvation, gDLL->getSymbolID(BAD_FOOD_CHAR), false, true, bStartedLine);
 			}
 		}
 	}

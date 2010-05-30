@@ -51,6 +51,9 @@ New Features:
 
 Improvements:
 
+- Building Actual Effects
+	Added additional starvation due to spoiled food from health effects (red slice of bread)
+
 Bug Fixes:
 
 - Production Decay
@@ -72,6 +75,10 @@ New Features:
 Improvements:
 
 Bug Fixes:
+
+- Python API
+	Fixed exposed name of CvCity::getAdditionalSpoiledFoodByBuilding(BuildingTypes eBuilding)
+	Exposed CvCity::getAdditionalStarvationByBuilding(BuildingTypes eBuilding)
 
 
 ____________________________________________________________________________________________________
