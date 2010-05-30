@@ -10272,7 +10272,9 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 					}
 				}
 			}
-			else if (kBuilding.isBuildingClassNeededInCity(iI))
+// BUG - Unofficial Patch - start
+			if (kBuilding.isBuildingClassNeededInCity(iI))
+// BUG - Unofficial Patch - end
 			{
 				if (NO_PLAYER != ePlayer)
 				{
