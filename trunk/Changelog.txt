@@ -58,6 +58,8 @@ Bug Fixes:
 
 - Production Decay
 	Fixed bug that caused decay to be carried over to items of the same type if built consecutively
+- Building Actual Effects
+	Added extra modifier from power when city already has power
 
 Merged Mods:
 

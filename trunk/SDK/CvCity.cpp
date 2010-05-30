@@ -8345,7 +8345,11 @@ int CvCity::getAdditionalYieldRateModifierByBuilding(YieldTypes eIndex, Building
 	if (!bObsolete)
 	{
 		iExtraModifier += kBuilding.getYieldModifier(eIndex);
-		if (!isPower())
+		if (isPower())
+		{
+			iExtraModifier += kBuilding.getPowerYieldModifier(eIndex);
+		}
+		else
 		{
 			if (kBuilding.isPower() || kBuilding.isAreaCleanPower() || (kBuilding.getPowerBonus() != NO_BONUS && hasBonus((BonusTypes)kBuilding.getPowerBonus())))
 			{
