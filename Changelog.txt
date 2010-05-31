@@ -60,8 +60,9 @@ Bug Fixes:
 	Fixed bug that caused decay to be carried over to items of the same type if built consecutively
 - Building Actual Effects
 	Added extra modifier from power when city already has power
-- Building Hover
-	Fixed missing normal prereq building when a building requires a minimum number of other buildings
+- BTS Fixes
+	Fixed missing normal prereq building in Building Hover when a building requires a minimum number of other buildings
+	Added "Will remove the <improvement>" to Action Hover that clears a feature required by the tile's improvement
 
 Merged Mods:
 

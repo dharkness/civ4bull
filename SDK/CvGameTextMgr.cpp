@@ -10244,12 +10244,17 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 
 		for (int iI = 0; iI < GC.getNumBuildingClassInfos(); ++iI)
 		{
+// BUG - Unofficial Patch - start
+			// EF: show "Requires Hospital" if "Requires Hospital (x/5)" requirement has been met
+			bool bShowedPrereq = false;
+
 			if (ePlayer == NO_PLAYER && kBuilding.getPrereqNumOfBuildingClass((BuildingClassTypes)iI) > 0)
 			{
 				eLoopBuilding = (BuildingTypes)GC.getBuildingClassInfo((BuildingClassTypes)iI).getDefaultBuildingIndex();
 				szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDING_REQUIRES_NUM_SPECIAL_BUILDINGS_NO_CITY", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), kBuilding.getPrereqNumOfBuildingClass((BuildingClassTypes)iI)).c_str());
 
 				szBuffer.append(szTempBuffer);
+				bShowedPrereq = true;
 			}
 			else if (ePlayer != NO_PLAYER && GET_PLAYER(ePlayer).getBuildingClassPrereqBuilding(eBuilding, ((BuildingClassTypes)iI)) > 0)
 			{
@@ -10269,11 +10274,12 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 						}
 
 						szBuffer.append(szTempBuffer);
+						bShowedPrereq = true;
 					}
 				}
 			}
 // BUG - Unofficial Patch - start
-			if (kBuilding.isBuildingClassNeededInCity(iI))
+			if (!bShowedPrereq && kBuilding.isBuildingClassNeededInCity(iI))
 // BUG - Unofficial Patch - end
 			{
 				if (NO_PLAYER != ePlayer)
