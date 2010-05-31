@@ -61,8 +61,8 @@ Bug Fixes:
 - Building Actual Effects
 	Added extra modifier from power when city already has power
 - BTS Fixes
-	Fixed missing normal prereq building in Building Hover when a building requires a minimum number of other buildings
-	Added "Will remove the <improvement>" to Action Hover that clears a feature required by the tile's improvement
+	Fixed missing normal prereq building in Building hover when a building requires a minimum number of other buildings
+	Added "Will remove the <improvement>" to Clear Feature Action hover when the feature is required by the improvement
 
 Merged Mods:
 
