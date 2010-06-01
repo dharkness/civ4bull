@@ -757,6 +757,17 @@
 		<Spanish>Despejar [NUM1:el:la:los:las] %s1_FeatName generará %d2_Num [ICON_PRODUCTION] para %s3_CityName.</Spanish>
 	</TEXT>
 
+<!-- Feature Health -->
+
+	<TEXT>
+		<Tag>TXT_KEY_ACTION_CHANGE_IN_CITY</Tag>
+		<English>[ICON_BULLET]%s1 in %s2_CityName</English>
+		<French>[ICON_BULLET]%s1 &#224; %s2_CityName</French>
+		<German>[ICON_BULLET]%s1 in %s2_CityName</German>
+		<Italian>[ICON_BULLET]%s1 a %s2_CityName</Italian>
+		<Spanish>[ICON_BULLET]%s1 en %s2_CityName</Spanish>
+	</TEXT>
+
 <!-- Delete/Fortify/Sleep All Units Actions -->
 	
 	<TEXT>
