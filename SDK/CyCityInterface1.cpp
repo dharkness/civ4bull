@@ -224,6 +224,11 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getBuildingBadHealth", &CyCity::getBuildingBadHealth, "int ()")
 		.def("getFeatureGoodHealth", &CyCity::getFeatureGoodHealth, "int () - returns the good health provided by the feature this city is built on")
 		.def("getFeatureBadHealth", &CyCity::getFeatureBadHealth, "int () - returns the bad health provided by the feature this city is built on")
+// BUG - Feature Health - startn")
+		.def("getAdditionalHealthByFeature", &CyCity::getAdditionalHealthByFeature, "int (int /*FeatureTypes*/ eFeature, int iChange) - additional healthiness minus additional unhealthiness")
+		.def("getAdditionalGoodHealthByFeature", &CyCity::getAdditionalGoodHealthByFeature, "int (int /*FeatureTypes*/ eFeature, int iChange) - additional healthiness")
+		.def("getAdditionalBadHealthByFeature", &CyCity::getAdditionalBadHealthByFeature, "int (int /*FeatureTypes*/ eFeature, int iChange) - additional unhealthiness")
+// BUG - Feature Health - end
 		.def("getBuildingHealth", &CyCity::getBuildingHealth, "int (int eBuilding)")
 // BUG - Building Additional Health - start
 		.def("getAdditionalHealthByBuilding", &CyCity::getAdditionalHealthByBuilding, "int (int /*BuildingTypes*/ eBuilding) - additional healthiness minus additional unhealthiness")

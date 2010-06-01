@@ -205,6 +205,11 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	
+	<Define>
+		<DefineName>BUG_REMOVE_FEATURE_HEALTH_EFFECTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	
 	<!-- City Screen -->
 	<Define>
 		<DefineName>BUG_CITY_SCREEN_BASE_COMMERCE_HOVER</DefineName>

@@ -6063,38 +6063,16 @@ int CvCity::getFeatureBadHealth() const
 }
 
 
+// BUG - Feature Health - start
 void CvCity::updateFeatureHealth()
 {
-	CvPlot* pLoopPlot;
-	FeatureTypes eFeature;
 	int iNewGoodHealth;
 	int iNewBadHealth;
-	int iI;
 
 	iNewGoodHealth = 0;
 	iNewBadHealth = 0;
 
-	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
-	{
-		pLoopPlot = getCityIndexPlot(iI);
-
-		if (pLoopPlot != NULL)
-		{
-			eFeature = pLoopPlot->getFeatureType();
-
-			if (eFeature != NO_FEATURE)
-			{
-				if (GC.getFeatureInfo(eFeature).getHealthPercent() > 0)
-				{
-					iNewGoodHealth += GC.getFeatureInfo(eFeature).getHealthPercent();
-				}
-				else
-				{
-					iNewBadHealth += GC.getFeatureInfo(eFeature).getHealthPercent();
-				}
-			}
-		}
-	}
+	calculateFeatureHealthPercent(iNewGoodHealth, iNewBadHealth);
 
 	iNewGoodHealth /= 100;
 	iNewBadHealth /= 100;
@@ -6114,6 +6092,123 @@ void CvCity::updateFeatureHealth()
 		}
 	}
 }
+
+/*
+ * Adds the total percentage effects of health from features to iGoodHealth and iBadHealth.
+ *
+ * Bad health is stored as a negative value as per the original code.
+ */
+void CvCity::calculateFeatureHealthPercent(int& iGood, int& iBad) const
+{
+	CvPlot* pLoopPlot;
+	FeatureTypes eFeature;
+	int iI;
+
+	for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+	{
+		pLoopPlot = getCityIndexPlot(iI);
+
+		if (pLoopPlot != NULL)
+		{
+			eFeature = pLoopPlot->getFeatureType();
+
+			if (eFeature != NO_FEATURE)
+			{
+				int iHealth = GC.getFeatureInfo(eFeature).getHealthPercent();
+
+				if (iHealth > 0)
+				{
+					iGood += iHealth;
+				}
+				else
+				{
+					iBad += iHealth;
+				}
+			}
+		}
+	}
+}
+
+/*
+ * Returns the total additional health that adding or removing iChange eFeatures will provide.
+ */
+int CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange) const
+{
+	int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+	return getAdditionalHealthByFeature(eFeature, iChange, iGood, iBad, iSpoiledFood, iStarvation);
+}
+
+/*
+ * Returns the total additional health that adding or removing iChange eFeatures will provide
+ * and sets the good and bad levels individually and any resulting additional spoiled food and starvation.
+ *
+ * Doesn't reset iGood, iBad, iSpoiledFood, iStarvation to zero.
+ * Positive values for iBad mean an increase in unhealthiness just as with buildings.
+ */
+int CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange, int& iGood, int& iBad, int& iSpoiledFood, int& iStarvation) const
+{
+	FAssertMsg(eFeature >= 0, "eFeature expected to be >= 0");
+	FAssertMsg(eFeature < GC.getNumFeatureInfos(), "eFeature expected to be < GC.getNumFeatureInfos()");
+
+	CvFeatureInfo& kFeature = GC.getFeatureInfo(eFeature);
+	int iHealth = GC.getFeatureInfo(eFeature).getHealthPercent();
+
+	if (iHealth > 0)
+	{
+		return getAdditionalHealth(iChange * iHealth, 0, iGood, iBad, iSpoiledFood, iStarvation);
+	}
+	else
+	{
+		return getAdditionalHealth(0, - iChange * iHealth, iGood, iBad, iSpoiledFood, iStarvation);
+	}
+}
+
+/*
+ * Returns the total additional health that adding or removing a good or bad health percent will provide
+ * and sets the good and bad levels individually and any resulting additional spoiled food and starvation.
+ *
+ * Doesn't reset iGood, iBad, iSpoiledFood, iStarvation to zero.
+ * Positive values for iBad and iBadPercent mean an increase in unhealthiness just as with buildings.
+ */
+int CvCity::getAdditionalHealth(int iGoodPercent, int iBadPercent, int& iGood, int& iBad, int& iSpoiledFood, int& iStarvation) const
+{
+	int iStarting = iGood - iBad;
+
+	// Add current
+	iBadPercent = - iBadPercent;								// negate to stored "negative bad is bad"
+	calculateFeatureHealthPercent(iGoodPercent, iBadPercent);
+
+	// Delta
+	iGood += (iGoodPercent / 100) - getFeatureGoodHealth();
+	iBad -= (iBadPercent / 100) - getFeatureBadHealth();		// negate back to normal "negative bad change is good"
+
+	// Effect on Spoiled Food
+	int iHealthy = goodHealth();
+	int iUnhealthy = badHealth();
+	int iFood = getYieldRate(YIELD_FOOD) - foodConsumption();
+	iSpoiledFood -= std::min(0, (iHealthy + iGood) - (iUnhealthy + iBad)) - std::min(0, iHealthy - iUnhealthy);
+	if (iSpoiledFood > 0)
+	{
+		if (iFood <= 0)
+		{
+			iStarvation += iSpoiledFood;
+		}
+		else if (iSpoiledFood > iFood)
+		{
+			iStarvation += iSpoiledFood - iFood;
+		}
+	}
+	else if (iSpoiledFood < 0)
+	{
+		if (iFood < 0)
+		{
+			iStarvation += std::max(iFood, iSpoiledFood);
+		}
+	}
+
+	return iGood - iBad - iStarting;
+}
+// BUG - Feature Health - end
 
 
 int CvCity::getBuildingGoodHealth() const
@@ -6591,7 +6686,7 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) const
 
 /*
  * Returns the total additional health that adding one of the given buildings will provide
- * and sets the good and bad levels individually and any resulting additional spoiled food.
+ * and sets the good and bad levels individually and any resulting additional spoiled food and starvation.
  *
  * Doesn't reset iGood, iBad, iSpoiledFood, iStarvation to zero.
  * Doesn't check if the building can be constructed in this city.

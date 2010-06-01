@@ -49,17 +49,20 @@ CHANGES
 
 New Features:
 
+- Actual Effects
+	Added health effects from actions that remove a feature (e.g. chopping a Forest or building a Farm on a Jungle)
+
 Improvements:
 
-- Building Actual Effects
+- Actual Effects
 	Added additional starvation due to spoiled food from health effects (red slice of bread)
 
 Bug Fixes:
 
 - Production Decay
 	Fixed bug that caused decay to be carried over to items of the same type if built consecutively
-- Building Actual Effects
-	Added extra modifier from power when city already has power
+- Actual Effects
+	Added extra modifier from buildings boosted by power when city already has power (e.g. rebuilding a Factory that was destroyed)
 - BTS Fixes
 	Fixed missing normal prereq building in Building hover when a building requires a minimum number of other buildings
 	Added "Will remove the <improvement>" to Clear Feature Action hover when the feature is required by the improvement
@@ -76,6 +79,8 @@ New Features:
 
 - Events with Images
 	You can now add an image to any random event using the new <EventArt> tag.
+- Python API
+	Exposed CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange) [three forms]
 
 Improvements:
 
