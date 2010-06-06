@@ -209,6 +209,10 @@
 		<DefineName>BUG_REMOVE_FEATURE_HEALTH_EFFECTS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+	<Define>
+		<DefineName>BUG_REMOVE_FEATURE_HEALTH_EFFECTS_COUNT_OTHER_TILES</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	
 	<!-- City Screen -->
 	<Define>
@@ -261,7 +265,7 @@
 	</Define>
 	<Define>
 		<DefineName>BUG_PRODUCTION_POPUP_TRAIN_MILITARY_UNITS_FOREVER</DefineName>
-		<iDefineIntVal>1</iDefineIntVal>
+		<iDefineIntVal>0</iDefineIntVal>
 	</Define>
 
 	<!-- Actions -->
