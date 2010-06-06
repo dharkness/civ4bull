@@ -79,16 +79,28 @@ New Features:
 
 - Events with Images
 	You can now add an image to any random event using the new <EventArt> tag.
+- API
+	Added CvCity::calculateFeatureHealthPercent(int& iGood, int& iBad)
+	Added CvCity::calculateFeatureHealthPercentChange(int& iGood, int& iBad, CvPlot* pIgnorePlot = NULL)
+	Added CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange)
+	Added CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange, int& iGood, int& iBad)
+	Added CvCity::getAdditionalHealth(int iGoodPercent, int iBadPercent, int& iGood, int& iBad)
+	Added CvCity::getAdditionalAngryPopuplation(int iGood, int iBad)
+	Added CvCity::getAdditionalSpoiledFood(int iGood, int iBad)
+	Added CvCity::getAdditionalStarvation(int iSpoiledFood)
 - Python API
 	Exposed CvCity::getAdditionalHealthByFeature(FeatureTypes eFeature, int iChange) [three forms]
+	Exposed CvCity::getAdditionalStarvationByBuilding(BuildingTypes eBuilding)
 
 Improvements:
+
+- API
+	Added separate functions in CvCity to calculate spoiled food, starvation, and angry population from health and happiness changes
 
 Bug Fixes:
 
 - Python API
 	Fixed exposed name of CvCity::getAdditionalSpoiledFoodByBuilding(BuildingTypes eBuilding)
-	Exposed CvCity::getAdditionalStarvationByBuilding(BuildingTypes eBuilding)
 
 
 ____________________________________________________________________________________________________
