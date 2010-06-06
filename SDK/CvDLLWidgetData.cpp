@@ -2885,11 +2885,29 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 										if (pLoopCity != NULL && pLoopCity->getTeam() == pHeadSelectedUnit->getTeam())
 										{
-											int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+											int iGood = 0, iBad = 0;
 
-											pLoopCity->getAdditionalHealth(iGoodPercentChange, iBadPercentChange, iGood, iBad, iSpoiledFood, iStarvation);
+											if (true)
+											{
+												int iCityGoodPercentChange = 0;
+												int iCityBadPercentChange = 0;
+
+												pLoopCity->calculateFeatureHealthPercentChange(iCityGoodPercentChange, iCityBadPercentChange, pMissionPlot);
+												pLoopCity->getAdditionalHealth(iCityGoodPercentChange, iCityBadPercentChange, iGood, iBad);
+												iGood = -iGood;
+												iBad = -iBad;
+												iCityGoodPercentChange += iGoodPercentChange;
+												iCityBadPercentChange += iBadPercentChange;
+												pLoopCity->getAdditionalHealth(iCityGoodPercentChange, iCityBadPercentChange, iGood, iBad);
+											}
+											else
+											{
+												pLoopCity->getAdditionalHealth(iGoodPercentChange, iBadPercentChange, iGood, iBad);
+											}
 											if (iGood != 0 || iBad != 0)
 											{
+												int iSpoiledFood = pLoopCity->getAdditionalSpoiledFood(iGood, iBad);
+												int iStarvation = pLoopCity->getAdditionalStarvation(iSpoiledFood);
 												bool bStarted = false;
 
 												CvWStringBuffer szFeatureEffects;
