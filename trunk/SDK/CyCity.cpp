@@ -1005,9 +1005,9 @@ int CyCity::getAdditionalHealthByFeature(int /*FeatureTypes*/ eFeature, int iCha
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+		int iGood = 0, iBad = 0;
 
-		return m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad, iSpoiledFood, iStarvation);
+		return m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
 	}
 	else
 	{
@@ -1019,9 +1019,9 @@ int CyCity::getAdditionalGoodHealthByFeature(int /*FeatureTypes*/ eFeature, int 
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+		int iGood = 0, iBad = 0;
 
-		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad, iSpoiledFood, iStarvation);
+		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
 		return iGood;
 	}
 	else
@@ -1034,9 +1034,9 @@ int CyCity::getAdditionalBadHealthByFeature(int /*FeatureTypes*/ eFeature, int i
 {
 	if (m_pCity)
 	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
+		int iGood = 0, iBad = 0;
 
-		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad, iSpoiledFood, iStarvation);
+		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
 		return iBad;
 	}
 	else
