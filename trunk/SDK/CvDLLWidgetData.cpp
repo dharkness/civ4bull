@@ -2864,6 +2864,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 
 							if (iHealthPercent != 0)
 							{
+								bool bCountOtherTiles = getBugOptionBOOL("MiscHover__RemoveFeatureHealthEffectsCountOtherTiles", true, "BUG_REMOVE_FEATURE_HEALTH_EFFECTS_COUNT_OTHER_TILES");
 								int iGoodPercentChange = 0;
 								int iBadPercentChange = 0;
 
@@ -2887,7 +2888,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 										{
 											int iGood = 0, iBad = 0;
 
-											if (true)
+											if (bCountOtherTiles)
 											{
 												int iCityGoodPercentChange = 0;
 												int iCityBadPercentChange = 0;
