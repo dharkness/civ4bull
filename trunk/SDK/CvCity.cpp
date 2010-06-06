@@ -6658,8 +6658,8 @@ void CvCity::updateExtraBuildingHappiness()
  */
 int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding) const
 {
-	int iGood = 0, iBad = 0, iAngryPop = 0;
-	return getAdditionalHappinessByBuilding(eBuilding, iGood, iBad, iAngryPop);
+	int iGood = 0, iBad = 0;
+	return getAdditionalHappinessByBuilding(eBuilding, iGood, iBad);
 }
 
 /*
@@ -6669,7 +6669,7 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding) const
  * Doesn't reset iGood or iBad to zero.
  * Doesn't check if the building can be constructed in this city.
  */
-int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iAngryPop) const
+int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
 {
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
@@ -6767,9 +6767,6 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
 		iBad = iStartingBad - unhappyLevel();
 	}
 
-	// Effect on Angry Population
-	iAngryPop += getAdditionalAngryPopuplation(iGood, iBad);
-
 	return iGood - iBad - iStarting;
 }
 
@@ -6781,8 +6778,8 @@ int CvCity::getAdditionalHappinessByBuilding(BuildingTypes eBuilding, int& iGood
  */
 int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) const
 {
-	int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-	return getAdditionalHealthByBuilding(eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
+	int iGood = 0, iBad = 0;
+	return getAdditionalHealthByBuilding(eBuilding, iGood, iBad);
 }
 
 /*
@@ -6792,7 +6789,7 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding) const
  * Doesn't reset iGood, iBad, iSpoiledFood, iStarvation to zero.
  * Doesn't check if the building can be constructed in this city.
  */
-int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad, int& iSpoiledFood, int& iStarvation) const
+int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, int& iBad) const
 {
 	FAssertMsg(eBuilding >= 0, "eBuilding expected to be >= 0");
 	FAssertMsg(eBuilding < GC.getNumBuildingInfos(), "eBuilding expected to be < GC.getNumBuildingInfos()");
@@ -6867,10 +6864,6 @@ int CvCity::getAdditionalHealthByBuilding(BuildingTypes eBuilding, int& iGood, i
 	{
 		iBad -= getPopulation();
 	}
-
-	// Effect on Spoiled Food
-	iSpoiledFood += getAdditionalSpoiledFood(iGood, iBad);
-	iStarvation += getAdditionalStarvation(iSpoiledFood);
 
 	return iGood - iBad - iStarting;
 }
