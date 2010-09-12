@@ -93,6 +93,21 @@
 		<DefineName>BUG_CITYBAR_HIDE_INSTRUCTIONS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+
+<!-- City Plot Status -->
+
+	<Define>
+		<DefineName>BUG_CITY_CONTROLLED_PLOTS</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITY_CONTROLLED_PLOTS_COLOR</DefineName>
+		<DefineTextVal>COLOR_HIGHLIGHT_TEXT</DefineTextVal>
+	</Define>
+	<Define>
+		<DefineName>BUG_CITY_CONTROLLED_PLOTS_ALPHA</DefineName>
+		<fDefineFloatVal>1.0</fDefineFloatVal>
+	</Define>
 	
 <!-- Miscellaneous Hovers -->
 	
