@@ -96,6 +96,7 @@ Improvements:
 
 - API
 	Added separate functions in CvCity to calculate spoiled food, starvation, and angry population from health and happiness changes
+	Added getDefineFLOAT() and getDefineSTRING()
 
 Bug Fixes:
 
