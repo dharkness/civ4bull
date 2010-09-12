@@ -121,6 +121,24 @@ void CvGame::updateColoredPlots()
 		}
 		else
 		{
+// BUG - City Controlled Plots - start
+			if (getBugOptionBOOL("CityBar__CityControlledPlots", true, "BUG_CITY_CONTROLLED_PLOTS"))
+			{
+				NiColorA color(GC.getColorInfo((ColorTypes)GC.getInfoTypeForString(getDefineSTRING("BUG_CITY_CONTROLLED_PLOTS_COLOR", "COLOR_HIGHLIGHT_TEXT"))).getColor());
+				color.a = getDefineFLOAT("BUG_CITY_CONTROLLED_PLOTS_ALPHA", 1.0);
+
+				for (iI = 0; iI < NUM_CITY_PLOTS; iI++)
+				{
+					pLoopPlot = pHeadSelectedCity->getCityIndexPlot(iI);
+
+					if (pLoopPlot != NULL && pLoopPlot->getWorkingCity() == pHeadSelectedCity)
+					{
+						gDLL->getEngineIFace()->fillAreaBorderPlot(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), color, AREA_BORDER_LAYER_CITY_RADIUS);
+					}
+				}
+			}
+// BUG - City Controlled Plots - end
+
 			pSelectedCityNode = gDLL->getInterfaceIFace()->headSelectedCitiesNode();
 
 			while (pSelectedCityNode != NULL)
