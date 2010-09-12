@@ -3136,6 +3136,9 @@ public:
 	bool isNoImprovement() const;			// Exposed to Python
 	bool isVisibleAlways() const;			// Exposed to Python
 	bool isNukeImmune() const;			// Exposed to Python
+// BUG - City Plot Status - start
+	bool isOnlyBad() const;				// Exposed to Python
+// BUG - City Plot Status - end
 	const TCHAR* getOnUnitChangeTo() const;
 
 	const TCHAR* getArtDefineTag() const;			
