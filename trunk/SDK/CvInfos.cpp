@@ -12838,6 +12838,25 @@ bool CvFeatureInfo::isNukeImmune() const
 	return m_bNukeImmune; 
 }
 
+// BUG - City Plot Status - start
+bool CvFeatureInfo::isOnlyBad() const
+{
+	if (getHealthPercent() > 0 || isAddsFreshWater())
+	{
+		return false;
+	}
+	for (int iI = 0; iI < NUM_YIELD_TYPES; iI++)
+	{
+		if (getYieldChange(iI) > 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+// BUG - City Plot Status - end
+
 const TCHAR* CvFeatureInfo::getOnUnitChangeTo() const
 {
 	return m_szOnUnitChangeTo;

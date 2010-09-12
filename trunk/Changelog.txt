@@ -49,8 +49,11 @@ CHANGES
 
 New Features:
 
-- City Controlled Plots
-	Selecting a city bar highlights the plots that it can work [color in GlobalDefinesAlt.xml]
+- City Tiles
+	Activate by selecting one or more city bars on the map
+	The area of tiles that each city can work are highlighted (similar to selecting a Settler)
+	A colored circle on each tile represents its status: worked vs. not worked and improved vs. improvable vs. not improvable
+	Customize the colors and transparencies in Assets/XML/GlobalDefinesAlt.xml
 - Actual Effects
 	Added health effects from actions that remove a feature (e.g. chopping a Forest or building a Farm on a Jungle)
 
