@@ -54,6 +54,8 @@ New Features:
 	The area of tiles that each city can work are highlighted (similar to selecting a Settler)
 	A colored circle on each tile represents its status: worked vs. not worked and improved vs. improvable vs. not improvable
 	Customize the colors and transparencies in Assets/XML/GlobalDefinesAlt.xml
+- Working City
+	Tile hover shows which city controls it and highlights the name in cyan if a citizen is working it
 - Actual Effects
 	Added health effects from actions that remove a feature (e.g. chopping a Forest or building a Farm on a Jungle)
 
