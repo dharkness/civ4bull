@@ -4422,6 +4422,28 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 			if (pPlot->isActiveVisible(true))
 			{
 				szTempBuffer.Format(L"%d%% " SETCOLR L"%s" ENDCOLR, pPlot->calculateCulturePercent(eRevealOwner), GET_PLAYER(eRevealOwner).getPlayerTextColorR(), GET_PLAYER(eRevealOwner).getPlayerTextColorG(), GET_PLAYER(eRevealOwner).getPlayerTextColorB(), GET_PLAYER(eRevealOwner).getPlayerTextColorA(), GET_PLAYER(eRevealOwner).getCivilizationAdjective());
+
+// BUG - City Controlled Plots - start
+				if (getBugOptionBOOL("MiscHover__PlotWorkingCity", true, "BUG_PLOT_HOVER_WORKING_CITY"))
+				{
+					CvCity* pWorkingCity = pPlot->getWorkingCity();
+
+					if (pWorkingCity != NULL && pWorkingCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+					{
+						szTempBuffer.append(L", ");
+
+						if (pWorkingCity->isWorkingPlot(pPlot))
+						{
+							szTempBuffer.append(CvWString::format(SETCOLR L"%s" ENDCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), pWorkingCity->getName().GetCString()));
+						}
+						else
+						{
+							szTempBuffer.append(CvWString::format(L"%s", pWorkingCity->getName().GetCString()));
+						}
+					}
+				}
+// BUG - City Controlled Plots - end
+
 				szString.append(szTempBuffer);
 				szString.append(NEWLINE);
 
