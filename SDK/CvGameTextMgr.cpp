@@ -4740,6 +4740,36 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		}
 // BUG - Lat/Long Coordinates - end
 
+// BUG - Recommended Build - start
+		BuildTypes eBestBuild = NO_BUILD;
+		bool bBestPartiallyBuilt = false;
+
+		if (getBugOptionBOOL("MiscHover__PlotRecommendedBuild", true, "BUG_PLOT_HOVER_RECOMMENDED_BUILD"))
+		{
+			CvCity* pWorkingCity = pPlot->getWorkingCity();
+
+			if (pWorkingCity != NULL && pWorkingCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+			{
+				eBestBuild = pWorkingCity->AI_getBestBuild(pWorkingCity->getCityPlotIndex(pPlot));
+
+				if (eBestBuild != NO_BUILD)
+				{
+					CvBuildInfo& kBestBuild = GC.getBuildInfo(eBestBuild);
+					ImprovementTypes ePlotImprovement = pPlot->getImprovementType();
+
+					if (ePlotImprovement != NO_IMPROVEMENT && ePlotImprovement == kBestBuild.getImprovement())
+					{
+						eBestBuild = NO_BUILD;
+					}
+					else if (kBestBuild.getRoute() != NO_ROUTE && (pPlot->isWater() || kBestBuild.getRoute() == pPlot->getRouteType()))
+					{
+						eBestBuild = NO_BUILD;
+					}
+				}
+			}
+		}
+// BUG - Recommended Build - end
+
 // BUG - Partial Builds - start
 		if (pPlot->hasAnyBuildProgress() && getBugOptionBOOL("MiscHover__PartialBuilds", true, "BUG_PLOT_HOVER_PARTIAL_BUILDS"))
 		{
@@ -4749,19 +4779,40 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 			{
 				if (pPlot->getBuildProgress((BuildTypes)iI) > 0 && pPlot->canBuild((BuildTypes)iI, ePlayer))
 				{
-					int iTurns = pPlot->getBuildTurnsLeft((BuildTypes)iI, GC.getGame().getActivePlayer());
+					BuildTypes eBuild = (BuildTypes)iI;
+					int iTurns = pPlot->getBuildTurnsLeft(eBuild, GC.getGame().getActivePlayer());
 					
 					if (iTurns > 0 && iTurns < MAX_INT)
 					{
 						szString.append(NEWLINE);
-						szString.append(GC.getBuildInfo((BuildTypes)iI).getDescription());
+						if (eBuild == eBestBuild)
+						{
+							bBestPartiallyBuilt = true;
+							szString.append(CvWString::format(SETCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT")));
+						}
+						szString.append(GC.getBuildInfo(eBuild).getDescription());
 						szString.append(L": ");
 						szString.append(gDLL->getText("TXT_KEY_ACTION_NUM_TURNS", iTurns));
+						
+						if (eBuild == eBestBuild)
+						{
+							szString.append(CvWString::format(ENDCOLR));
+						}
 					}
 				}
 			}
 		}
 // BUG - Partial Builds - end
+
+// BUG - Recommended Build - start
+		if (eBestBuild != NO_BUILD && !bBestPartiallyBuilt)
+		{
+			szString.append(NEWLINE);
+			szString.append(CvWString::format(SETCOLR, TEXT_COLOR("COLOR_HIGHLIGHT_TEXT")));
+			szString.append(GC.getBuildInfo(eBestBuild).getDescription());
+			szString.append(ENDCOLR);
+		}
+// BUG - Recommended Build - end
 
 		if (pPlot->getBlockadedCount(GC.getGameINLINE().getActiveTeam()) > 0)
 		{
