@@ -263,6 +263,10 @@
 		<DefineName>BUG_BUILDING_HOVER_ACTUAL_EFFECTS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+	<Define>
+		<DefineName>BUG_BUILDING_DOUBLE_COMMERCE</DefineName>
+		<iDefineIntVal>1</iDefineIntVal>
+	</Define>
 	
 	<!-- Unit -->
 	<Define>

@@ -60,6 +60,8 @@ New Features:
 	Highlights which improvement an automated worker will build in the tile hover text
 - Actual Effects
 	Added health effects from actions that remove a feature (e.g. chopping a Forest or building a Farm on a Jungle)
+- Double Commerce
+	Shows the year each building was built in its hover and how many years until its commerce (typically culture) doubles
 
 Improvements:
 

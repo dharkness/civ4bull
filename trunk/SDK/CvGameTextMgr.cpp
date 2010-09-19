@@ -10078,6 +10078,61 @@ void CvGameTextMgr::setBuildingHelpActual(CvWStringBuffer &szBuffer, BuildingTyp
 
 	if (pCity != NULL)
 	{
+// BUG - Building Double Commerce - start
+		if (GC.getGameINLINE().getActivePlayer() != NO_PLAYER && pCity->getNumRealBuilding(eBuilding) > 0 && pCity->getBuildingOriginalOwner(eBuilding) == GC.getGameINLINE().getActivePlayer())
+		{
+			if (getBugOptionBOOL("CityScreen__BuildingDoubleCommerce", true, "BUG_BUILDING_DOUBLE_COMMERCE"))
+			{
+				int iYear = pCity->getBuildingOriginalTime(eBuilding);
+
+				if (iYear != MIN_INT)
+				{
+					// year built
+					CvWString szYear;
+
+					if (iYear < 0)
+					{
+						szYear = gDLL->getText("TXT_KEY_TIME_BC", -iYear);
+					}
+					else if (iYear > 0)
+					{
+						szYear = gDLL->getText("TXT_KEY_TIME_AD", iYear);
+					}
+					else
+					{
+						szYear = gDLL->getText("TXT_KEY_TIME_AD", 1);
+					}
+
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_BUG_YEAR_BUILT", szYear.GetCString()));
+
+					// double commerce
+					if (pCity->getOwnerINLINE() == GC.getGameINLINE().getActivePlayer())
+					{
+						for (iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
+						{
+							int iDoubleTime = kBuilding.getCommerceChangeDoubleTime(iI);
+							int iAge = GC.getGameINLINE().getGameTurnYear() - iYear;
+							
+							if (iAge < iDoubleTime)
+							{
+								szBuffer.append(NEWLINE);
+								if (iAge - iDoubleTime == 1)
+								{
+									szBuffer.append(gDLL->getText("TXT_KEY_BUG_DOUBLE_COMMERCE_NEXT_YEAR", GC.getCommerceInfo((CommerceTypes)iI).getTextKeyWide()));
+								}
+								else
+								{
+									szBuffer.append(gDLL->getText("TXT_KEY_BUG_DOUBLE_COMMERCE_YEARS", GC.getCommerceInfo((CommerceTypes)iI).getTextKeyWide(), iDoubleTime - iAge));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+// BUG - Building Double Commerce - end
+
 		if (!(GC.getBuildingClassInfo((BuildingClassTypes)(kBuilding.getBuildingClassType())).isNoLimit()))
 		{
 			if (isWorldWonderClass((BuildingClassTypes)(kBuilding.getBuildingClassType())))
