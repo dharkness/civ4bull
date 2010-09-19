@@ -878,7 +878,11 @@ public:
 	int getNumUnitNames() const;							// Exposed to Python
 	int getCommandType() const;								// Exposed to Python
 	void setCommandType(int iNewType);
-
+	
+// BUG - Female Great People - start
+	bool isFemale() const;				// Exposed to Python
+	int getFemaleUnitType() const;
+// BUG - Female Great People - end
 	bool isAnimal() const;				// Exposed to Python
 	bool isFoodProduction() const;				// Exposed to Python
 	bool isNoBadGoodies() const;				// Exposed to Python
@@ -1064,7 +1068,10 @@ protected:
 	int m_iNumUnitNames;
 	int m_iCommandType;
 	int m_iLeaderExperience;
-
+	
+// BUG - Female Great People - start
+	bool m_bFemale;
+// BUG - Female Great People - end
 	bool m_bAnimal;
 	bool m_bFoodProduction;
 	bool m_bNoBadGoodies;
@@ -5890,9 +5897,7 @@ public:
 	int getNumWorldNews() const;
 
 // BUG - Events with Images - start
-#ifdef _MOD_EVENTIMG
 	const TCHAR* getEventArt() const;				// Exposed to Python
-#endif
 // BUG - Events with Images - end
 	bool isSinglePlayer() const;				// Exposed to Python
 	bool isTeam() const;						// Exposed to Python
@@ -5975,9 +5980,7 @@ private:
 	std::vector<CvWString> m_aszWorldNews;
 
 // BUG - Events with Images - start
-#ifdef _MOD_EVENTIMG
 	CvString m_szEventArt;
-#endif
 // BUG - Events with Images - end
 	bool m_bSinglePlayer;
 	bool m_bTeam;
