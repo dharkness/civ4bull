@@ -76,18 +76,15 @@ Bug Fixes:
 	Fixed missing normal prereq building in Building hover when a building requires a minimum number of other buildings
 	Added "Will remove the <improvement>" to Clear Feature Action hover when the feature is required by the improvement
 
-Merged Mods:
-
-- Events with Images
-	Added release version [optional]
-
 
 MODDING
 
 New Features:
 
 - Events with Images
-	You can now add an image to any random event using the new <EventArt> tag.
+	You can now add an image to any random event using the new <EventArt> tag
+- Female Great People
+	You can now add female great people using the new <bFemale> tag
 - API
 	Added CvCity::calculateFeatureHealthPercent(int& iGood, int& iBad)
 	Added CvCity::calculateFeatureHealthPercentChange(int& iGood, int& iBad, CvPlot* pIgnorePlot = NULL)
