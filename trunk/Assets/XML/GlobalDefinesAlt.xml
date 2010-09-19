@@ -245,6 +245,14 @@
 		<DefineName>BUG_PLOT_HOVER_LAT_LONG</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+  <Define>
+    <DefineName>BUG_PLOT_HOVER_WORKING_CITY</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
+  <Define>
+    <DefineName>BUG_PLOT_HOVER_RECOMMENDED_BUILD</DefineName>
+    <iDefineIntVal>1</iDefineIntVal>
+  </Define>
 	<Define>
 		<DefineName>BUG_PLOT_HOVER_PARTIAL_BUILDS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
