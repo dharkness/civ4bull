@@ -103,6 +103,10 @@ Improvements:
 - API
 	Added separate functions in CvCity to calculate spoiled food, starvation, and angry population from health and happiness changes
 	Added getDefineFLOAT() and getDefineSTRING()
+- Compilation
+	Switched to Danny Daemonic's makefile; added differences at top
+	Created static libraries for CxImage
+	Included additional static libraries required by CxImage
 
 Bug Fixes:
 
