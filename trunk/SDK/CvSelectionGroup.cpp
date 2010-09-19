@@ -3621,9 +3621,7 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 					&& pSelectionGroup->getActivityType() == ACTIVITY_MISSION && pSelectionGroup->getLengthMissionQueue() > 0 
 					&& pSelectionGroup->getMissionType(0) == kBuildInfo.getMissionType() && pSelectionGroup->getMissionData1(0) == eBuild)
 			{
-				logMsg("group %d stopping group %d", getID(), pSelectionGroup->getID());
 				pSelectionGroup->deleteMissionQueueNode(pSelectionGroup->headMissionQueueNode());
-				//pSelectionGroup->clearMissionQueue();
 			}
 		}
 	}
