@@ -71,7 +71,7 @@ BEGIN
         BEGIN
             VALUE "Comments", "See MODDING.txt for instructions on merging and customizing BULL"
             VALUE "CompanyName", "BUG Team"
-            VALUE "FileDescription", "BULL - The BUG DLL - Custom DLL for Civilization 4 : Beyond The Sword"
+            VALUE "FileDescription", "BULL - The BUG DLL for Civ4:BTS"
             VALUE "FileVersion", "1, 3, 0, 0"
             VALUE "InternalName", "BULL"
             VALUE "LegalCopyright", "Copyright (C) 2010 BUG Mod. All Rights Reserved."
