@@ -76,7 +76,8 @@ Bug Fixes:
 	Added extra modifier from buildings boosted by power when city already has power (e.g. rebuilding a Factory that was destroyed)
 - Pre-Chop
 	Workers in different selection groups also stop chopping
-- BTS Fixes
+- Miscellaneous
+	Fixed doubling of specialist name in the Remove Specialist button
 	Fixed missing normal prereq building in Building hover when a building requires a minimum number of other buildings
 	Added "Will remove the <improvement>" to Clear Feature Action hover when the feature is required by the improvement
 
@@ -111,6 +112,8 @@ Improvements:
 	Switched to Danny Daemonic's makefile; added differences at top
 	Created static libraries for CxImage
 	Included additional static libraries required by CxImage
+- Map Regeneration
+	Added call to gameStart event immediately before creating the initial autosave
 
 Bug Fixes:
 
