@@ -148,25 +148,25 @@
 		<Tag>TXT_KEY_BUG_YEAR_BUILT</Tag>
 		<English>Built in %s1_year</English>
 		<French>Built in %s1_year</French>
-		<German>Built in %s1_year</German>
+		<German>Errichtet im Jahr %s1_year</German>
 		<Italian>Built in %s1_year</Italian>
 		<Spanish>Built in %s1_year</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUG_DOUBLE_COMMERCE_NEXT_YEAR</Tag>
 		<English>[ICON_BULLET]Double %s1_commerce_type next year</English>
-		<French></French>
-		<German></German>
-		<Italian></Italian>
-		<Spanish></Spanish>
+		<French>[ICON_BULLET]Double %s1_commerce_type next year</French>
+		<German>[ICON_BULLET]Doppelte %s1_commerce_type im nächsten Jahr</German>
+		<Italian>[ICON_BULLET]Double %s1_commerce_type next year</Italian>
+		<Spanish>[ICON_BULLET]Double %s1_commerce_type next year</Spanish>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUG_DOUBLE_COMMERCE_YEARS</Tag>
 		<English>[ICON_BULLET]Double %s1_commerce_type in %d2 years</English>
-		<French></French>
-		<German></German>
-		<Italian></Italian>
-		<Spanish></Spanish>
+		<French>[ICON_BULLET]Double %s1_commerce_type in %d2 years</French>
+		<German>[ICON_BULLET]Doppelte %s1_commerce_type für %d2 Jahre</German>
+		<Italian>[ICON_BULLET]Double %s1_commerce_type in %d2 years</Italian>
+		<Spanish>[ICON_BULLET]Double %s1_commerce_type in %d2 years</Spanish>
 	</TEXT>
 
 <!-- Production Decay -->
