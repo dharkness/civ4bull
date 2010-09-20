@@ -4,7 +4,7 @@ CHANGELOG for BULL
 1. Introduction
 2. Known Issues
 
-* BULL x.x
+* BULL 1.3
 * BULL 1.2
 * BULL 1.1
 * BULL 1.0
@@ -43,7 +43,7 @@ ________________________________________________________________________________
 
 
 ____________________________________________________________________________________________________
-BULL x.x unreleased
+BULL 1.3 released September 20th, 2010
 
 CHANGES
 
@@ -110,8 +110,7 @@ Improvements:
 	Added getDefineFLOAT() and getDefineSTRING()
 - Compilation
 	Switched to Danny Daemonic's makefile; added differences at top
-	Created static libraries for CxImage
-	Included additional static libraries required by CxImage
+	Created static libraries for CxImage and those it requires
 - Map Regeneration
 	Added call to gameStart event immediately before creating the initial autosave
 

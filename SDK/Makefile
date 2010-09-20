@@ -76,10 +76,9 @@ Release_OTHER = Release\CvGameCoreDLL.exp
 #   _MOD_AIAUTOPLAY
 #   _MOD_GWARM				has extra assets; effectively eliminates global warming
 #   _MOD_SHAM_SPOILER		enables AG modifiers in mod
-#	_MOD_EVENTIMG			adds optional <EventArt> tag on <EventTriggerInfo> elements
 
-MODFLAGS = /D_MOD_AIAUTOPLAY
-#MODFLAGS = /D_MOD_FRACTRADE /D_MOD_SENTRY /D_MOD_GOVWORKERS /D_MOD_AIAUTOPLAY /D_MOD_GWARM /D_MOD_EVENTIMG
+MODFLAGS = /D_MOD_AIAUTOPLAY 
+#MODFLAGS = /D_MOD_FRACTRADE /D_MOD_SENTRY /D_MOD_GOVWORKERS /D_MOD_AIAUTOPLAY /D_MOD_GWARM
 
 # /EHsc		catch C++ exceptions only; assume that extern C functions never throw a C++ exception
 # /Gd		Use the __cdecl calling convention (x86 only). 
