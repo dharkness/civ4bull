@@ -5651,7 +5651,7 @@ int CvCity::getSavedMaintenanceTimes100ByBuilding(BuildingTypes eBuilding) const
 	if (iModifier != 0 && !isDisorder() && !isWeLoveTheKingDay() && (getPopulation() > 0))
 	{
 		int iNewMaintenance = calculateBaseMaintenanceTimes100() * std::max(0, getMaintenanceModifier() + iModifier + 100) / 100;
-		return std::max(0, getMaintenanceTimes100() - iNewMaintenance);
+		return getMaintenanceTimes100() - iNewMaintenance;
 	}
 
 	return 0;

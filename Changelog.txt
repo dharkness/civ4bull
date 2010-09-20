@@ -117,6 +117,8 @@ Improvements:
 
 Bug Fixes:
 
+- API
+	CvCity::getSavedMaintenanceTimes100ByBuilding() now allows buildings that increase maintenance
 - Python API
 	Fixed exposed name of CvCity::getAdditionalSpoiledFoodByBuilding(BuildingTypes eBuilding)
 
