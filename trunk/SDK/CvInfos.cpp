@@ -3565,7 +3565,7 @@ bool CvUnitInfo::isFemale() const
 int CvUnitInfo::getFemaleUnitType() const
 {
 	CvString szFemaleUnitType = m_szType + "_FEMALE";
-	return GC.getInfoTypeForString(szFemaleUnitType.GetCString());
+	return GC.getInfoTypeForString(szFemaleUnitType.GetCString(), true);
 }
 // BUG - Female Great People - end
 
